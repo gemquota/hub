@@ -53,6 +53,16 @@ h1{font-size:1.3rem;font-weight:700;margin-bottom:.1rem;background:linear-gradie
 .filter-btn:hover{border-color:rgba(123,47,255,.3);color:#ccc}
 .filter-btn.active{background:rgba(123,47,255,.15);border-color:#7b2fff;color:#a855f7}
 .filter-btn.non-ai.active{background:rgba(255,140,0,.15);border-color:#ff8c00;color:#ff8c00}
+
+.stacked-bar-wrap{padding:.3rem 0}
+.stacked-bar{display:flex;height:32px;border-radius:8px;overflow:hidden;background:rgba(255,255,255,.03)}
+.stacked-bar .seg{height:100%;transition:width 1s;min-width:2px}
+.stacked-bar .seg:first-child{border-radius:8px 0 0 8px}
+.stacked-bar .seg:last-child{border-radius:0 8px 8px 0}
+.stacked-legend{display:flex;flex-wrap:wrap;gap:.3rem .6rem;margin-top:.5rem;font-size:.6rem}
+.stacked-legend .leg-item{display:flex;align-items:center;gap:.25rem;color:#999}
+.stacked-legend .leg-swatch{width:8px;height:8px;border-radius:2px;flex-shrink:0}
+.stacked-legend .leg-total{color:#555;margin-left:auto}
 </style>
 </head>
 <body>
@@ -97,11 +107,20 @@ h1{font-size:1.3rem;font-weight:700;margin-bottom:.1rem;background:linear-gradie
   <!-- Chart 1: Entity Count -->
   <div class="card">
     <div class="card-header"><span class="icon">📊</span> Entity Count</div>
-    <div class="vbar-wrap">
-      <div class="vbar-col"><div class="vbar" style="height:100%;background:linear-gradient(0deg,#a855f7,#c084fc)"><span class="vval">2,442</span></div><span class="vbar-lbl">MyKB</span></div>
-      <div class="vbar-col"><div class="vbar" style="height:18%;background:#3b82f6"><span class="vval">420</span></div><span class="vbar-lbl">SPACE</span></div>
-      <div class="vbar-col"><div class="vbar" style="height:8%;background:#ff8c00"><span class="vval">180</span></div><span class="vbar-lbl">RSIS3</span></div>
-      <div class="vbar-col"><div class="vbar" style="height:1%;background:#22c55e"><span class="vval">15</span></div><span class="vbar-lbl">MyRSIKB</span></div>
+        <div class="stacked-bar-wrap">
+      <div class="stacked-bar">
+        <div class="seg" style="width:52.5%;background:#ef4444" title="VEPA2: 680"></div>
+        <div class="seg" style="width:32.4%;background:#3b82f6" title="SPACE: 420"></div>
+        <div class="seg" style="width:13.9%;background:#ff8c00" title="RSIS3: 180"></div>
+        <div class="seg" style="width:1.2%;background:#22c55e" title="MyRSIKB: 15"></div>
+      </div>
+      <div class="stacked-legend">
+        <span class="leg-item"><span class="leg-swatch" style="background:#ef4444"></span> VEPA2 (680)</span>
+        <span class="leg-item"><span class="leg-swatch" style="background:#3b82f6"></span> SPACE (420)</span>
+        <span class="leg-item"><span class="leg-swatch" style="background:#ff8c00"></span> RSIS3 (180)</span>
+        <span class="leg-item"><span class="leg-swatch" style="background:#22c55e"></span> MyRSIKB (15)</span>
+        <span class="leg-item leg-total">Total: 1295</span>
+      </div>
     </div>
   </div>
 
@@ -109,13 +128,13 @@ h1{font-size:1.3rem;font-weight:700;margin-bottom:.1rem;background:linear-gradie
   <div class="card">
     <div class="card-header"><span class="icon">📁</span> File Distribution</div>
     <div class="donut-wrap">
-      <svg class="donut" viewBox="0 0 100 100">
+            <svg class="donut" viewBox="0 0 100 100">
         <circle cx="50" cy="50" r="40" fill="none" stroke="rgba(255,255,255,.04)" stroke-width="16"/>
-        <circle cx="50" cy="50" r="40" fill="none" stroke="#ef4444" stroke-width="16" stroke-dasharray="65 251" stroke-dashoffset="0" transform="rotate(-90 50 50)"/>
-        <circle cx="50" cy="50" r="40" fill="none" stroke="#a855f7" stroke-width="16" stroke-dasharray="60 251" stroke-dashoffset="-65" transform="rotate(-90 50 50)"/>
-        <circle cx="50" cy="50" r="40" fill="none" stroke="#3b82f6" stroke-width="16" stroke-dasharray="15 251" stroke-dashoffset="-125" transform="rotate(-90 50 50)"/>
-        <circle cx="50" cy="50" r="40" fill="none" stroke="#ff8c00" stroke-width="16" stroke-dasharray="10 251" stroke-dashoffset="-140" transform="rotate(-90 50 50)"/>
-        <circle cx="50" cy="50" r="40" fill="none" stroke="#22c55e" stroke-width="16" stroke-dasharray="2 251" stroke-dashoffset="-150" transform="rotate(-90 50 50)"/>
+        <circle cx="50" cy="50" r="40" fill="none" stroke="#a855f7" stroke-width="16" stroke-dasharray="164 251" stroke-dashoffset="-0" transform="rotate(-90 50 50)"/>
+        <circle cx="50" cy="50" r="40" fill="none" stroke="#ef4444" stroke-width="16" stroke-dasharray="46 251" stroke-dashoffset="-164" transform="rotate(-90 50 50)"/>
+        <circle cx="50" cy="50" r="40" fill="none" stroke="#3b82f6" stroke-width="16" stroke-dasharray="28 251" stroke-dashoffset="-210" transform="rotate(-90 50 50)"/>
+        <circle cx="50" cy="50" r="40" fill="none" stroke="#ff8c00" stroke-width="16" stroke-dasharray="12 251" stroke-dashoffset="-238" transform="rotate(-90 50 50)"/>
+        <circle cx="50" cy="50" r="40" fill="none" stroke="#22c55e" stroke-width="16" stroke-dasharray="1 251" stroke-dashoffset="-250" transform="rotate(-90 50 50)"/>
       </svg>
       <div class="donut-legend">
         <div class="row"><span class="swatch" style="background:#a855f7"></span><span class="lbl">MyKB</span><span class="cnt">2,442</span></div>
@@ -136,7 +155,85 @@ h1{font-size:1.3rem;font-weight:700;margin-bottom:.1rem;background:linear-gradie
   </div>
 
   <div class="footer">Generated 2026-07-28 · AI / RSI Ecosystem Dashboard</div>
-</div>
+<
+  <!-- Chart 4: File Count -->
+  <div class="card">
+    <div class="card-header"><span class="icon">📄</span> File Count (on disk)</div>
+    <div class="stacked-bar-wrap">
+      <div class="stacked-bar">
+        <div class="seg" style="width:44.3%;background:#3b82f6" title="SPACE: 9,901 files"></div>
+        <div class="seg" style="width:40.2%;background:#ef4444" title="VEPA2: 8,982 files"></div>
+        <div class="seg" style="width:15%;background:#a855f7" title="MyKB: 3,351 files"></div>
+        <div class="seg" style="width:2.8%;background:#ff8c00" title="RSIS3: 627 files"></div>
+        <div class="seg" style="width:0.2%;background:#22c55e" title="MyRSIKB: 44 files"></div>
+      </div>
+      <div class="stacked-legend">
+        <span class="leg-item"><span class="leg-swatch" style="background:#3b82f6"></span> SPACE (9,901)</span>
+        <span class="leg-item"><span class="leg-swatch" style="background:#ef4444"></span> VEPA2 (8,982)</span>
+        <span class="leg-item"><span class="leg-swatch" style="background:#a855f7"></span> MyKB (3,351)</span>
+        <span class="leg-item"><span class="leg-swatch" style="background:#ff8c00"></span> RSIS3 (627)</span>
+        <span class="leg-item"><span class="leg-swatch" style="background:#22c55e"></span> MyRSIKB (44)</span>
+        <span class="leg-item leg-total">Total: 22,905</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chart 5: Lines of Code -->
+  <div class="card">
+    <div class="card-header"><span class="icon">⚡</span> Lines of Code</div>
+    <div class="stacked-bar-wrap">
+      <div class="stacked-bar">
+        <div class="seg" style="width:60.8%;background:#ef4444" title="VEPA2: 532,380 lines"></div>
+        <div class="seg" style="width:23.9%;background:#3b82f6" title="SPACE: 209,283 lines"></div>
+        <div class="seg" style="width:7.8%;background:#a855f7" title="MyKB: 68,345 lines"></div>
+        <div class="seg" style="width:4.8%;background:#ff8c00" title="RSIS3: 41,964 lines"></div>
+        <div class="seg" style="width:1.1%;background:#22c55e" title="MyRSIKB: 9,958 lines"></div>
+      </div>
+      <div class="stacked-legend">
+        <span class="leg-item"><span class="leg-swatch" style="background:#ef4444"></span> VEPA2 (532k)</span>
+        <span class="leg-item"><span class="leg-swatch" style="background:#3b82f6"></span> SPACE (209k)</span>
+        <span class="leg-item"><span class="leg-swatch" style="background:#a855f7"></span> MyKB (68k)</span>
+        <span class="leg-item"><span class="leg-swatch" style="background:#ff8c00"></span> RSIS3 (42k)</span>
+        <span class="leg-item"><span class="leg-swatch" style="background:#22c55e"></span> MyRSIKB (10k)</span>
+        <span class="leg-item leg-total">Total: 861k</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chart 6: Language Mix -->
+  <div class="card">
+    <div class="card-header"><span class="icon">🔤</span> Language Mix</div>
+    <div class="stacked-bar-wrap">
+      <div class="stacked-bar">
+        <div class="seg" style="width:78%;background:#eab308" title="JS/TS: 78%"></div>
+        <div class="seg" style="width:11%;background:#22c55e" title="Markdown: 11%"></div>
+        <div class="seg" style="width:5%;background:#3b82f6" title="JSON: 5%"></div>
+        <div class="seg" style="width:2%;background:#ff8c00" title="Python: 2%"></div>
+        <div class="seg" style="width:2%;background:#ef4444" title="HTML: 2%"></div>
+        <div class="seg" style="width:2%;background:#a855f7" title="Other: 2%"></div>
+      </div>
+      <div class="stacked-legend">
+        <span class="leg-item"><span class="leg-swatch" style="background:#eab308"></span> JS/TS (78%)</span>
+        <span class="leg-item"><span class="leg-swatch" style="background:#22c55e"></span> Markdown (11%)</span>
+        <span class="leg-item"><span class="leg-swatch" style="background:#3b82f6"></span> JSON (5%)</span>
+        <span class="leg-item"><span class="leg-swatch" style="background:#ff8c00"></span> Python (2%)</span>
+        <span class="leg-item"><span class="leg-swatch" style="background:#ef4444"></span> HTML (2%)</span>
+        <span class="leg-item"><span class="leg-swatch" style="background:#a855f7"></span> Other (2%)</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chart 7: Freshness -->
+  <div class="card">
+    <div class="card-header"><span class="icon">🕐</span> Last Activity</div>
+    <div class="comp-row"><span class="lbl">MyKB</span><div class="track"><div class="fill" style="width:100%;background:#a855f7"></div></div><span class="pct">Today</span></div>
+    <div class="comp-row"><span class="lbl">SPACE</span><div class="track"><div class="fill" style="width:95%;background:#3b82f6"></div></div><span class="pct">1 day ago</span></div>
+    <div class="comp-row"><span class="lbl">MyRSIKB</span><div class="track"><div class="fill" style="width:90%;background:#22c55e"></div></div><span class="pct">2 days ago</span></div>
+    <div class="comp-row"><span class="lbl">RSIS3</span><div class="track"><div class="fill" style="width:68%;background:#ff8c00"></div></div><span class="pct">8 days ago</span></div>
+    <div class="comp-row"><span class="lbl">VEPA2</span><div class="track"><div class="fill" style="width:58%;background:#ef4444"></div></div><span class="pct">12 days ago</span></div>
+  </div>
+
+/div>
 
 <div class="footer">Generated 2026-07-28 · AI / RSI Ecosystem Dashboard</div>
 </div>
