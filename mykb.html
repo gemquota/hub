@@ -30,29 +30,35 @@ h1{font-size:1.8rem;margin-bottom:.2rem;background:linear-gradient(90deg,#7b2fff
 .card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:.6rem;margin-bottom:.6rem}
 .card h3{font-size:.8rem;color:#ccc;margin-bottom:.4rem}
 
-/* Domain explorer - tree */
-.domain-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:.5rem}
-.domain-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:.5rem;cursor:pointer;transition:all .2s}
-.domain-card:hover{border-color:rgba(123,47,255,.4)}
-.domain-card.expanded{grid-column:1/-1;border-color:rgba(123,47,255,.5);background:rgba(123,47,255,.06)}
-.domain-card .dname{font-size:.75rem;font-weight:600;color:#fff;display:flex;justify-content:space-between}
-.domain-card .dcount{color:#a855f7;font-size:.85rem}
-.domain-card .dbar{height:3px;background:rgba(255,255,255,.08);border-radius:2px;margin-top:.3rem}
-.domain-card .dbar-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,#7b2fff,#00ff9f)}
-.domain-card .dexpand{display:none;margin-top:.5rem;padding-top:.5rem;border-top:1px solid rgba(255,255,255,.08);font-size:.7rem;color:#aaa}
-.domain-card.expanded .dexpand{display:block}
+/* File Tree Envelope */
+.tree-env{border:1px solid rgba(255,255,255,.06);border-radius:8px;background:rgba(0,0,0,.15);overflow:hidden}
+.tree-env-header{display:flex;align-items:center;gap:.4rem;padding:.35rem .5rem;background:rgba(255,255,255,.03);border-bottom:1px solid rgba(255,255,255,.06);font-size:.6rem;color:#888;font-weight:600;letter-spacing:.5px;text-transform:uppercase}
+.tree-env-body{padding:.2rem 0;max-height:70vh;overflow-y:auto}
+.tree-env-body::-webkit-scrollbar{width:4px}
+.tree-env-body::-webkit-scrollbar-track{background:rgba(255,255,255,.02)}
+.tree-env-body::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);border-radius:4px}
 
-/* Tree drill-down */
-.tree-node{padding-left:.6rem;border-left:1px solid rgba(255,255,255,.06);margin:.1rem 0}
-.tree-item{display:flex;align-items:center;gap:.3rem;padding:.15rem .3rem;border-radius:4px;cursor:pointer;transition:all .15s;font-size:.65rem}
-.tree-item:hover{background:rgba(123,47,255,.1)}
-.tree-item .arrow{display:inline-block;width:.6rem;font-size:.5rem;color:#555;transition:transform .15s}
-.tree-item .arrow.open{transform:rotate(90deg)}
-.tree-item .icon{font-size:.6rem}
-.tree-item .name{color:#ccc;flex:1}
-.tree-item .count{color:#666;font-size:.55rem;background:rgba(255,255,255,.04);padding:0 5px;border-radius:4px}
-.tree-children{display:none;margin-left:.4rem;border-left:1px solid rgba(255,255,255,.04);padding-left:.4rem}
-.tree-children.open{display:block}
+.env-node{}
+.env-row{display:flex;align-items:center;gap:.25rem;padding:.2rem .5rem;cursor:pointer;transition:all .1s;border-left:2px solid transparent;font-size:.65rem;line-height:1.3}
+.env-row:hover{background:rgba(123,47,255,.06);border-left-color:rgba(123,47,255,.3)}
+.env-row .arrow{display:inline-flex;align-items:center;justify-content:center;width:1rem;font-size:.5rem;color:#555;flex-shrink:0;transition:transform .12s}
+.env-row .arrow.open{transform:rotate(90deg)}
+.env-row .env-icon{font-size:.6rem;flex-shrink:0;width:1rem;text-align:center}
+.env-row .env-name{color:#ccc;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.env-row .env-count{color:#555;font-size:.5rem;background:rgba(255,255,255,.04);padding:0 6px;border-radius:4px;flex-shrink:0}
+.env-row .env-type{font-size:.45rem;color:#444;text-transform:uppercase;letter-spacing:.3px;margin-left:.2rem;flex-shrink:0}
+.env-row .env-size{font-size:.45rem;color:#333;margin-left:.2rem;flex-shrink:0}
+.env-children{display:none}
+.env-children.open{display:block}
+.env-node.dim>.env-row{opacity:.5}
+.env-file .env-row{padding-left:1.2rem}
+.env-file .env-row .env-name{color:#999;font-size:.6rem}
+.env-file .env-row:hover .env-name{color:#ddd}
+.env-search-wrap{padding:.3rem .5rem;border-bottom:1px solid rgba(255,255,255,.04)}
+.env-search{width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:6px;padding:.25rem .4rem;font-size:.6rem;color:#ccc;outline:none;font-family:inherit}
+.env-search:focus{border-color:rgba(123,47,255,.3);background:rgba(123,47,255,.04)}
+.env-stats-bar{display:flex;gap:.5rem;padding:.25rem .5rem;border-top:1px solid rgba(255,255,255,.04);font-size:.5rem;color:#555;flex-wrap:wrap}
+.env-stats-bar span{display:flex;align-items:center;gap:.2rem}
 .file-item{padding:.1rem .3rem .1rem 1.2rem;font-size:.6rem;color:#888;cursor:pointer;border-radius:3px;transition:all .1s}
 .file-item:hover{color:#a855f7;background:rgba(123,47,255,.08)}
 .file-item .file-icon{font-size:.55rem;margin-right:.2rem}
@@ -132,13 +138,18 @@ h1{font-size:1.8rem;margin-bottom:.2rem;background:linear-gradient(90deg,#7b2fff
 
     <div class="card">
       <h3>🔍 Search Wiki <span style="font-weight:400;font-size:.65rem;color:#666">(type to filter domains &amp; files)</span></h3>
-      <input class="search-box" id="searchBox" type="text" placeholder="Search domains, categories, files..." oninput="filterExplorer(this.value)">
+      <input class="search-box" id="searchBox" type="text" placeholder="Search domains, categories, files..." oninput="filterEnv(this.value)">
     </div>
 
-    <div class="card">
-      <h3>📂 Domain Explorer <span style="font-weight:400;font-size:.65rem;color:#666">(click to drill down → category → file → content)</span></h3>
-      <div id="explorerLoading" class="loading">⏳ Loading wiki tree...</div>
-      <div class="domain-grid" id="domainGrid"></div>
+    <div class="card" style="padding:0">
+      <div class="tree-env" id="treeEnv">
+        <div class="tree-env-header"><span>📂</span> Wiki File Tree <span style="font-weight:400;color:#666">— domains → categories → files</span><span style="margin-left:auto;font-weight:400" id="envStats">⏳</span></div>
+        <div class="env-search-wrap"><input class="env-search" id="envSearch" type="text" placeholder="Filter domains, categories, files..." oninput="filterEnv(this.value)"></div>
+        <div class="tree-env-body" id="envBody">
+          <div id="envLoading" style="padding:.5rem;text-align:center;font-size:.6rem;color:#666">⏳ Loading wiki tree...</div>
+        </div>
+        <div class="env-stats-bar" id="envStatsBar"></div>
+      </div>
     </div>
   </div>
 
@@ -194,9 +205,111 @@ async function loadWikiTree() {
     wikiTree = await resp.json();
     initDashboard();
   } catch(e) {
-    document.getElementById('explorerLoading').textContent = '❌ Failed to load wiki tree: ' + e.message;
+    document.getElementById('envLoading').textContent = '❌ Failed to load wiki tree: ' + e.message;
     document.getElementById('headerSubtitle').textContent = '⚠️ Load failed';
   }
+}
+
+function renderEnvTree(tree, filterQuery) {
+  const body = document.getElementById('envBody');
+  const loading = document.getElementById('envLoading');
+  if (loading) loading.style.display = 'none';
+  body.innerHTML = '';
+
+  const sorted = tree.filter(n => n.type === 'dir').sort((a, b) => (b.count||0) - (a.count||0));
+  const totalFiles = tree.reduce((s, n) => s + (n.count||0), 0);
+  const totalDirs = tree.filter(n => n.type === 'dir').length;
+
+  const statsBar = document.getElementById('envStatsBar');
+  if (statsBar) {
+    statsBar.innerHTML = '<span>📁 ' + totalDirs + ' domains</span><span>📄 ' + totalFiles.toLocaleString() + ' files</span><span>🔍 ' + sorted.length + ' top-level</span>';
+  }
+  const statsEl = document.getElementById('envStats');
+  if (statsEl) statsEl.textContent = totalDirs + ' domains · ' + totalFiles.toLocaleString() + ' files';
+
+  sorted.forEach(d => {
+    if (filterQuery && !matchesFilter(d, filterQuery.toLowerCase())) return;
+    const node = document.createElement('div');
+    node.className = 'env-node';
+    const pct = Math.max(2, ((d.count||0) / Math.max(1, sorted[0]?.count || 1)) * 100);
+    const barStyle = 'background:linear-gradient(90deg,rgba(123,47,255,.15) 0%,rgba(123,47,255,.25) ' + pct + '%,transparent ' + pct + '%);';
+    const header = document.createElement('div');
+    header.className = 'env-row';
+    header.innerHTML = '<span class="arrow">▶</span><span class="env-icon">📁</span><span class="env-name" title="' + escapeHtml(d.name) + '">' + escapeHtml(d.name) + '</span><span class="env-count">' + (d.count||0) + '</span><span class="env-type">domain</span>';
+    header.style = barStyle;
+    const children = document.createElement('div');
+    children.className = 'env-children';
+
+    let open = false;
+    header.addEventListener('click', (ev) => {
+      ev.stopPropagation();
+      open = !open;
+      header.querySelector('.arrow').classList.toggle('open');
+      children.classList.toggle('open');
+      if (open && children.children.length === 0) {
+        renderEnvLevel(d.children || [], children, filterQuery, 1);
+      }
+    });
+
+    node.appendChild(header);
+    node.appendChild(children);
+    body.appendChild(node);
+  });
+}
+
+function renderEnvLevel(entries, container, filterQuery, depth) {
+  entries.forEach(e => {
+    if (filterQuery && !matchesFilter(e, filterQuery.toLowerCase())) return;
+    if (e.type === 'dir') {
+      const node = document.createElement('div');
+      node.className = 'env-node';
+      const header = document.createElement('div');
+      header.className = 'env-row';
+      const indent = depth * .5;
+      header.innerHTML = '<span class="arrow">▶</span><span class="env-icon">📂</span><span class="env-name" title="' + escapeHtml(e.name) + '">' + escapeHtml(e.name) + '</span><span class="env-count">' + (e.count||0) + '</span><span class="env-type">cat</span>';
+      header.style.paddingLeft = (indent + .5) + 'rem';
+      const children = document.createElement('div');
+      children.className = 'env-children';
+
+      let open = false;
+      header.addEventListener('click', (ev) => {
+        ev.stopPropagation();
+        open = !open;
+        header.querySelector('.arrow').classList.toggle('open');
+        children.classList.toggle('open');
+        if (open && children.children.length === 0) {
+          renderEnvLevel(e.children || [], children, filterQuery, depth + 1);
+        }
+      });
+
+      if (filterQuery) {
+        children.classList.add('open');
+        header.querySelector('.arrow').classList.add('open');
+        renderEnvLevel(e.children || [], children, filterQuery, depth + 1);
+      }
+
+      node.appendChild(header);
+      node.appendChild(children);
+      container.appendChild(node);
+    } else if (e.type === 'file') {
+      const item = document.createElement('div');
+      item.className = 'env-node env-file';
+      const header = document.createElement('div');
+      header.className = 'env-row';
+      const indent = depth * .5;
+      const typeIcon = getTypeIcon(e.doc_type || '');
+      const sizeStr = e.size ? formatBytes(e.size) : '';
+      header.innerHTML = '<span class="arrow" style="visibility:hidden">▶</span><span class="env-icon">' + typeIcon + '</span><span class="env-name" title="' + escapeHtml(e.title || e.name) + '">' + escapeHtml(e.title || e.name) + '</span><span class="env-size">' + sizeStr + '</span><span class="env-type">' + (e.doc_type || 'file') + '</span>';
+      header.style.paddingLeft = (indent + .5) + 'rem';
+      header.style.cursor = 'pointer';
+      header.addEventListener('click', (ev) => {
+        ev.stopPropagation();
+        openFileModal(e);
+      });
+      item.appendChild(header);
+      container.appendChild(item);
+    }
+  });
 }
 
 function initDashboard() {
@@ -205,13 +318,14 @@ function initDashboard() {
 
   // Collect all top-level domains
   allDomains = tree.filter(n => n.type === 'dir');
+  
+  // Update stats in header
+  document.getElementById('headerSubtitle').textContent = stats.total_files + ' files · ' + stats.total_domains + ' domains · Obsidian wiki with file tree';
 
-  // Update stats
-  document.getElementById('headerSubtitle').textContent = stats.total_files + ' files · ' + stats.total_domains + ' domains · Obsidian wiki with tree explorer';
+  // Stat cards
   document.getElementById('statFiles').textContent = stats.total_files.toLocaleString();
   document.getElementById('statDomains').textContent = stats.total_domains;
 
-  // Count total directories (categories+subcategories)
   let totalDirs = 0;
   function countDirs(entries) {
     for (const e of entries) {
@@ -221,7 +335,6 @@ function initDashboard() {
   countDirs(tree);
   document.getElementById('statDirs').textContent = totalDirs;
 
-  // Total size
   let totalBytes = 0;
   function sumSize(entries) {
     for (const e of entries) {
@@ -233,208 +346,15 @@ function initDashboard() {
   const fmt = totalBytes > 1024*1024 ? (totalBytes/1024/1024).toFixed(1)+' MB' : totalBytes > 1024 ? (totalBytes/1024).toFixed(1)+' KB' : totalBytes+' B';
   document.getElementById('statSize').textContent = fmt;
 
-  // Render the explorer
-  document.getElementById('explorerLoading').style.display = 'none';
-  renderExplorer(tree);
+  // Render the file tree
+  document.getElementById('envLoading').style.display = 'none';
+  renderEnvTree(tree);
 }
 
-// === RENDER EXPLORER ===
-function renderExplorer(tree, filterQuery) {
-  const grid = document.getElementById('domainGrid');
-  grid.innerHTML = '';
-
-  // Sort: dirs first, by file count desc
-  const sorted = tree.filter(n => n.type === 'dir').sort((a, b) => (b.count||0) - (a.count||0));
-
-  const maxCount = Math.max(1, ...sorted.map(d => d.count || 0));
-
-  sorted.forEach(d => {
-    if (filterQuery && !matchesFilter(d, filterQuery.toLowerCase())) return;
-    const card = document.createElement('div');
-    card.className = 'domain-card';
-    const pct = Math.max(2, ((d.count||0) / maxCount) * 100);
-    card.innerHTML = '<div class="dname"><span>'+escapeHtml(d.name)+'</span><span class="dcount">'+(d.count||0)+'</span></div><div class="dbar"><div class="dbar-fill" style="width:'+pct+'%"></div></div><div class="dexpand"></div>';
-
-    const expandDiv = card.querySelector('.dexpand');
-    let expanded = false;
-
-    card.addEventListener('click', (e) => {
-      if (e.target.closest('.tree-item') || e.target.closest('.file-item')) return;
-      expanded = !expanded;
-      card.classList.toggle('expanded');
-      if (expanded) {
-        expandDiv.innerHTML = '';
-        renderTreeLevel(d.children || [], expandDiv, filterQuery);
-      }
-    });
-
-    grid.appendChild(card);
-  });
-}
-
-function renderTreeLevel(entries, container, filterQuery) {
-  entries.forEach(e => {
-    if (filterQuery && !matchesFilter(e, filterQuery.toLowerCase())) return;
-    if (e.type === 'dir') {
-      const node = document.createElement('div');
-      node.className = 'tree-node';
-      const header = document.createElement('div');
-      header.className = 'tree-item';
-      header.innerHTML = '<span class="arrow">▶</span><span class="icon">📁</span><span class="name">'+escapeHtml(e.name)+'</span><span class="count">'+(e.count||0)+'</span>';
-      const children = document.createElement('div');
-      children.className = 'tree-children';
-
-      let open = false;
-      header.addEventListener('click', (ev) => {
-        ev.stopPropagation();
-        open = !open;
-        header.querySelector('.arrow').classList.toggle('open');
-        children.classList.toggle('open');
-        if (open && children.children.length === 0) {
-          renderTreeLevel(e.children || [], children, filterQuery);
-        }
-      });
-
-      // Pre-render children if filtered
-      if (filterQuery) {
-        children.classList.add('open');
-        header.querySelector('.arrow').classList.add('open');
-        renderTreeLevel(e.children || [], children, filterQuery);
-      }
-
-      node.appendChild(header);
-      node.appendChild(children);
-      container.appendChild(node);
-    } else if (e.type === 'file') {
-      const item = document.createElement('div');
-      item.className = 'file-item';
-      const typeIcon = getTypeIcon(e.doc_type);
-      item.innerHTML = '<span class="file-icon">'+typeIcon+'</span><span class="file-title">'+escapeHtml(e.title)+'</span><span class="file-type">'+escapeHtml(e.doc_type)+'</span>';
-      item.addEventListener('click', (ev) => {
-        ev.stopPropagation();
-        openFileModal(e);
-      });
-      container.appendChild(item);
-    }
-  });
-}
-
-function getTypeIcon(type) {
-  const icons = {'synthesis':'🧩','domain':'🏛️','log':'📝','index':'📋','concept':'💡','entity':'🔷','session':'💬','reference':'📚','source':'📎','decision':'⚖️','plan':'📐','pulse':'⚡','experiment':'🔬','question':'❓','reflection':'🪞','topic':'🏷️','tool':'🔧','daily':'📅'};
-  return icons[type] || '📄';
-}
-
-// === FILE MODAL ===
-async function openFileModal(fileEntry) {
-  document.getElementById('modalTitle').textContent = fileEntry.title || fileEntry.name;
-  const meta = [];
-  meta.push('<span>📁 '+escapeHtml(fileEntry.path)+'</span>');
-  meta.push('<span>📄 '+escapeHtml(fileEntry.doc_type)+'</span>');
-  if (fileEntry.tags && fileEntry.tags.length > 0) meta.push('<span>🏷️ '+fileEntry.tags.join(', ')+'</span>');
-  meta.push('<span>📏 '+formatBytes(fileEntry.size)+'</span>');
-  const ghBase = 'https://github.com/gemquota/cosmos/blob/main/components/mykb/wiki/';
-  meta.push('<a href="'+ghBase+fileEntry.path+'" target="_blank" style="color:#7b2fff;text-decoration:none">🌐 GitHub</a>');
-  document.getElementById('modalMeta').innerHTML = meta.join(' · ');
-  
-  document.getElementById('fileModal').classList.add('open');
-  
-  // Show preview from tree JSON
-  if (fileEntry.preview) {
-    renderMarkdown(fileEntry.preview, fileEntry.path);
-  } else {
-    document.getElementById('modalBody').textContent = '⏳ Loading...';
-  }
-
-  // Try to fetch full content from co-located wiki-content/ (works when wiki files are mirrored locally)
-  // Falls back gracefully to the preview
-  try {
-    const resp = await fetch('wiki-content/' + fileEntry.path);
-    if (resp.ok) {
-      const text = await resp.text();
-      renderMarkdown(text, fileEntry.path);
-    }
-  } catch(e) {
-    // Preview already shown
-  }
-}
-
-function renderMarkdown(text, path) {
-  const body = document.getElementById('modalBody');
-  // Simple render: show raw with some formatting
-  let html = '';
-  
-  // Frontmatter
-  text = text.replace(/^---\n[\s\S]*?\n(?:---|\.\.\.)\n?/, (match) => {
-    html += '<div class="frontmatter">' + escapeHtml(match) + '</div>';
-    return '';
-  });
-
-  // Wiki links [[link|text]] or [[link]]
-  text = text.replace(/\[\[([^\]|]+)(?:\|([^\]]+))?\]\]/g, (m, link, label) => {
-    const display = label || link.split('/').pop().replace('.md','').replace(/-/g,' ');
-    return '<span class="wiki-link" onclick="followWikiLink(\''+escapeHtml(link)+'\')">' + escapeHtml(display) + '</span>';
-  });
-
-  // Headers
-  text = text.replace(/^### (.+)$/gm, '<br><b style="color:#a855f7;font-size:.8rem">$1</b>');
-  text = text.replace(/^## (.+)$/gm, '<br><b style="color:#7b2fff;font-size:.9rem">$1</b>');
-  text = text.replace(/^# (.+)$/gm, '<br><b style="color:#fff;font-size:1rem">$1</b>');
-
-  // Bold and italic
-  text = text.replace(/\*\*(.+?)\*\*/g, '<b>$1</b>');
-  text = text.replace(/\*(.+?)\*/g, '<i>$1</i>');
-
-  // Lists
-  text = text.replace(/^- (.+)$/gm, '• $1');
-
-  // Code blocks
-  text = text.replace(/```(\w*)\n([\s\S]*?)```/g, (m, lang, code) => {
-    return '<pre style="background:rgba(0,0,0,.3);padding:.4rem;border-radius:4px;font-size:.6rem;overflow-x:auto;margin:.2rem 0">'+escapeHtml(code)+'</pre>';
-  });
-
-  // Inline code
-  text = text.replace(/`([^`]+)`/g, '<code style="background:rgba(0,0,0,.3);padding:1px 4px;border-radius:3px;font-size:.6rem">$1</code>');
-
-  // Horizontal rules
-  text = text.replace(/^---$/gm, '<hr style="border-color:rgba(255,255,255,.04);margin:.3rem 0">');
-
-  // Paragraphs
-  text = text.replace(/\n\n/g, '<br><br>');
-  text = text.replace(/\n/g, '<br>');
-
-  body.innerHTML = html + text;
-}
-
-function followWikiLink(link) {
-  // Find file in tree by path
-  let found = null;
-  function search(entries) {
-    for (const e of entries) {
-      if (e.type === 'file' && (e.path === link || e.path === link+'.md' || e.name === link+'.md')) {
-        found = e; return;
-      }
-      if (e.type === 'dir') search(e.children || []);
-    }
-  }
-  search(wikiTree.children);
-  if (found) {
-    openFileModal(found);
-  } else {
-    document.getElementById('modalBody').textContent = '🔗 Wiki link: ' + link + ' (file not found in tree)';
-  }
-}
-
-function closeFileModal() {
-  document.getElementById('fileModal').classList.remove('open');
-}
-
-// === SEARCH/FILTER ===
-function filterExplorer(query) {
+function filterEnv(query) {
   const tree = wikiTree ? wikiTree.children : [];
-  renderExplorer(tree, query);
-}
-
-function matchesFilter(node, q) {
+  renderEnvTree(tree, query);
+}function matchesFilter(node, q) {
   if (!q) return true;
   if (node.name && node.name.toLowerCase().includes(q)) return true;
   if (node.title && node.title.toLowerCase().includes(q)) return true;
