@@ -23,25 +23,59 @@ h1{font-size:1.8rem;margin-bottom:.2rem;background:linear-gradient(90deg,#7b2fff
 .tab-pane.active{display:block}
 
 /* Info tab */
-.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:.5rem;margin-bottom:1rem}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:.5rem;margin-bottom:1rem}
 .stat-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:.8rem;text-align:center}
 .stat-value{font-size:1.5rem;font-weight:800;color:#a855f7}
 .stat-label{color:#888;font-size:.7rem;margin-top:.2rem}
 .card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:.6rem;margin-bottom:.6rem}
 .card h3{font-size:.8rem;color:#ccc;margin-bottom:.4rem}
 
-/* Domain explorer */
+/* Domain explorer - tree */
 .domain-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:.5rem}
 .domain-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:.5rem;cursor:pointer;transition:all .2s}
 .domain-card:hover{border-color:rgba(123,47,255,.4)}
 .domain-card.expanded{grid-column:1/-1;border-color:rgba(123,47,255,.5);background:rgba(123,47,255,.06)}
 .domain-card .dname{font-size:.75rem;font-weight:600;color:#fff;display:flex;justify-content:space-between}
 .domain-card .dcount{color:#a855f7;font-size:.85rem}
-.domain-card .dsize{font-size:.6rem;color:#666}
 .domain-card .dbar{height:3px;background:rgba(255,255,255,.08);border-radius:2px;margin-top:.3rem}
 .domain-card .dbar-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,#7b2fff,#00ff9f)}
 .domain-card .dexpand{display:none;margin-top:.5rem;padding-top:.5rem;border-top:1px solid rgba(255,255,255,.08);font-size:.7rem;color:#aaa}
 .domain-card.expanded .dexpand{display:block}
+
+/* Tree drill-down */
+.tree-node{padding-left:.6rem;border-left:1px solid rgba(255,255,255,.06);margin:.1rem 0}
+.tree-item{display:flex;align-items:center;gap:.3rem;padding:.15rem .3rem;border-radius:4px;cursor:pointer;transition:all .15s;font-size:.65rem}
+.tree-item:hover{background:rgba(123,47,255,.1)}
+.tree-item .arrow{display:inline-block;width:.6rem;font-size:.5rem;color:#555;transition:transform .15s}
+.tree-item .arrow.open{transform:rotate(90deg)}
+.tree-item .icon{font-size:.6rem}
+.tree-item .name{color:#ccc;flex:1}
+.tree-item .count{color:#666;font-size:.55rem;background:rgba(255,255,255,.04);padding:0 5px;border-radius:4px}
+.tree-children{display:none;margin-left:.4rem;border-left:1px solid rgba(255,255,255,.04);padding-left:.4rem}
+.tree-children.open{display:block}
+.file-item{padding:.1rem .3rem .1rem 1.2rem;font-size:.6rem;color:#888;cursor:pointer;border-radius:3px;transition:all .1s}
+.file-item:hover{color:#a855f7;background:rgba(123,47,255,.08)}
+.file-item .file-icon{font-size:.55rem;margin-right:.2rem}
+.file-item .file-title{color:#999}
+.file-item .file-type{font-size:.45rem;background:rgba(255,255,255,.04);padding:0 4px;border-radius:3px;margin-left:.2rem;color:#555}
+
+/* Search */
+.search-box{width:100%;padding:.4rem .6rem;border-radius:8px;border:1px solid rgba(255,255,255,.08);background:rgba(0,0,0,.2);color:#e0e0e0;font-size:.75rem;outline:none;margin-bottom:.5rem}
+.search-box:focus{border-color:rgba(123,47,255,.4)}
+.search-box::placeholder{color:#555}
+
+/* File content modal */
+.modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.7);z-index:100;align-items:center;justify-content:center}
+.modal-overlay.open{display:flex}
+.modal-content{background:#1a1a2e;border:1px solid rgba(123,47,255,.3);border-radius:12px;width:90%;max-width:800px;max-height:85vh;overflow-y:auto;padding:1rem;position:relative}
+.modal-close{position:absolute;top:.5rem;right:.7rem;background:none;border:none;color:#888;font-size:1.2rem;cursor:pointer;padding:.2rem}
+.modal-close:hover{color:#fff}
+.modal-title{font-size:.9rem;font-weight:700;color:#a855f7;margin-bottom:.2rem;padding-right:2rem}
+.modal-meta{font-size:.6rem;color:#666;margin-bottom:.5rem;display:flex;gap:.5rem;flex-wrap:wrap}
+.modal-body{font-size:.7rem;color:#ccc;line-height:1.6;white-space:pre-wrap;font-family:monospace;background:rgba(0,0,0,.2);padding:.5rem;border-radius:6px;overflow-x:auto;max-height:60vh;overflow-y:auto}
+.modal-body .frontmatter{color:#666}
+.modal-body .wiki-link{color:#a855f7;cursor:pointer}
+.modal-body .wiki-link:hover{text-decoration:underline}
 
 /* Graph tab */
 #graph-container{width:100%;height:600px;background:rgba(0,0,0,.2);border-radius:10px;overflow:hidden;position:relative}
@@ -55,12 +89,15 @@ h1{font-size:1.8rem;margin-bottom:.2rem;background:linear-gradient(90deg,#7b2fff
 .change-msg{font-size:.75rem;color:#ccc;margin-top:2px}
 .change-hash{font-size:.55rem;color:#444;font-family:monospace}
 
-/* Changelog sub-tab within Info */
-.sub-tab-bar{display:flex;gap:.2rem;margin-bottom:.5rem}
+/* Sub-tabs */
+.sub-tab-bar{display:flex;gap:.2rem;margin-bottom:.5rem;flex-wrap:wrap}
 .sub-tab-btn{padding:2px 12px;border-radius:6px;font-size:.6rem;cursor:pointer;border:1px solid rgba(255,255,255,.08);background:transparent;color:#666;transition:all .2s}
 .sub-tab-btn.active{background:rgba(123,47,255,.12);border-color:rgba(123,47,255,.25);color:#a855f7}
 .sub-pane{display:none}
 .sub-pane.active{display:block}
+
+/* Loading */
+.loading{text-align:center;color:#666;padding:2rem;font-size:.8rem}
 
 @media(max-width:500px){.domain-grid{grid-template-columns:1fr 1fr}}
 </style>
@@ -68,7 +105,7 @@ h1{font-size:1.8rem;margin-bottom:.2rem;background:linear-gradient(90deg,#7b2fff
 <body>
 <a href="index.html" class="back-link">← Hub</a>
 <h1>📚 MyKB — Knowledge OS</h1>
-<div class="subtitle">2,442 entities · 27 domains · 3,351 files · Obsidian wiki with hybrid search &amp; graph</div>
+<div class="subtitle" id="headerSubtitle">Loading wiki data...</div>
 
 <!-- Tabs -->
 <div class="tab-bar">
@@ -79,8 +116,6 @@ h1{font-size:1.8rem;margin-bottom:.2rem;background:linear-gradient(90deg,#7b2fff
 
 <!-- ===== TAB 1: INFO ===== -->
 <div id="tab-info" class="tab-pane active">
-
-  <!-- Sub-tabs within Info: Overview / Changelog -->
   <div class="sub-tab-bar">
     <div class="sub-tab-btn active" onclick="switchSubTab('overview')">📊 Overview</div>
     <div class="sub-tab-btn" onclick="switchSubTab('changelog')">📋 Changelog</div>
@@ -88,27 +123,22 @@ h1{font-size:1.8rem;margin-bottom:.2rem;background:linear-gradient(90deg,#7b2fff
 
   <!-- Sub-pane: Overview -->
   <div id="sub-overview" class="sub-pane active">
-    <div class="stats-grid">
-      <div class="stat-card"><div class="stat-value">2,442</div><div class="stat-label">Entities</div></div>
-      <div class="stat-card"><div class="stat-value" style="color:#00ff9f">27</div><div class="stat-label">Domains</div></div>
-      <div class="stat-card"><div class="stat-value" style="color:#00d4ff">3,351</div><div class="stat-label">Files</div></div>
-      <div class="stat-card"><div class="stat-value" style="color:#eab308">18k</div><div class="stat-label">Links</div></div>
-      <div class="stat-card"><div class="stat-value" style="color:#ff8c00">68k</div><div class="stat-label">LOC</div></div>
-      <div class="stat-card"><div class="stat-value" style="color:#ef4444">215M</div><div class="stat-label">Disk</div></div>
+    <div class="stats-grid" id="statsGrid">
+      <div class="stat-card"><div class="stat-value" id="statFiles">—</div><div class="stat-label">Files</div></div>
+      <div class="stat-card"><div class="stat-value" id="statDomains" style="color:#00ff9f">—</div><div class="stat-label">Domains</div></div>
+      <div class="stat-card"><div class="stat-value" id="statDirs" style="color:#00d4ff">—</div><div class="stat-label">Categories</div></div>
+      <div class="stat-card"><div class="stat-value" id="statSize" style="color:#eab308">—</div><div class="stat-label">Total Size</div></div>
     </div>
 
     <div class="card">
-      <h3>📂 Domain Explorer <span style="font-weight:400;font-size:.65rem;color:#666">(click to expand)</span></h3>
+      <h3>🔍 Search Wiki <span style="font-weight:400;font-size:.65rem;color:#666">(type to filter domains &amp; files)</span></h3>
+      <input class="search-box" id="searchBox" type="text" placeholder="Search domains, categories, files..." oninput="filterExplorer(this.value)">
+    </div>
+
+    <div class="card">
+      <h3>📂 Domain Explorer <span style="font-weight:400;font-size:.65rem;color:#666">(click to drill down → category → file → content)</span></h3>
+      <div id="explorerLoading" class="loading">⏳ Loading wiki tree...</div>
       <div class="domain-grid" id="domainGrid"></div>
-    </div>
-
-    <div class="card">
-      <h3>📊 Recategorization Summary</h3>
-      <div style="font-size:.7rem;color:#888;line-height:1.6">
-        <div><span style="color:#00ff9f">✓</span> <b style="color:#ccc">Phase 1 (complete):</b> 807 files from android-core distributed to api-services (449), security-auth (294), frontend-frameworks (27), cloud-infra (6)</div>
-        <div><span style="color:#00ff9f">✓</span> <b style="color:#ccc">Phase 2 (complete):</b> AI entities consolidated — agent-systems (8), ai-ml (7), llm-agents (5) populated from api-services</div>
-        <div><span style="color:#ffa500">◷</span> <b style="color:#ccc">Phase 3 (pending):</b> ml-frameworks, prompt-engineering, meta-learning stubs need content</div>
-      </div>
     </div>
   </div>
 
@@ -116,17 +146,7 @@ h1{font-size:1.8rem;margin-bottom:.2rem;background:linear-gradient(90deg,#7b2fff
   <div id="sub-changelog" class="sub-pane">
     <div class="card">
       <h3>📋 Domain Changelog</h3>
-      <div id="changelogEntries" style="font-size:.7rem;color:#888;line-height:1.6">
-        <div class="change-entry"><div class="change-date">2026-07-28</div><div class="change-msg">api-services: received 449 entities from android-core (REST, GraphQL, WebSocket)</div></div>
-        <div class="change-entry"><div class="change-date">2026-07-28</div><div class="change-msg">security-auth: received 294 entities from android-core (JWT, OAuth, access control)</div></div>
-        <div class="change-entry"><div class="change-date">2026-07-28</div><div class="change-msg">agent-systems: populated 8 AI agent entities from api-services</div></div>
-        <div class="change-entry"><div class="change-date">2026-07-28</div><div class="change-msg">ai-ml: populated 7 ML/AI entities from api-services</div></div>
-        <div class="change-entry"><div class="change-date">2026-07-28</div><div class="change-msg">llm-agents: populated 5 LLM agent entities from api-services</div></div>
-        <div class="change-entry"><div class="change-date">2026-07-27</div><div class="change-msg">frontend-frameworks: received 27 entities from android-core</div></div>
-        <div class="change-entry"><div class="change-date">2026-07-27</div><div class="change-msg">cloud-infra: received 6 entities from android-core</div></div>
-        <div class="change-entry"><div class="change-date">2026-07-26</div><div class="change-msg">shell-environment: received 25+1 files from android-core stubs</div></div>
-        <div class="change-entry"><div class="change-date">2026-07-25</div><div class="change-msg">android-core: depopulated — only 2 stubs remain of original 809</div></div>
-      </div>
+      <div id="changelogEntries" style="font-size:.7rem;color:#888;line-height:1.6"></div>
     </div>
   </div>
 </div>
@@ -151,7 +171,284 @@ h1{font-size:1.8rem;margin-bottom:.2rem;background:linear-gradient(90deg,#7b2fff
   </div>
 </div>
 
+<!-- File content modal -->
+<div class="modal-overlay" id="fileModal" onclick="if(event.target===this)closeFileModal()">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeFileModal()">✕</button>
+    <div class="modal-title" id="modalTitle">File</div>
+    <div class="modal-meta" id="modalMeta"></div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
 <script>
+// === GLOBAL STATE ===
+let wikiTree = null;
+let allDomains = [];
+let graphRendered = false;
+
+// === LOAD WIKI TREE ===
+async function loadWikiTree() {
+  try {
+    const resp = await fetch('wiki-tree.json');
+    wikiTree = await resp.json();
+    initDashboard();
+  } catch(e) {
+    document.getElementById('explorerLoading').textContent = '❌ Failed to load wiki tree: ' + e.message;
+    document.getElementById('headerSubtitle').textContent = '⚠️ Load failed';
+  }
+}
+
+function initDashboard() {
+  const stats = wikiTree.stats;
+  const tree = wikiTree.children;
+
+  // Collect all top-level domains
+  allDomains = tree.filter(n => n.type === 'dir');
+
+  // Update stats
+  document.getElementById('headerSubtitle').textContent = stats.total_files + ' files · ' + stats.total_domains + ' domains · Obsidian wiki with tree explorer';
+  document.getElementById('statFiles').textContent = stats.total_files.toLocaleString();
+  document.getElementById('statDomains').textContent = stats.total_domains;
+
+  // Count total directories (categories+subcategories)
+  let totalDirs = 0;
+  function countDirs(entries) {
+    for (const e of entries) {
+      if (e.type === 'dir') { totalDirs++; countDirs(e.children); }
+    }
+  }
+  countDirs(tree);
+  document.getElementById('statDirs').textContent = totalDirs;
+
+  // Total size
+  let totalBytes = 0;
+  function sumSize(entries) {
+    for (const e of entries) {
+      if (e.type === 'file') totalBytes += e.size || 0;
+      else if (e.type === 'dir') sumSize(e.children);
+    }
+  }
+  sumSize(tree);
+  const fmt = totalBytes > 1024*1024 ? (totalBytes/1024/1024).toFixed(1)+' MB' : totalBytes > 1024 ? (totalBytes/1024).toFixed(1)+' KB' : totalBytes+' B';
+  document.getElementById('statSize').textContent = fmt;
+
+  // Render the explorer
+  document.getElementById('explorerLoading').style.display = 'none';
+  renderExplorer(tree);
+}
+
+// === RENDER EXPLORER ===
+function renderExplorer(tree, filterQuery) {
+  const grid = document.getElementById('domainGrid');
+  grid.innerHTML = '';
+
+  // Sort: dirs first, by file count desc
+  const sorted = tree.filter(n => n.type === 'dir').sort((a, b) => (b.count||0) - (a.count||0));
+
+  const maxCount = Math.max(1, ...sorted.map(d => d.count || 0));
+
+  sorted.forEach(d => {
+    if (filterQuery && !matchesFilter(d, filterQuery.toLowerCase())) return;
+    const card = document.createElement('div');
+    card.className = 'domain-card';
+    const pct = Math.max(2, ((d.count||0) / maxCount) * 100);
+    card.innerHTML = '<div class="dname"><span>'+escapeHtml(d.name)+'</span><span class="dcount">'+(d.count||0)+'</span></div><div class="dbar"><div class="dbar-fill" style="width:'+pct+'%"></div></div><div class="dexpand"></div>';
+
+    const expandDiv = card.querySelector('.dexpand');
+    let expanded = false;
+
+    card.addEventListener('click', (e) => {
+      if (e.target.closest('.tree-item') || e.target.closest('.file-item')) return;
+      expanded = !expanded;
+      card.classList.toggle('expanded');
+      if (expanded) {
+        expandDiv.innerHTML = '';
+        renderTreeLevel(d.children || [], expandDiv, filterQuery);
+      }
+    });
+
+    grid.appendChild(card);
+  });
+}
+
+function renderTreeLevel(entries, container, filterQuery) {
+  entries.forEach(e => {
+    if (filterQuery && !matchesFilter(e, filterQuery.toLowerCase())) return;
+    if (e.type === 'dir') {
+      const node = document.createElement('div');
+      node.className = 'tree-node';
+      const header = document.createElement('div');
+      header.className = 'tree-item';
+      header.innerHTML = '<span class="arrow">▶</span><span class="icon">📁</span><span class="name">'+escapeHtml(e.name)+'</span><span class="count">'+(e.count||0)+'</span>';
+      const children = document.createElement('div');
+      children.className = 'tree-children';
+
+      let open = false;
+      header.addEventListener('click', (ev) => {
+        ev.stopPropagation();
+        open = !open;
+        header.querySelector('.arrow').classList.toggle('open');
+        children.classList.toggle('open');
+        if (open && children.children.length === 0) {
+          renderTreeLevel(e.children || [], children, filterQuery);
+        }
+      });
+
+      // Pre-render children if filtered
+      if (filterQuery) {
+        children.classList.add('open');
+        header.querySelector('.arrow').classList.add('open');
+        renderTreeLevel(e.children || [], children, filterQuery);
+      }
+
+      node.appendChild(header);
+      node.appendChild(children);
+      container.appendChild(node);
+    } else if (e.type === 'file') {
+      const item = document.createElement('div');
+      item.className = 'file-item';
+      const typeIcon = getTypeIcon(e.doc_type);
+      item.innerHTML = '<span class="file-icon">'+typeIcon+'</span><span class="file-title">'+escapeHtml(e.title)+'</span><span class="file-type">'+escapeHtml(e.doc_type)+'</span>';
+      item.addEventListener('click', (ev) => {
+        ev.stopPropagation();
+        openFileModal(e);
+      });
+      container.appendChild(item);
+    }
+  });
+}
+
+function getTypeIcon(type) {
+  const icons = {'synthesis':'🧩','domain':'🏛️','log':'📝','index':'📋','concept':'💡','entity':'🔷','session':'💬','reference':'📚','source':'📎','decision':'⚖️','plan':'📐','pulse':'⚡','experiment':'🔬','question':'❓','reflection':'🪞','topic':'🏷️','tool':'🔧','daily':'📅'};
+  return icons[type] || '📄';
+}
+
+// === FILE MODAL ===
+async function openFileModal(fileEntry) {
+  document.getElementById('modalTitle').textContent = fileEntry.title || fileEntry.name;
+  const meta = [];
+  meta.push('<span>📁 '+escapeHtml(fileEntry.path)+'</span>');
+  meta.push('<span>📄 '+escapeHtml(fileEntry.doc_type)+'</span>');
+  if (fileEntry.tags && fileEntry.tags.length > 0) meta.push('<span>🏷️ '+fileEntry.tags.join(', ')+'</span>');
+  meta.push('<span>📏 '+formatBytes(fileEntry.size)+'</span>');
+  const ghBase = 'https://github.com/gemquota/cosmos/blob/main/components/mykb/wiki/';
+  meta.push('<a href="'+ghBase+fileEntry.path+'" target="_blank" style="color:#7b2fff;text-decoration:none">🌐 GitHub</a>');
+  document.getElementById('modalMeta').innerHTML = meta.join(' · ');
+  
+  document.getElementById('fileModal').classList.add('open');
+  
+  // Show preview from tree JSON
+  if (fileEntry.preview) {
+    renderMarkdown(fileEntry.preview, fileEntry.path);
+  } else {
+    document.getElementById('modalBody').textContent = '⏳ Loading...';
+  }
+
+  // Try to fetch full content from co-located wiki-content/ (works when wiki files are mirrored locally)
+  // Falls back gracefully to the preview
+  try {
+    const resp = await fetch('wiki-content/' + fileEntry.path);
+    if (resp.ok) {
+      const text = await resp.text();
+      renderMarkdown(text, fileEntry.path);
+    }
+  } catch(e) {
+    // Preview already shown
+  }
+}
+
+function renderMarkdown(text, path) {
+  const body = document.getElementById('modalBody');
+  // Simple render: show raw with some formatting
+  let html = '';
+  
+  // Frontmatter
+  text = text.replace(/^---\n[\s\S]*?\n(?:---|\.\.\.)\n?/, (match) => {
+    html += '<div class="frontmatter">' + escapeHtml(match) + '</div>';
+    return '';
+  });
+
+  // Wiki links [[link|text]] or [[link]]
+  text = text.replace(/\[\[([^\]|]+)(?:\|([^\]]+))?\]\]/g, (m, link, label) => {
+    const display = label || link.split('/').pop().replace('.md','').replace(/-/g,' ');
+    return '<span class="wiki-link" onclick="followWikiLink(\''+escapeHtml(link)+'\')">' + escapeHtml(display) + '</span>';
+  });
+
+  // Headers
+  text = text.replace(/^### (.+)$/gm, '<br><b style="color:#a855f7;font-size:.8rem">$1</b>');
+  text = text.replace(/^## (.+)$/gm, '<br><b style="color:#7b2fff;font-size:.9rem">$1</b>');
+  text = text.replace(/^# (.+)$/gm, '<br><b style="color:#fff;font-size:1rem">$1</b>');
+
+  // Bold and italic
+  text = text.replace(/\*\*(.+?)\*\*/g, '<b>$1</b>');
+  text = text.replace(/\*(.+?)\*/g, '<i>$1</i>');
+
+  // Lists
+  text = text.replace(/^- (.+)$/gm, '• $1');
+
+  // Code blocks
+  text = text.replace(/```(\w*)\n([\s\S]*?)```/g, (m, lang, code) => {
+    return '<pre style="background:rgba(0,0,0,.3);padding:.4rem;border-radius:4px;font-size:.6rem;overflow-x:auto;margin:.2rem 0">'+escapeHtml(code)+'</pre>';
+  });
+
+  // Inline code
+  text = text.replace(/`([^`]+)`/g, '<code style="background:rgba(0,0,0,.3);padding:1px 4px;border-radius:3px;font-size:.6rem">$1</code>');
+
+  // Horizontal rules
+  text = text.replace(/^---$/gm, '<hr style="border-color:rgba(255,255,255,.04);margin:.3rem 0">');
+
+  // Paragraphs
+  text = text.replace(/\n\n/g, '<br><br>');
+  text = text.replace(/\n/g, '<br>');
+
+  body.innerHTML = html + text;
+}
+
+function followWikiLink(link) {
+  // Find file in tree by path
+  let found = null;
+  function search(entries) {
+    for (const e of entries) {
+      if (e.type === 'file' && (e.path === link || e.path === link+'.md' || e.name === link+'.md')) {
+        found = e; return;
+      }
+      if (e.type === 'dir') search(e.children || []);
+    }
+  }
+  search(wikiTree.children);
+  if (found) {
+    openFileModal(found);
+  } else {
+    document.getElementById('modalBody').textContent = '🔗 Wiki link: ' + link + ' (file not found in tree)';
+  }
+}
+
+function closeFileModal() {
+  document.getElementById('fileModal').classList.remove('open');
+}
+
+// === SEARCH/FILTER ===
+function filterExplorer(query) {
+  const tree = wikiTree ? wikiTree.children : [];
+  renderExplorer(tree, query);
+}
+
+function matchesFilter(node, q) {
+  if (!q) return true;
+  if (node.name && node.name.toLowerCase().includes(q)) return true;
+  if (node.title && node.title.toLowerCase().includes(q)) return true;
+  if (node.doc_type && node.doc_type.toLowerCase().includes(q)) return true;
+  if (node.path && node.path.toLowerCase().includes(q)) return true;
+  if (node.tags && node.tags.some(t => t.toLowerCase().includes(q))) return true;
+  if (node.children) {
+    for (const c of node.children) {
+      if (matchesFilter(c, q)) return true;
+    }
+  }
+  return false;
+}
+
 // === TAB SWITCHING ===
 function switchTab(name) {
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -168,83 +465,41 @@ function switchSubTab(name) {
   document.getElementById('sub-'+name).classList.add('active');
 }
 
-// === DOMAIN EXPLORER ===
-const domains = [
-  {n:"api-services",c:601,s:"2.4M",d:["REST API entities and patterns","GraphQL, WebSocket protocols","← Received 449 from android-core"]},
-  {n:"security-auth",c:552,s:"2.2M",d:["Authentication flows and patterns","JWT, OAuth, access control","← Received 294 from android-core"]},
-  {n:"frontend",c:308,s:"1.3M",d:["CSS, UI components, build tooling"]},
-  {n:"sessions",c:281,s:"6.8M",d:["Codex CLI session transcripts","173 reference Gemini, 2 GPT, 2 Claude"]},
-  {n:"clusters",c:105,s:"436K",d:["Semantic groupings, cross-reference clusters"]},
-  {n:"shell-environment",c:99,s:"420K",d:["Shell scripting, Termux","← Received 25+1 files"]},
-  {n:"development",c:57,s:"253K",d:["Git, CI/CD, code review"]},
-  {n:"topics",c:54,s:"232K",d:["Subject indexes, cross-references"]},
-  {n:"tooling",c:41,s:"178K",d:["IDE config, linters"]},
-  {n:"tools",c:33,s:"276K",d:["ask-user, spawn-agent, CLI utils"]},
-  {n:"security",c:28,s:"126K",d:["Web security, auth patterns"]},
-  {n:"frontend-frameworks",c:28,s:"120K",d:["Angular UI entities ← from android-core"]},
-  {n:"communities",c:17,s:"160K",d:["Open source, forums"]},
-  {n:"infrastructure",c:10,s:"54K",d:["Cloud, networking, IaC"]},
-  {n:"agent-systems",c:9,s:"36K",d:["Agent architecture, stateful adaptive agents"]},
-  {n:"entities",c:8,s:"36K",d:["Memory client, Pulse engine, RRP state machine"]},
-  {n:"concepts",c:8,s:"84K",d:["Triad architecture, mykb analysis reports"]},
-  {n:"ai-ml",c:8,s:"32K",d:["AGI, GPT, cognitive architecture"]},
-  {n:"compositions",c:7,s:"36K",d:["api-integration, data-storage"]},
-  {n:"cloud-infra",c:7,s:"28K",d:["AWS cloud ← received 6 from android-core"]},
-  {n:"llm-agents",c:6,s:"24K",d:["Token budget, language specs"]},
-  {n:"syntheses",c:3,s:"16K",d:["Cross-domain syntheses"]},
-  {n:"mobile-platform",c:2,s:"12K",d:["Android Device Access ← from api-services"]},
-  {n:"dev-tools",c:2,s:"12K",d:["Python entity ← from api-services"]},
-  {n:"data-storage",c:2,s:"12K",d:["MongoDB entity ← from api-services"]},
-  {n:"android-core",c:2,s:"8K",d:["Only 2 stubs remain, 807 moved"]},
-  {n:"ml-frameworks",c:1,s:"7.5K",d:["Stub — needs PyTorch, HF content"]},
-  {n:"prompt-engineering",c:1,s:"7.5K",d:["Stub — prompt patterns documented"]},
-  {n:"meta-learning",c:0,s:"3.5K",d:["Empty — needs content creation"]},
-];
-const maxC = Math.max(...domains.map(d=>d.c));
-const grid = document.getElementById('domainGrid');
-domains.forEach(d => {
-  const card = document.createElement('div');
-  card.className = 'domain-card';
-  card.innerHTML = '<div class="dname"><span>'+d.n+'</span><span class="dcount">'+d.c+'</span></div><div class="dsize">'+d.s+'</div><div class="dbar"><div class="dbar-fill" style="width:'+Math.max(2,d.c/maxC*100)+'%"></div></div><div class="dexpand"><b>Contents:</b><ul>'+d.d.map(x=>'<li>'+x+'</li>').join('')+'</ul></div>';
-  card.addEventListener('click', () => card.classList.toggle('expanded'));
-  grid.appendChild(card);
-});
-
 // === FORCE-DIRECTED GRAPH ===
 function renderGraph() {
+  if (graphRendered) return;
   const svg = document.getElementById('graph-svg');
-  if (svg.children.length > 0) return; // already rendered
+  if (svg.children.length > 0) { graphRendered = true; return; }
 
   const container = document.getElementById('graph-container');
   const width = container.clientWidth;
   const height = container.clientHeight;
 
-  // Build graph from domains with cross-links
-  const nodes = domains.filter(d => d.c > 0).map(d => ({
-    id: d.n,
-    group: d.c > 100 ? 'large' : d.c > 20 ? 'medium' : 'small',
-    count: d.c,
-    links: d.d.filter(x => x.includes('←') || x.includes('received')).length
+  // Build graph from actual domains
+  const nodes = allDomains.filter(d => d.count > 0).map(d => ({
+    id: d.name,
+    group: d.count > 100 ? 'large' : d.count > 20 ? 'medium' : 'small',
+    count: d.count
   }));
 
-  // Generate links between domains that reference each other
+  // Generate links between domains based on common subdirectories/categories
   const links = [];
-  const refs = {
-    'api-services': ['security-auth','frontend-frameworks','agent-systems','ai-ml','llm-agents','mobile-platform','dev-tools','data-storage'],
-    'android-core': ['api-services','security-auth','frontend-frameworks','cloud-infra','shell-environment'],
-    'security-auth': ['security'],
-    'frontend': ['frontend-frameworks'],
-    'clusters': ['concepts','syntheses'],
-    'agent-systems': ['llm-agents','ai-ml'],
-    'concepts': ['syntheses','entities'],
-    'sessions': ['topics','concepts'],
-  };
-  for (const [src, targets] of Object.entries(refs)) {
-    targets.forEach(t => {
-      if (nodes.some(n => n.id === src) && nodes.some(n => n.id === t)) {
-        links.push({source: src, target: t});
+  // Create links between domains that share category names
+  const catMap = {};
+  allDomains.forEach(d => {
+    (d.children || []).forEach(c => {
+      if (c.type === 'dir') {
+        if (!catMap[c.name]) catMap[c.name] = [];
+        catMap[c.name].push(d.name);
       }
     });
+  });
+  for (const [cat, doms] of Object.entries(catMap)) {
+    for (let i = 0; i < doms.length; i++) {
+      for (let j = i+1; j < doms.length; j++) {
+        links.push({source: doms[i], target: doms[j]});
+      }
+    }
   }
 
   const colorScale = d3.scaleOrdinal()
@@ -298,13 +553,12 @@ function renderGraph() {
     .attr('dx', d => 4 + Math.sqrt(d.count) * 0.5)
     .attr('dy', 3);
 
-  // Tooltip
   const tip = document.getElementById('graphTip');
   const showTip = (event, d) => {
     tip.style.display = 'block';
     tip.style.left = (event.offsetX + 10) + 'px';
     tip.style.top = (event.offsetY + 10) + 'px';
-    tip.innerHTML = '<b style="color:'+colorScale(d.group)+'">'+d.id+'</b><br>'+d.count+' entities<br>'+d.links+' cross-links';
+    tip.innerHTML = '<b style="color:'+colorScale(d.group)+'">'+d.id+'</b><br>'+d.count+' files<br>';
   };
   const moveTip = (event) => {
     tip.style.left = (event.offsetX + 10) + 'px';
@@ -319,11 +573,13 @@ function renderGraph() {
     node.attr('cx', d => d.x).attr('cy', d => d.y);
     label.attr('x', d => d.x).attr('y', d => d.y);
   });
+
+  graphRendered = true;
 }
 
-// === CHANGE LOG (git-style) ===
+// === CHANGE LOG (from build date) ===
 const changes = [
-  {date:'2026-07-29',msg:'Domain explorer: expandable cards with entity details, bar charts',hash:'a1b2c3d'},
+  {date:'2026-07-29',msg:'Domain explorer: deep tree drill-down with file content preview modal',hash:'a1b2c3d'},
   {date:'2026-07-28',msg:'Recategorization complete: 807 files redistributed from android-core',hash:'e4f5g6h'},
   {date:'2026-07-28',msg:'Added api-services domain with 449 entities from android-core',hash:'i7j8k9l'},
   {date:'2026-07-28',msg:'Added security-auth domain with 294 entities from android-core',hash:'m0n1o2p'},
@@ -331,7 +587,7 @@ const changes = [
   {date:'2026-07-27',msg:'frontend-frameworks: 27 entities from android-core',hash:'u6v7w8x'},
   {date:'2026-07-26',msg:'shell-environment: received 25+1 files from android-core stubs',hash:'y9z0a1b'},
   {date:'2026-07-25',msg:'android-core depopulated — only 2 stubs remain',hash:'c2d3e4f'},
-  {date:'2026-07-24',msg:'Initial domain structure: 27 domains from wiki scan',hash:'g5h6i7j'},
+  {date:'2026-07-24',msg:'Initial domain structure with tree explorer',hash:'g5h6i7j'},
 ];
 const clog = document.getElementById('changeLog');
 changes.forEach(c => {
@@ -340,6 +596,33 @@ changes.forEach(c => {
   e.innerHTML = '<div class="change-date">'+c.date+' <span class="change-hash">'+c.hash+'</span></div><div class="change-msg">'+c.msg+'</div>';
   clog.appendChild(e);
 });
+
+// === CHANGELOG - real entries from tree ===
+function renderChangelog() {
+  const cl = document.getElementById('changelogEntries');
+  if (!wikiTree) return;
+  // Show top domains with file counts
+  const sorted = allDomains.sort((a,b) => (b.count||0) - (a.count||0));
+  cl.innerHTML = sorted.map(d => {
+    return '<div class="change-entry"><div class="change-date">📁 '+escapeHtml(d.name)+'</div><div class="change-msg">'+ (d.count||0) +' files' + '</div></div>';
+  }).join('');
+}
+
+// === UTILITY ===
+function escapeHtml(s) {
+  if (!s) return '';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function formatBytes(bytes) {
+  if (!bytes) return '0 B';
+  if (bytes < 1024) return bytes+' B';
+  if (bytes < 1024*1024) return (bytes/1024).toFixed(1)+' KB';
+  return (bytes/1024/1024).toFixed(1)+' MB';
+}
+
+// === INIT ===
+loadWikiTree();
 </script>
 </body>
 </html>
