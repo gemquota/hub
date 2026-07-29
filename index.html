@@ -68,12 +68,14 @@ h1{font-size:1.3rem;font-weight:700;margin-bottom:.05rem;background:linear-gradi
 <body>
 <div class="container">
 <div class="filter-bar">
-<a href="index.html" class="filter-btn active">All</a>
-<a href="ai.html" class="filter-btn">☯ AI / RSI</a>
-<a href="non-ai.html" class="filter-btn">🔧 Non-AI</a>
+<span class="filter-btn active" onclick="filterView('all')">All</span>
+<span class="filter-btn" onclick="filterView('cosmos')">🌌 COSMOS</span>
+<span class="filter-btn" onclick="filterView('more')">📋 More</span>
 </div>
 <h1>✦ Project Ecosystem Dashboard</h1>
 <div class="subtitle">All projects · comprehensive overview</div>
+
+<div class="filter-view" data-view="cosmos">
 <!-- MODULE: COSMOS Ecosystem & Project Families -->
 <div class="module-label"><span class="icon">🌌</span> COSMOS Ecosystem <span class="hdr-sub">v0.1.0 · <a href="https://github.com/gemquota/cosmos" style="color:#888;text-decoration:none">gemquota/cosmos</a></span></div>
 <div class="card" style="background:linear-gradient(135deg,#161822 0%,#1a1030 50%,#161822 100%);border-color:rgba(123,47,255,.15)">
@@ -103,6 +105,9 @@ h1{font-size:1.3rem;font-weight:700;margin-bottom:.05rem;background:linear-gradi
 <span>🔗 Active Triad:</span><span style="color:#ff8c00;font-weight:600">rsis3</span><span style="color:#555">+</span><span style="color:#a855f7;font-weight:600">mykb</span><span style="color:#555">+</span><span style="color:#22c55e;font-weight:600">myrsikb</span>
 <span style="margin-left:auto;color:#555">Updated 2026-07-29</span>
 </div></div>
+</div>
+
+<div class="filter-view" data-view="more">
 <div class="module-label"><span class="icon">🗂️</span> Other Projects</div>
 <div class="card"><div class="proj-grid">
 <a href="vepa.html" class="proj-card" style="border-left:3px solid #ef4444">
@@ -148,6 +153,7 @@ h1{font-size:1.3rem;font-weight:700;margin-bottom:.05rem;background:linear-gradi
 <span style="font-size:.5rem;padding:1px 6px;border-radius:8px;background:rgba(255,255,255,.06);color:#999;border:1px solid rgba(255,255,255,.04)">Agents</span>
 </div></a>
 </div></div>
+
 <!-- MODULE: Stats & Activity -->
 <div class="module-label"><span class="icon">📈</span> Stats &amp; Activity <span class="hdr-sub">small cards + donuts</span></div>
 <div class="stat-flex">
@@ -208,6 +214,7 @@ h1{font-size:1.3rem;font-weight:700;margin-bottom:.05rem;background:linear-gradi
 <div class="row"><span class="swatch" style="background:rgba(255,255,255,.08)"></span><span class="lbl">Other</span><span class="cnt">~50k</span></div>
 <div class="row" style="margin-top:4px;font-size:.5rem;color:#555"><span class="lbl">Total ~2.5M lines</span></div></div></div></div>
 </div>
+
 <!-- MODULE: Charts -->
 <div class="module-label"><span class="icon">📊</span> Charts <span class="hdr-sub">all stacked · click toggle for separate horizontal bars</span></div>
 <div class="card">
@@ -560,8 +567,20 @@ h1{font-size:1.3rem;font-weight:700;margin-bottom:.05rem;background:linear-gradi
 <div class="comp-row"><span class="lbl">GOLF</span><div class="track"><div class="fill" style="width:5%;background:#eab308"></div></div><span class="pct">3.5</span></div>
 </div>
 </div>
-<div class="footer">Generated 2026-07-29 · <a href="https://gemquota.github.io/hub/">Hub Dashboard</a> · <a href="https://github.com/gemquota/hub">GitHub</a> · 12 projects tracked</div>
 </div>
+
+<div class="footer">Generated 2026-07-29 · <a href="https://gemquota.github.io/hub/">Hub Dashboard</a> · <a href="https://github.com/gemquota/hub">GitHub</a> · 10 projects tracked</div>
+</div>
+<script>
+function filterView(v) {
+  document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
+  document.querySelector('.filter-btn[onclick="filterView(\'' + v + '\')"]').classList.add('active');
+  document.querySelectorAll('.filter-view').forEach(function(el) {
+    if (v === 'all') { el.style.display = ''; }
+    else { el.style.display = el.getAttribute('data-view') === v ? '' : 'none'; }
+  });
+}
+</script>
 <script>
 function toggleChart(n){var s=document.getElementById(n+"-stacked"),g=document.getElementById(n+"-grouped"),b=document.querySelector('.chart-toggle[data-target="'+n+'"]');if(!s||!g||!b)return;s.classList.contains("hidden")?(g.classList.add("hidden"),s.classList.remove("hidden"),b.textContent="\u25A4 Separate",b.classList.remove("active")):(s.classList.add("hidden"),g.classList.remove("hidden"),b.textContent="\u25A6 Stacked",b.classList.add("active"))}
 function toggleChart3(n){var s=document.getElementById(n+"-stacked"),g=document.getElementById(n+"-grouped"),p=document.getElementById(n+"-perproj"),b=document.querySelector('.chart-toggle[data-target="'+n+'"]');if(!s||!g||!p||!b)return;if(!s.classList.contains("hidden")){s.classList.add("hidden");g.classList.remove("hidden");b.textContent="\u25A6 By-Project";b.classList.add("active")}else if(!g.classList.contains("hidden")){g.classList.add("hidden");p.classList.remove("hidden");b.textContent="\u25A4 Stacked";b.classList.remove("active")}else{p.classList.add("hidden");s.classList.remove("hidden");b.textContent="\u25A4 Separate";b.classList.remove("active")}}
