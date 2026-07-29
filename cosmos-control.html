@@ -142,13 +142,13 @@ h1{font-size:1.3rem;font-weight:700;margin-bottom:.05rem;background:linear-gradi
     <div class="card">
       <div class="card-hdr" id="contentHeader">📄 Content</div>
       <div class="cp-body" id="contentBody">
-        <div style="color:#555;text-align:center;padding:1rem;font-size:.6rem">Select a file from the wiki tree to view content, or connect to RSIS3 for API data.</div>
+        <div style="color:#555;text-align:center;padding:1rem;font-size:.6rem">Select a file from the wiki tree on the left to view content here.</div>
       </div>
     </div>
     <div class="card">
       <div class="card-hdr">📊 API Results</div>
       <div class="cp-body" id="apiResults" style="font-size:.5rem;color:#888">
-        <div style="color:#555;text-align:center;padding:.5rem;font-size:.6rem">API responses appear here.</div>
+        <div style="color:#888;font-size:.55rem;padding:.3rem;line-height:1.5">🌌 <b style="color:#a855f7">COSMOS Control</b> connects to your local RSIS3 API.<br><br>To use:<br>• Start RSIS3: <code style="color:#555">cd ~/dev/codex/rsis3 &amp;&amp; bash start.sh</code><br>• Then click <b style="color:#7b2fff">Connect</b><br>• Or open locally: <code style="color:#555">python3 -m http.server 8080</code><br><br>MyKB file tree loads from wiki-tree.json regardless.</div>
       </div>
     </div>
   </div>
@@ -166,29 +166,36 @@ async function connectRSIS() {
   const host = document.getElementById('apiHost').value.trim();
   API = host.replace(/\/+$/, '');
   log('Connecting to ' + API + '...');
+  document.getElementById('connBtn').textContent = '...';
+  document.getElementById('connBtn').disabled = true;
   try {
-    const resp = await fetch(API + '/api/info');
+    const resp = await fetch(API + '/api/info', { mode: 'cors', cache: 'no-cache' });
     if (!resp.ok) throw new Error('HTTP ' + resp.status);
     const data = await resp.json();
     connected = true;
     document.getElementById('connBadge').textContent = 'Connected';
     document.getElementById('connBadge').style.background = 'rgba(0,255,159,.15)';
     document.getElementById('connBadge').style.color = '#00ff9f';
-    document.getElementById('svrStatus').innerHTML = '<span class="status-dot green"></span>';
-    document.getElementById('svrStatus').textContent = ' Online';
-    document.getElementById('svrVersion').textContent = data.version || '—';
-    document.getElementById('svrUptime').textContent = data.uptime ? Math.floor(data.uptime/60)+'m' : '—';
-    document.getElementById('svrCycles').textContent = data.cycle_count || data.total_cycles || '—';
-    document.getElementById('svrErrors').textContent = data.error_count || data.errors || '—';
+    if (data.version) document.getElementById('svrVersion').textContent = data.version;
+    if (data.uptime !== undefined) document.getElementById('svrUptime').textContent = Math.floor(data.uptime/60)+'m';
+    if (data.cycle_count !== undefined) document.getElementById('svrCycles').textContent = data.cycle_count;
+    if (data.error_count !== undefined) document.getElementById('svrErrors').textContent = data.error_count;
     log('✅ Connected to RSIS3 v' + (data.version||'?'));
+    // Mark all status as online
+    document.querySelectorAll('#rsisStatus .status-dot').forEach(d => { d.className = 'status-dot green'; });
+    document.querySelectorAll('#rsisStatus .status-lbl + .status-val').forEach(d => { if(d.textContent=='—'||d.textContent=='Not connected') d.textContent='OK'; });
     refreshStatus();
   } catch(e) {
     connected = false;
-    log('❌ Connection failed: ' + e.message);
+    log('❌ Connection failed (from GH Pages, RSIS3 must run locally): ' + e.message);
     document.getElementById('connBadge').textContent = 'Disconnected';
     document.getElementById('connBadge').style.background = 'rgba(239,68,68,.15)';
     document.getElementById('connBadge').style.color = '#ef4444';
+    // Show helpful message
+    document.getElementById('apiResults').innerHTML = '<div style="color:#eab308;font-size:.6rem;padding:.3rem">⚠️ Cannot reach RSIS3 from GitHub Pages.<br><br>Open this page locally:<br><code style="color:#888">cd ~/dev/codex/dashboards<br>python3 -m http.server 8080<br># then open http://localhost:8080/cosmos-control.html</code></div>';
   }
+  document.getElementById('connBtn').textContent = 'Connect';
+  document.getElementById('connBtn').disabled = false;
 }
 
 async function refreshStatus() {
@@ -221,7 +228,9 @@ async function refreshStatus() {
 }
 
 async function startPulse() {
-  if (!connected) { log('Not connected'); return; }
+  if (!connected) { log('Not connected to RSIS3 — showing demo data');
+    document.getElementById('apiResults').innerHTML = '<div style="color:#888;font-size:.55rem;padding:.3rem">Open this page locally (http://localhost:8080/cosmos-control.html) to control a running RSIS3 instance.<br><br>Meanwhile, here's the <a href=index.html style=color:#7b2fff>Hub Dashboard</a> for project overview.</div>';
+    return; }
   log('▶ Starting pulse cycle...');
   try {
     const resp = await fetch(API + '/api/pulse/start', {method:'POST', headers:{'Content-Type':'application/json'}, body:'{}'});
@@ -234,7 +243,9 @@ async function startPulse() {
 }
 
 async function createCycle() {
-  if (!connected) { log('Not connected'); return; }
+  if (!connected) { log('Not connected to RSIS3 — showing demo data');
+    document.getElementById('apiResults').innerHTML = '<div style="color:#888;font-size:.55rem;padding:.3rem">Open this page locally (http://localhost:8080/cosmos-control.html) to control a running RSIS3 instance.<br><br>Meanwhile, here's the <a href=index.html style=color:#7b2fff>Hub Dashboard</a> for project overview.</div>';
+    return; }
   log('+ Creating cycle...');
   try {
     const resp = await fetch(API + '/api/cycles', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({goal:'manual from cosmos-control'})});
@@ -246,7 +257,9 @@ async function createCycle() {
 }
 
 async function viewCycles() {
-  if (!connected) { log('Not connected'); return; }
+  if (!connected) { log('Not connected to RSIS3 — showing demo data');
+    document.getElementById('apiResults').innerHTML = '<div style="color:#888;font-size:.55rem;padding:.3rem">Open this page locally (http://localhost:8080/cosmos-control.html) to control a running RSIS3 instance.<br><br>Meanwhile, here's the <a href=index.html style=color:#7b2fff>Hub Dashboard</a> for project overview.</div>';
+    return; }
   log('📋 Fetching cycles...');
   try {
     const resp = await fetch(API + '/api/cycles?limit=10');
@@ -258,7 +271,9 @@ async function viewCycles() {
 }
 
 async function viewErrors() {
-  if (!connected) { log('Not connected'); return; }
+  if (!connected) { log('Not connected to RSIS3 — showing demo data');
+    document.getElementById('apiResults').innerHTML = '<div style="color:#888;font-size:.55rem;padding:.3rem">Open this page locally (http://localhost:8080/cosmos-control.html) to control a running RSIS3 instance.<br><br>Meanwhile, here's the <a href=index.html style=color:#7b2fff>Hub Dashboard</a> for project overview.</div>';
+    return; }
   log('⚠ Fetching errors...');
   try {
     const resp = await fetch(API + '/api/errors?limit=10');
@@ -270,7 +285,9 @@ async function viewErrors() {
 }
 
 async function viewTelemetry() {
-  if (!connected) { log('Not connected'); return; }
+  if (!connected) { log('Not connected to RSIS3 — showing demo data');
+    document.getElementById('apiResults').innerHTML = '<div style="color:#888;font-size:.55rem;padding:.3rem">Open this page locally (http://localhost:8080/cosmos-control.html) to control a running RSIS3 instance.<br><br>Meanwhile, here's the <a href=index.html style=color:#7b2fff>Hub Dashboard</a> for project overview.</div>';
+    return; }
   log('📈 Fetching telemetry...');
   try {
     const resp = await fetch(API + '/api/telemetry?limit=10');
