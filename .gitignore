@@ -10,3 +10,5 @@ space
 
 # Generated wiki content (regenerate with build-tree.py)
 wiki-content/
+wiki-tree.json
+build_hub.py
