@@ -7,238 +7,213 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{width:100%;max-width:100%;overflow-x:hidden}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0f1118;color:#e0e0e0;padding:.6rem;padding-top:2.2rem}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0f1118;color:#e0e0e0;padding:.6rem}
 .container{width:100%}
-h1{font-size:1.3rem;font-weight:700;margin-bottom:.1rem;background:linear-gradient(90deg,#ff8c00,#ffd93d,#ff6b35);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.subtitle{color:#666;font-size:.7rem;margin-bottom:.6rem}
-.card{background:#161822;border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:.7rem;margin-bottom:.7rem;width:100%}
-.card-header{font-size:.75rem;font-weight:600;color:#ccc;margin-bottom:.4rem;display:flex;align-items:center;gap:.4rem}
-.card-header .icon{font-size:.9rem}
-.proj-grid{display:grid;grid-template-columns:1fr 1fr;gap:.5rem}
-.proj-card{background:#161822;border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:.6rem;text-decoration:none;color:inherit;transition:border-color .2s,transform .15s;cursor:pointer;display:flex;flex-direction:column}
-.proj-card:hover{transform:translateY(-1px)}
-.proj-card .p-row{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.1rem}
-.proj-card .p-name{font-size:.8rem;font-weight:700}
-.proj-card .p-badge{font-size:.5rem;padding:1px 8px;border-radius:8px;font-weight:600;letter-spacing:.3px}
-.proj-card .p-badge.beta{background:rgba(255,165,0,.15);color:#ffa500;border:1px solid rgba(255,165,0,.25)}
-.proj-card .p-badge.live{background:rgba(0,255,159,.15);color:#00ff9f;border:1px solid rgba(0,255,159,.25)}
-.proj-card .p-badge.dev{background:rgba(59,130,246,.15);color:#60a5fa;border:1px solid rgba(59,130,246,.25)}
-.proj-card .p-badge.stable{background:rgba(168,85,247,.15);color:#a855f7;border:1px solid rgba(168,85,247,.25)}
-.proj-card .p-desc{font-size:.6rem;color:#777;margin-bottom:.35rem;line-height:1.3}
-.proj-card .p-pills{display:flex;flex-wrap:wrap;gap:.25rem}
-.proj-card .p-pill{font-size:.5rem;padding:1px 6px;border-radius:8px;background:rgba(255,255,255,.06);color:#999;border:1px solid rgba(255,255,255,.04)}
-.vbar-wrap{display:flex;align-items:flex-end;gap:3px;height:130px;padding:.3rem 0}
-.vbar-col{flex:1;display:flex;flex-direction:column;align-items:center;min-width:0}
-.vbar{width:100%;border-radius:3px 3px 0 0;min-height:2px;transition:height 1s;position:relative}
-.vbar .vval{position:absolute;top:-12px;left:50%;transform:translateX(-50%);font-size:.5rem;color:#555;white-space:nowrap}
-.vbar-lbl{font-size:.5rem;color:#888;margin-top:2px;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
-.donut-wrap{display:flex;align-items:center;gap:.6rem}
-.donut{width:100px;height:100px;border-radius:50%;flex-shrink:0;overflow:hidden}
-.donut-legend{font-size:.6rem;flex:1;min-width:0}
-.donut-legend .row{display:flex;align-items:center;gap:.3rem;margin-bottom:2px}
-.donut-legend .swatch{width:8px;height:8px;border-radius:2px;flex-shrink:0}
-.donut-legend .lbl{color:#999}
-.donut-legend .cnt{color:#555;margin-left:auto}
-.comp-row{display:flex;align-items:center;gap:.3rem;margin-bottom:.2rem;font-size:.65rem}
-.comp-row .lbl{width:55px;text-align:right;color:#888;flex-shrink:0}
-.comp-row .track{flex:1;height:10px;background:rgba(255,255,255,.04);border-radius:5px;overflow:hidden}
-.comp-row .fill{height:100%;border-radius:5px}
-.comp-row .pct{color:#555;font-size:.6rem;width:26px;text-align:right}
-.xtra{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}
-.xtra .card{margin-bottom:0}
-.footer{text-align:center;color:#222;font-size:.55rem;margin-top:.6rem}
-@media(max-width:500px){.proj-grid,.xtra{grid-template-columns:1fr}}
-
-/* Filter bar */
-.filter-bar{display:flex;gap:.3rem;margin-bottom:.6rem;flex-wrap:wrap}
+h1{font-size:1.3rem;font-weight:700;margin-bottom:.05rem;background:linear-gradient(90deg,#ff8c00,#ffd93d,#ff6b35);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.subtitle{color:#666;font-size:.65rem;margin-bottom:.3rem}
+.filter-bar{display:flex;gap:.3rem;margin-bottom:.4rem;flex-wrap:wrap}
 .filter-btn{padding:3px 16px;border-radius:12px;font-size:.7rem;font-weight:600;cursor:pointer;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:#888;transition:all .2s;text-decoration:none;display:inline-flex;align-items:center;gap:.3rem}
 .filter-btn:hover{border-color:rgba(255,140,0,.3);color:#ccc}
 .filter-btn.active{background:rgba(255,140,0,.15);border-color:#ff8c00;color:#ff8c00}
-.filter-btn.ai.active{background:rgba(123,47,255,.15);border-color:#7b2fff;color:#a855f7}
-
-.stacked-bar-wrap{padding:.3rem 0}
-.stacked-bar{display:flex;height:32px;border-radius:8px;overflow:hidden;background:rgba(255,255,255,.03)}
+.card{background:#161822;border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:.6rem;margin-bottom:.5rem;width:100%}
+.card-header{font-size:.7rem;font-weight:600;color:#ccc;margin-bottom:.3rem;display:flex;align-items:center;gap:.35rem}
+.card-header .icon{font-size:.8rem}
+.stacked-bar-wrap{padding:.2rem 0}
+.stacked-bar{display:flex;height:28px;border-radius:6px;overflow:hidden;background:rgba(255,255,255,.03)}
 .stacked-bar .seg{height:100%;transition:width 1s;min-width:2px}
-.stacked-bar .seg:first-child{border-radius:8px 0 0 8px}
-.stacked-bar .seg:last-child{border-radius:0 8px 8px 0}
-.stacked-legend{display:flex;flex-wrap:wrap;gap:.3rem .6rem;margin-top:.5rem;font-size:.6rem}
-.stacked-legend .leg-item{display:flex;align-items:center;gap:.25rem;color:#999}
-.stacked-legend .leg-swatch{width:8px;height:8px;border-radius:2px;flex-shrink:0}
+.stacked-bar .seg:first-child{border-radius:6px 0 0 6px}
+.stacked-bar .seg:last-child{border-radius:0 6px 6px 0}
+.stacked-legend{display:flex;flex-wrap:wrap;gap:.2rem .5rem;margin-top:.35rem;font-size:.55rem}
+.stacked-legend .leg-item{display:flex;align-items:center;gap:.2rem;color:#999}
+.stacked-legend .leg-swatch{width:7px;height:7px;border-radius:2px;flex-shrink:0}
 .stacked-legend .leg-total{color:#555;margin-left:auto}
-</style>
-</head>
-<body>
+.vbar-wrap{display:flex;align-items:flex-end;gap:3px;height:100px;padding:.2rem 0}
+.vbar-col{flex:1;display:flex;flex-direction:column;align-items:center;min-width:0;justify-content:flex-end}
+.vbar{width:80%;border-radius:3px 3px 0 0;min-height:2px;transition:height 1s;position:relative}
+.vbar .vval{position:absolute;top:-11px;left:50%;transform:translateX(-50%);font-size:.45rem;color:#555;white-space:nowrap}
+.vbar-lbl{font-size:.45rem;color:#888;margin-top:2px;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.donut-wrap{display:flex;align-items:center;gap:.5rem}
+.donut{width:90px;height:90px;border-radius:50%;flex-shrink:0;overflow:hidden}
+.donut-legend{font-size:.55rem;flex:1;min-width:0}
+.donut-legend .row{display:flex;align-items:center;gap:.25rem;margin-bottom:1px}
+.donut-legend .swatch{width:7px;height:7px;border-radius:2px;flex-shrink:0}
+.donut-legend .lbl{color:#999}
+.donut-legend .cnt{color:#555;margin-left:auto}
+.comp-row{display:flex;align-items:center;gap:.25rem;margin-bottom:.15rem;font-size:.6rem}
+.comp-row .lbl{width:45px;text-align:right;color:#888;flex-shrink:0}
+.comp-row .track{flex:1;height:8px;background:rgba(255,255,255,.04);border-radius:4px;overflow:hidden}
+.comp-row .fill{height:100%;border-radius:4px}
+.comp-row .pct{color:#555;font-size:.55rem;width:32px;text-align:right}
+.module-label{font-size:.8rem;font-weight:700;color:#ccc;margin:.8rem 0 .4rem 0;padding-bottom:.2rem;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:.3rem}
+.module-label .icon{font-size:.9rem}
+.hdr-sub{font-weight:400;font-size:.6rem;color:#666;margin-left:.4rem}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.4rem}
+.stat-cell{text-align:center;background:rgba(255,255,255,.03);border-radius:8px;padding:.5rem .2rem}
+.stat-big{font-size:1.1rem;font-weight:800;color:#e0e0e0;display:block}
+.stat-sm{font-size:.55rem;color:#777;display:block;margin-top:1px}
+.footer{text-align:center;color:#222;font-size:.5rem;margin-top:.5rem}
 
-  <div class="filter-bar">
-    <a href="./" class="filter-btn">All</a>
-    <a href="ai.html" class="filter-btn">☯ AI / RSI</a>
-    <a href="non-ai.html" class="filter-btn active">🔧 Non-AI</a>
-  </div></div>
+.proj-grid{display:grid;grid-template-columns:1fr 1fr;gap:.35rem}
+.proj-card{background:#161822;border:1px solid rgba(255,255,255,.06);border-
+  <!-- MODULE: Project Families -->
+  <div class="module-label"><span class="icon">🗂️</span> Project Families</div>
 
-<div class="container">
-  <h1>Non-AI Projects</h1>
-  <div class="subtitle">Tools · simulations · scrapers · games</div>
-
-  <!-- Project Cards (top) -->
   <div class="card">
-    <div class="card-header"><span class="icon">🗂️</span> Projects</div>
     <div class="proj-grid">
-      <a href="hmxot.html" class="proj-card">
-        <div class="p-row"><span class="p-name" style="color:#00d4ff">HMXOT</span><span class="p-badge stable">STABLE</span></div>
-        <div class="p-desc">Org toolkit — 320 entities across tools, templates, and workflow automation</div>
-        <div class="p-pills"><span class="p-pill">320 entities</span><span class="p-pill">templates</span><span class="p-pill">workflows</span><span class="p-pill">automation</span></div>
+      <a href="/" class="proj-card" style="border-left:3px solid #a855f7">
+        <div class="p-row"><span class="p-name" style="color:#a855f7">🧠 MyKB</span><span class="p-badge" style="background:rgba(255,255,255,.06);color:#888;padding:1px 8px;border-radius:8px;font-size:.5rem">1 ver</span></div>
       </a>
-      <a href="vepa.html" class="proj-card">
-        <div class="p-row"><span class="p-name" style="color:#ef4444">VEPA2</span><span class="p-badge beta">BETA</span></div>
-        <div class="p-desc">Multi-agent orchestration — 680 agents, delegation, batch processing, overseer supervision</div>
-        <div class="p-pills"><span class="p-pill">680 agents</span><span class="p-pill">overseer</span><span class="p-pill">delegation</span><span class="p-pill">batch proc</span></div>
+      <a href="/" class="proj-card" style="border-left:3px solid #22c55e">
+        <div class="p-row"><span class="p-name" style="color:#22c55e">📓 MyRSIKB</span><span class="p-badge" style="background:rgba(255,255,255,.06);color:#888;padding:1px 8px;border-radius:8px;font-size:.5rem">1 ver</span></div>
       </a>
-      <a href="golf.html" class="proj-card">
-        <div class="p-row"><span class="p-name" style="color:#eab308">GOLF</span><span class="p-badge beta">BETA</span></div>
-        <div class="p-desc">Game/simulation — 90 entities with physics, scoring, interactive gameplay</div>
-        <div class="p-pills"><span class="p-pill">90 entities</span><span class="p-pill">simulation</span><span class="p-pill">physics</span><span class="p-pill">gameplay</span></div>
+      <a href="projects/rsis3.html" class="proj-card" style="border-left:3px solid #ff8c00">
+        <div class="p-row"><span class="p-name" style="color:#ff8c00">🔄 RSIS3</span><span class="p-badge" style="background:rgba(255,255,255,.06);color:#888;padding:1px 8px;border-radius:8px;font-size:.5rem">10 ver</span></div>
+      </a>
+      <a href="projects/vepa.html" class="proj-card" style="border-left:3px solid #ef4444">
+        <div class="p-row"><span class="p-name" style="color:#ef4444">⚙️ VEPA</span><span class="p-badge" style="background:rgba(255,255,255,.06);color:#888;padding:1px 8px;border-radius:8px;font-size:.5rem">2 ver</span></div>
+      </a>
+      <a href="/" class="proj-card" style="border-left:3px solid #3b82f6">
+        <div class="p-row"><span class="p-name" style="color:#3b82f6">🛰️ SPACE</span><span class="p-badge" style="background:rgba(255,255,255,.06);color:#888;padding:1px 8px;border-radius:8px;font-size:.5rem">1 ver</span></div>
+      </a>
+      <a href="projects/hmxot.html" class="proj-card" style="border-left:3px solid #00d4ff">
+        <div class="p-row"><span class="p-name" style="color:#00d4ff">🔧 HMXOT</span><span class="p-badge" style="background:rgba(255,255,255,.06);color:#888;padding:1px 8px;border-radius:8px;font-size:.5rem">2 ver</span></div>
+      </a>
+      <a href="projects/golf.html" class="proj-card" style="border-left:3px solid #eab308">
+        <div class="p-row"><span class="p-name" style="color:#eab308">🏌️ GOLF</span><span class="p-badge" style="background:rgba(255,255,255,.06);color:#888;padding:1px 8px;border-radius:8px;font-size:.5rem">2 ver</span></div>
+      </a>
+      <a href="projects/hz.html" class="proj-card" style="border-left:3px solid #7c3aed">
+        <div class="p-row"><span class="p-name" style="color:#7c3aed">⚡ HZ</span><span class="p-badge" style="background:rgba(255,255,255,.06);color:#888;padding:1px 8px;border-radius:8px;font-size:.5rem">2 ver</span></div>
+      </a>
+      <a href="projects/sim.html" class="proj-card" style="border-left:3px solid #14b8a6">
+        <div class="p-row"><span class="p-name" style="color:#14b8a6">🎮 SIM</span><span class="p-badge" style="background:rgba(255,255,255,.06);color:#888;padding:1px 8px;border-radius:8px;font-size:.5rem">2 ver</span></div>
+      </a>
+      <a href="/" class="proj-card" style="border-left:3px solid #f43f5e">
+        <div class="p-row"><span class="p-name" style="color:#f43f5e">🤖 ACE</span><span class="p-badge" style="background:rgba(255,255,255,.06);color:#888;padding:1px 8px;border-radius:8px;font-size:.5rem">1 ver</span></div>
+      </a>
+      <a href="/" class="proj-card" style="border-left:3px solid #0ea5e9">
+        <div class="p-row"><span class="p-name" style="color:#0ea5e9">🧬 CELL</span><span class="p-badge" style="background:rgba(255,255,255,.06);color:#888;padding:1px 8px;border-radius:8px;font-size:.5rem">1 ver</span></div>
+      </a>
+      <a href="/" class="proj-card" style="border-left:3px solid #71717a">
+        <div class="p-row"><span class="p-name" style="color:#71717a">🎲 2B</span><span class="p-badge" style="background:rgba(255,255,255,.06);color:#888;padding:1px 8px;border-radius:8px;font-size:.5rem">1 ver</span></div>
       </a>
     </div>
   </div>
 
-  <!-- Chart 1: Entity Count -->
+radius:8px;padding:.4rem .5rem;text-decoration:none;color:inherit;transition:border-color .2s;cursor:pointer;display:block}
+.proj-card:hover{border-color:rgba(123,47,255,.3)}
+.proj-card .p-row{display:flex;justify-content:space-between;align-items:center}
+.proj-card .p-name{font-size:.75rem;font-weight:600}
+.proj-card .p-badge{font-size:.5rem}
+@media(max-width:500px){.proj-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Non-AI Projects</h1>
+  <div class="subtitle">Tools · simulations · scrapers · games</div>
+
+  <div class="filter-bar">
+    <a href="/" class="filter-btn">All</a>
+    <a href="/ai.html" class="filter-btn">☯ AI / RSI</a>
+    <a href="/non-ai.html" class="filter-btn active">🔧 Non-AI</a>
+  </div>
+
+  <!-- MODULE: Scale & Size -->
+  <div class="module-label"><span class="icon">📊</span> Scale &amp; Size</div>
+
   <div class="card">
-    <div class="card-header"><span class="icon">📊</span> Entity Count</div>
-        <div class="stacked-bar-wrap">
+    <div class="card-header"><span class="icon">📦</span> Entity Count</div>
+    <div class="stacked-bar-wrap">
       <div class="stacked-bar">
         <div class="seg" style="width:62.4%;background:#ef4444" title="VEPA2: 680"></div>
         <div class="seg" style="width:29.4%;background:#00d4ff" title="HMXOT: 320"></div>
         <div class="seg" style="width:8.3%;background:#eab308" title="GOLF: 90"></div>
       </div>
       <div class="stacked-legend">
-        <span class="leg-item"><span class="leg-swatch" style="background:#ef4444"></span> VEPA2 (680)</span>
-        <span class="leg-item"><span class="leg-swatch" style="background:#00d4ff"></span> HMXOT (320)</span>
-        <span class="leg-item"><span class="leg-swatch" style="background:#eab308"></span> GOLF (90)</span>
+        <span class="leg-item"><span class="leg-swatch" style="background:#ef4444"></span> VEPA2: 680</span>
+        <span class="leg-item"><span class="leg-swatch" style="background:#00d4ff"></span> HMXOT: 320</span>
+        <span class="leg-item"><span class="leg-swatch" style="background:#eab308"></span> GOLF: 90</span>
         <span class="leg-item leg-total">Total: 1090</span>
       </div>
     </div>
   </div>
 
-  <!-- Chart 2: File Distribution -->
   <div class="card">
-    <div class="card-header"><span class="icon">📁</span> File Distribution</div>
+    <div class="card-header"><span class="icon">📄</span> File Count</div>
+    <div class="vbar-wrap">
+      <div class="vbar-col"><div class="vbar" style="height:100.0%;background:#ef4444"><span class="vval">8,982</span></div><span class="vbar-lbl">VEPA2</span></div>
+      <div class="vbar-col"><div class="vbar" style="height:14.1%;background:#00d4ff"><span class="vval">1,269</span></div><span class="vbar-lbl">HMXOT</span></div>
+      <div class="vbar-col"><div class="vbar" style="height:28.7%;background:#eab308"><span class="vval">2,579</span></div><span class="vbar-lbl">GOLF</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><span class="icon">⚡</span> Lines of Code</div>
+    <div class="stacked-bar-wrap">
+      <div class="stacked-bar">
+        <div class="seg" style="width:29.9%;background:#ef4444" title="VEPA2: 532,380"></div>
+        <div class="seg" style="width:53.5%;background:#00d4ff" title="HMXOT: 952,758"></div>
+        <div class="seg" style="width:16.7%;background:#eab308" title="GOLF: 296,729"></div>
+      </div>
+      <div class="stacked-legend">
+        <span class="leg-item"><span class="leg-swatch" style="background:#ef4444"></span> VEPA2: 532,380</span>
+        <span class="leg-item"><span class="leg-swatch" style="background:#00d4ff"></span> HMXOT: 952,758</span>
+        <span class="leg-item"><span class="leg-swatch" style="background:#eab308"></span> GOLF: 296,729</span>
+        <span class="leg-item leg-total">Total: 1,781,867</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODULE: Composition -->
+  <div class="module-label"><span class="icon">🧬</span> Composition</div>
+
+  <div class="card">
+    <div class="card-header"><span class="icon">🥧</span> Entity Distribution</div>
     <div class="donut-wrap">
-            <svg class="donut" viewBox="0 0 100 100">
+      <svg class="donut" viewBox="0 0 100 100">
         <circle cx="50" cy="50" r="40" fill="none" stroke="rgba(255,255,255,.04)" stroke-width="16"/>
         <circle cx="50" cy="50" r="40" fill="none" stroke="#ef4444" stroke-width="16" stroke-dasharray="157 251" stroke-dashoffset="-0" transform="rotate(-90 50 50)"/>
         <circle cx="50" cy="50" r="40" fill="none" stroke="#00d4ff" stroke-width="16" stroke-dasharray="74 251" stroke-dashoffset="-157" transform="rotate(-90 50 50)"/>
         <circle cx="50" cy="50" r="40" fill="none" stroke="#eab308" stroke-width="16" stroke-dasharray="21 251" stroke-dashoffset="-231" transform="rotate(-90 50 50)"/>
       </svg>
       <div class="donut-legend">
+        <div class="row"><span class="swatch" style="background:#ef4444"></span><span class="lbl">VEPA2</span><span class="cnt">680</span></div>
         <div class="row"><span class="swatch" style="background:#00d4ff"></span><span class="lbl">HMXOT</span><span class="cnt">320</span></div>
         <div class="row"><span class="swatch" style="background:#eab308"></span><span class="lbl">GOLF</span><span class="cnt">90</span></div>
-        <div class="row"><span class="swatch" style="background:#ef4444"></span><span class="lbl">VEPA2</span><span class="cnt">680</span></div>
-        <div class="row"><span class="swatch" style="background:#ef4444"></span><span class="lbl">VEPA2</span><span class="cnt">680</span></div>
       </div>
     </div>
   </div>
 
-  <!-- Extra: Language Split + Lines of Code -->
-  <div class="xtra">
-    <div class="card">
-      <div class="card-header"><span class="icon">💻</span> Language Split</div>
-      <div class="bar-chart">
-        <div class="comp-row"><span class="lbl" style="width:42px">Python</span><div class="track"><div class="fill" style="width:100%;background:#22c55e"></div></div><span class="pct">40%</span></div>
-        <div class="comp-row"><span class="lbl" style="width:42px">JS</span><div class="track"><div class="fill" style="width:62%;background:#eab308"></div></div><span class="pct">25%</span></div>
-        <div class="comp-row"><span class="lbl" style="width:42px">HTML</span><div class="track"><div class="fill" style="width:38%;background:#ef4444"></div></div><span class="pct">15%</span></div>
-        <div class="comp-row"><span class="lbl" style="width:42px">Shell</span><div class="track"><div class="fill" style="width:30%;background:#3b82f6"></div></div><span class="pct">12%</span></div>
-        <div class="comp-row"><span class="lbl" style="width:42px">TS</span><div class="track"><div class="fill" style="width:20%;background:#a855f7"></div></div><span class="pct">8%</span></div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-header"><span class="icon">📏</span> Lines of Code</div>
-      <div class="comp-row"><span class="lbl" style="width:42px">GOLF</span><div class="track"><div class="fill" style="width:100%;background:#eab308"></div></div><span class="pct">1.8k</span></div>
-      <div class="comp-row"><span class="lbl" style="width:42px">HMXOT</span><div class="track"><div class="fill" style="width:67%;background:#00d4ff"></div></div><span class="pct">1.2k</span></div>
-    </div>
-  </div>
+  <!-- MODULE: Health -->
+  <div class="module-label"><span class="icon">💓</span> Health &amp; Activity</div>
 
-  <!-- Chart 3: Completion Status -->
   <div class="card">
     <div class="card-header"><span class="icon">🎯</span> Completion Status</div>
-    <div class="comp-row"><span class="lbl">GOLF</span><div class="track"><div class="fill" style="width:85%;background:#eab308"></div></div><span class="pct">85%</span></div>
-    <div class="comp-row"><span class="lbl">HMXOT</span><div class="track"><div class="fill" style="width:50%;background:#00d4ff"></div></div><span class="pct">50%</span></div>
-    <div class="comp-row"><span class="lbl">VEPA2</span><div class="track"><div class="fill" style="width:25%;background:#ef4444"></div></div><span class="pct">25%</span></div>
-    <div class="comp-row"><span class="lbl">VEPA2</span><div class="track"><div class="fill" style="width:25%;background:#ef4444"></div></div><span class="pct">25%</span></div>
+    <div class="comp-row"><span class="lbl">GOLF</span><div class="track"><div class="fill" style="width:85.0%;background:#eab308"></div></div><span class="pct">85%</span></div>
+    <div class="comp-row"><span class="lbl">HMXOT</span><div class="track"><div class="fill" style="width:50.0%;background:#00d4ff"></div></div><span class="pct">50%</span></div>
+    <div class="comp-row"><span class="lbl">VEPA2</span><div class="track"><div class="fill" style="width:25.0%;background:#ef4444"></div></div><span class="pct">25%</span></div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><span class="icon">🕐</span> Last Activity</div>
+    <div class="comp-row"><span class="lbl">HMXOT</span><div class="track"><div class="fill" style="width:100.0%;background:#00d4ff"></div></div><span class="pct">Today</span></div>
+    <div class="comp-row"><span class="lbl">GOLF</span><div class="track"><div class="fill" style="width:100.0%;background:#eab308"></div></div><span class="pct">Today</span></div>
+    <div class="comp-row"><span class="lbl">VEPA2</span><div class="track"><div class="fill" style="width:58.0%;background:#ef4444"></div></div><span class="pct">12d ago</span></div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><span class="icon">📈</span> Stats Snapshot</div>
+    <div class="stat-grid">
+      <div class="stat-cell"><span class="stat-big" style="color:#ef4444">3</span><span class="stat-sm">Projects</span></div>
+      <div class="stat-cell"><span class="stat-big" style="color:#3b82f6">12.8k</span><span class="stat-sm">Total Files</span></div>
+      <div class="stat-cell"><span class="stat-big" style="color:#eab308">1.78M</span><span class="stat-sm">Lines of Code</span></div>
+      <div class="stat-cell"><span class="stat-big" style="color:#00d4ff">1,090</span><span class="stat-sm">Entities</span></div>
+      <div class="stat-cell"><span class="stat-big" style="color:#ff8c00">~845M</span><span class="stat-sm">Disk Usage</span></div>
+      <div class="stat-cell"><span class="stat-big" style="color:#22c55e">2</span><span class="stat-sm">Active Today</span></div>
+    </div>
   </div>
 
   <div class="footer">Generated 2026-07-28 · Non-AI Project Dashboard</div>
-<
-  <!-- Chart 4: File Count -->
-  <div class="card">
-    <div class="card-header"><span class="icon">📄</span> File Count (on disk)</div>
-    <div class="stacked-bar-wrap">
-      <div class="stacked-bar">
-        <div class="seg" style="width:70%;background:#ef4444" title="VEPA2: 8,982 files"></div>
-        <div class="seg" style="width:20%;background:#eab308" title="GOLF: 2,579 files"></div>
-        <div class="seg" style="width:10%;background:#00d4ff" title="HMXOT: 1,269 files"></div>
-      </div>
-      <div class="stacked-legend">
-        <span class="leg-item"><span class="leg-swatch" style="background:#ef4444"></span> VEPA2 (8,982)</span>
-        <span class="leg-item"><span class="leg-swatch" style="background:#eab308"></span> GOLF (2,579)</span>
-        <span class="leg-item"><span class="leg-swatch" style="background:#00d4ff"></span> HMXOT (1,269)</span>
-        <span class="leg-item leg-total">Total: 12,830</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- Chart 5: Lines of Code -->
-  <div class="card">
-    <div class="card-header"><span class="icon">⚡</span> Lines of Code</div>
-    <div class="stacked-bar-wrap">
-      <div class="stacked-bar">
-        <div class="seg" style="width:53.5%;background:#00d4ff" title="HMXOT: 952,758 lines"></div>
-        <div class="seg" style="width:29.9%;background:#ef4444" title="VEPA2: 532,380 lines"></div>
-        <div class="seg" style="width:16.7%;background:#eab308" title="GOLF: 296,729 lines"></div>
-      </div>
-      <div class="stacked-legend">
-        <span class="leg-item"><span class="leg-swatch" style="background:#00d4ff"></span> HMXOT (952k)</span>
-        <span class="leg-item"><span class="leg-swatch" style="background:#ef4444"></span> VEPA2 (532k)</span>
-        <span class="leg-item"><span class="leg-swatch" style="background:#eab308"></span> GOLF (297k)</span>
-        <span class="leg-item leg-total">Total: 1.78M</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- Chart 6: Language Mix -->
-  <div class="card">
-    <div class="card-header"><span class="icon">🔤</span> Language Mix</div>
-    <div class="stacked-bar-wrap">
-      <div class="stacked-bar">
-        <div class="seg" style="width:57%;background:#eab308" title="JS/TS: 57%"></div>
-        <div class="seg" style="width:32%;background:#00d4ff" title="HMXOT-specific: 32%"></div>
-        <div class="seg" style="width:7%;background:#ef4444" title="HTML: 7%"></div>
-        <div class="seg" style="width:4%;background:#22c55e" title="Markdown: 4%"></div>
-      </div>
-      <div class="stacked-legend">
-        <span class="leg-item"><span class="leg-swatch" style="background:#eab308"></span> JS/TS (57%)</span>
-        <span class="leg-item"><span class="leg-swatch" style="background:#00d4ff"></span> HMXOT-TS (32%)</span>
-        <span class="leg-item"><span class="leg-swatch" style="background:#ef4444"></span> HTML (7%)</span>
-        <span class="leg-item"><span class="leg-swatch" style="background:#22c55e"></span> Markdown (4%)</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- Chart 7: Freshness -->
-  <div class="card">
-    <div class="card-header"><span class="icon">🕐</span> Last Activity</div>
-    <div class="comp-row"><span class="lbl">HMXOT</span><div class="track"><div class="fill" style="width:100%;background:#00d4ff"></div></div><span class="pct">Today</span></div>
-    <div class="comp-row"><span class="lbl">GOLF</span><div class="track"><div class="fill" style="width:100%;background:#eab308"></div></div><span class="pct">Today</span></div>
-    <div class="comp-row"><span class="lbl">VEPA2</span><div class="track"><div class="fill" style="width:58%;background:#ef4444"></div></div><span class="pct">12 days ago</span></div>
-  </div>
-
-/div>
-
-<div class="footer">Generated 2026-07-28 · Non-AI Project Dashboard</div>
 </div>
 </body>
-</html>      <a href="vepa.html" class="proj-card">
-        <div class="p-row"><span class="p-name" style="color:#ef4444">VEPA2</span><span class="p-badge beta">BETA</span></div>
-        <div class="p-desc">Multi-agent orchestration — 680 agents, delegation, batch processing, overseer supervision</div>
-        <div class="p-pills"><span class="p-pill">680 agents</span><span class="p-pill">overseer</span><span class="p-pill">delegation</span><span class="p-pill">batch proc</span></div>
-      </a>
-
+</html>
