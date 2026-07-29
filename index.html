@@ -391,64 +391,150 @@ h1{font-size:1.3rem;font-weight:700;margin-bottom:.05rem;background:linear-gradi
 <span class="icon">🔀</span> Code vs Data <span class="hdr-sub">3 views</span>
 <span class="chart-toggle" data-target="code-data" onclick="toggleChart3('code-data')">▤ Separate</span>
 </div>
-<div id="code-data-stacked" class="chart-view">
-<div class="stacked-bar-wrap"><div class="stacked-bar">
-<div class="seg" style="width:25.0%;background:#a855f7" title="MyKB Code"></div>
-<div class="seg" style="width:9.2%;background:rgba(168,85,247,.3)" title="MyKB Data"></div>
-<div class="seg" style="width:30.3%;background:#ef4444" title="VEPA2 Code"></div>
-<div class="seg" style="width:3.7%;background:rgba(239,68,68,.3)" title="VEPA2 Data"></div>
-<div class="seg" style="width:21.1%;background:#3b82f6" title="SPACE Code"></div>
-<div class="seg" style="width:12.9%;background:rgba(59,130,246,.3)" title="SPACE Data"></div>
-<div class="seg" style="width:4.3%;background:#00d4ff" title="HMXOT Code"></div>
-<div class="seg" style="width:1.2%;background:rgba(0,212,255,.3)" title="HMXOT Data"></div>
-<div class="seg" style="width:2.1%;background:#ff8c00" title="RSIS3 Code"></div>
-<div class="seg" style="width:0.2%;background:rgba(255,140,0,.3)" title="RSIS3 Data"></div>
-<div class="seg" style="width:8.8%;background:#eab308" title="GOLF Code"></div>
-<div class="seg" style="width:4.3%;background:rgba(234,179,8,.3)" title="GOLF Data"></div>
-<div class="seg" style="width:0.1%;background:#22c55e" title="MyRSIKB Code"></div>
-<div class="seg" style="width:0.1%;background:rgba(34,197,94,.3)" title="MyRSIKB Data"></div>
-</div><div class="stacked-legend">
-<span class="leg-item"><span class="leg-swatch" style="background:#a855f7"></span> MyKB Code: </span>
-<span class="leg-item"><span class="leg-swatch" style="background:rgba(168,85,247,.3)"></span> MyKB Data: </span>
-<span class="leg-item"><span class="leg-swatch" style="background:#ef4444"></span> VEPA2 Code: </span>
-<span class="leg-item"><span class="leg-swatch" style="background:rgba(239,68,68,.3)"></span> VEPA2 Data: </span>
-<span class="leg-item"><span class="leg-swatch" style="background:#3b82f6"></span> SPACE Code: </span>
-<span class="leg-item"><span class="leg-swatch" style="background:rgba(59,130,246,.3)"></span> SPACE Data: </span>
-<span class="leg-item"><span class="leg-swatch" style="background:#00d4ff"></span> HMXOT Code: </span>
-<span class="leg-item"><span class="leg-swatch" style="background:rgba(0,212,255,.3)"></span> HMXOT Data: </span>
-<span class="leg-item"><span class="leg-swatch" style="background:#ff8c00"></span> RSIS3 Code: </span>
-<span class="leg-item"><span class="leg-swatch" style="background:rgba(255,140,0,.3)"></span> RSIS3 Data: </span>
-<span class="leg-item"><span class="leg-swatch" style="background:#eab308"></span> GOLF Code: </span>
-<span class="leg-item"><span class="leg-swatch" style="background:rgba(234,179,8,.3)"></span> GOLF Data: </span>
-<span class="leg-item"><span class="leg-swatch" style="background:#22c55e"></span> MyRSIKB Code: </span>
-<span class="leg-item"><span class="leg-swatch" style="background:rgba(34,197,94,.3)"></span> MyRSIKB Data: </span>
-</div></div></div>
-<div id="code-data-grouped" class="chart-view hidden">
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:.4rem">
-<div class="comp-row"><span class="lbl">MyKB Code</span><div class="track"><div class="fill" style="width:73%;background:#a855f7"></div></div><span class="pct">73%</span></div>
-<div class="comp-row"><span class="lbl">MyKB Data</span><div class="track"><div class="fill" style="width:27%;background:rgba(168,85,247,.3)"></div></div><span class="pct">27%</span></div>
-<div class="comp-row"><span class="lbl">VEPA2 Code</span><div class="track"><div class="fill" style="width:89%;background:#ef4444"></div></div><span class="pct">89%</span></div>
-<div class="comp-row"><span class="lbl">VEPA2 Data</span><div class="track"><div class="fill" style="width:11%;background:rgba(239,68,68,.3)"></div></div><span class="pct">11%</span></div>
-<div class="comp-row"><span class="lbl">SPACE Code</span><div class="track"><div class="fill" style="width:62%;background:#3b82f6"></div></div><span class="pct">62%</span></div>
-<div class="comp-row"><span class="lbl">SPACE Data</span><div class="track"><div class="fill" style="width:38%;background:rgba(59,130,246,.3)"></div></div><span class="pct">38%</span></div>
-<div class="comp-row"><span class="lbl">HMXOT Code</span><div class="track"><div class="fill" style="width:78%;background:#00d4ff"></div></div><span class="pct">78%</span></div>
-<div class="comp-row"><span class="lbl">HMXOT Data</span><div class="track"><div class="fill" style="width:22%;background:rgba(0,212,255,.3)"></div></div><span class="pct">22%</span></div>
-<div class="comp-row"><span class="lbl">RSIS3 Code</span><div class="track"><div class="fill" style="width:91%;background:#ff8c00"></div></div><span class="pct">91%</span></div>
-<div class="comp-row"><span class="lbl">RSIS3 Data</span><div class="track"><div class="fill" style="width:9%;background:rgba(255,140,0,.3)"></div></div><span class="pct">9%</span></div>
-<div class="comp-row"><span class="lbl">GOLF Code</span><div class="track"><div class="fill" style="width:67%;background:#eab308"></div></div><span class="pct">67%</span></div>
-<div class="comp-row"><span class="lbl">GOLF Data</span><div class="track"><div class="fill" style="width:33%;background:rgba(234,179,8,.3)"></div></div><span class="pct">33%</span></div>
-<div class="comp-row"><span class="lbl">MyRSIKB Code</span><div class="track"><div class="fill" style="width:58%;background:#22c55e"></div></div><span class="pct">58%</span></div>
-<div class="comp-row"><span class="lbl">MyRSIKB Data</span><div class="track"><div class="fill" style="width:42%;background:rgba(34,197,94,.3)"></div></div><span class="pct">42%</span></div>
-</div></div>
-<div id="code-data-perproj" class="chart-view hidden">
-<div class="mini-stack-row">
-<div class="mini-stack"><div class="ms-title">MyKB</div><div class="ms-bar"><div class="seg" style="width:73%;background:#a855f7"></div><div class="seg" style="width:27%;background:rgba(168,85,247,.3)"></div></div><div class="ms-leg">C:73% D:27%</div></div>
-<div class="mini-stack"><div class="ms-title">VEPA2</div><div class="ms-bar"><div class="seg" style="width:89%;background:#ef4444"></div><div class="seg" style="width:11%;background:rgba(239,68,68,.3)"></div></div><div class="ms-leg">C:89% D:11%</div></div>
-<div class="mini-stack"><div class="ms-title">SPACE</div><div class="ms-bar"><div class="seg" style="width:62%;background:#3b82f6"></div><div class="seg" style="width:38%;background:rgba(59,130,246,.3)"></div></div><div class="ms-leg">C:62% D:38%</div></div>
-<div class="mini-stack"><div class="ms-title">HMXOT</div><div class="ms-bar"><div class="seg" style="width:78%;background:#00d4ff"></div><div class="seg" style="width:22%;background:rgba(0,212,255,.3)"></div></div><div class="ms-leg">C:78% D:22%</div></div>
-<div class="mini-stack"><div class="ms-title">RSIS3</div><div class="ms-bar"><div class="seg" style="width:91%;background:#ff8c00"></div><div class="seg" style="width:9%;background:rgba(255,140,0,.3)"></div></div><div class="ms-leg">C:91% D:9%</div></div>
-<div class="mini-stack"><div class="ms-title">GOLF</div><div class="ms-bar"><div class="seg" style="width:67%;background:#eab308"></div><div class="seg" style="width:33%;background:rgba(234,179,8,.3)"></div></div><div class="ms-leg">C:67% D:33%</div></div>
-<div class="mini-stack"><div class="ms-title">MyRSIKB</div><div class="ms-bar"><div class="seg" style="width:58%;background:#22c55e"></div><div class="seg" style="width:42%;background:rgba(34,197,94,.3)"></div></div><div class="ms-leg">C:58% D:42%</div></div>
+<div class="chart-view" id="code-data-stacked">
+  <div style="font-size:.55rem;color:#888;margin:.2rem 0 .1rem;display:flex;align-items:center;gap:.3rem">
+    <span style="width:36px;font-weight:600;color:#a855f7">Code</span>
+    <div class="stacked-bar" style="flex:1;height:24px"><div class="seg" style="width:73.0%;background:#a855f7" title="MyKB Code: 73%"></div><div class="seg" style="width:89.0%;background:#ef4444" title="VEPA2 Code: 89%"></div><div class="seg" style="width:62.0%;background:#3b82f6" title="SPACE Code: 62%"></div><div class="seg" style="width:78.0%;background:#00d4ff" title="HMXOT Code: 78%"></div><div class="seg" style="width:91.0%;background:#ff8c00" title="RSIS3 Code: 91%"></div><div class="seg" style="width:67.0%;background:#eab308" title="GOLF Code: 67%"></div><div class="seg" style="width:58.0%;background:#22c55e" title="MyRSIKB Code: 58%"></div></div>
+  </div>
+  <div style="font-size:.55rem;color:#888;margin:.1rem 0;display:flex;align-items:center;gap:.3rem">
+    <span style="width:36px;font-weight:600;color:rgba(255,255,255,.3)">Data</span>
+    <div class="stacked-bar" style="flex:1;height:24px"><div class="seg" style="width:27.0%;background:rgba(168,85,247,.3)" title="MyKB Data: 27%"></div><div class="seg" style="width:11.0%;background:rgba(239,68,68,.3)" title="VEPA2 Data: 11%"></div><div class="seg" style="width:38.0%;background:rgba(59,130,246,.3)" title="SPACE Data: 38%"></div><div class="seg" style="width:22.0%;background:rgba(0,212,255,.3)" title="HMXOT Data: 22%"></div><div class="seg" style="width:9.0%;background:rgba(255,140,0,.3)" title="RSIS3 Data: 9%"></div><div class="seg" style="width:33.0%;background:rgba(234,179,8,.3)" title="GOLF Data: 33%"></div><div class="seg" style="width:42.0%;background:rgba(34,197,94,.3)" title="MyRSIKB Data: 42%"></div></div>
+  </div>
+  <div class="stacked-legend" style="margin-top:.2rem">
+    <span class="leg-item"><span class="leg-swatch" style="background:#a855f7"></span> MyKB</span><span class="leg-item"><span class="leg-swatch" style="background:#ef4444"></span> VEPA2</span><span class="leg-item"><span class="leg-swatch" style="background:#3b82f6"></span> SPACE</span><span class="leg-item"><span class="leg-swatch" style="background:#00d4ff"></span> HMXOT</span><span class="leg-item"><span class="leg-swatch" style="background:#ff8c00"></span> RSIS3</span><span class="leg-item"><span class="leg-swatch" style="background:#eab308"></span> GOLF</span><span class="leg-item"><span class="leg-swatch" style="background:#22c55e"></span> MyRSIKB</span>
+  </div>
+</div>
+<div class="chart-view hidden" id="code-data-grouped">
+  <div style="display:flex;align-items:center;gap:.25rem;margin-bottom:.1rem;font-size:.6rem">
+  <span style="width:60px;text-align:right;color:#888;flex-shrink:0">MyKB</span>
+  <div style="flex:1;display:flex;flex-direction:column;gap:2px">
+    <div style="display:flex;align-items:center;gap:.2rem">
+      <div class="track" style="flex:1;height:7px;background:rgba(255,255,255,.04);border-radius:4px;overflow:hidden">
+        <div class="fill" style="height:100%;width:73%;border-radius:4px;background:#a855f7"></div>
+      </div>
+      <span style="color:#555;font-size:.5rem;width:30px;text-align:right">73%</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:.2rem">
+      <div class="track" style="flex:1;height:7px;background:rgba(255,255,255,.04);border-radius:4px;overflow:hidden">
+        <div class="fill" style="height:100%;width:27%;border-radius:4px;background:rgba(168,85,247,.3)"></div>
+      </div>
+      <span style="color:#555;font-size:.5rem;width:30px;text-align:right">27%</span>
+    </div>
+  </div>
+</div> <div style="display:flex;align-items:center;gap:.25rem;margin-bottom:.1rem;font-size:.6rem">
+  <span style="width:60px;text-align:right;color:#888;flex-shrink:0">VEPA2</span>
+  <div style="flex:1;display:flex;flex-direction:column;gap:2px">
+    <div style="display:flex;align-items:center;gap:.2rem">
+      <div class="track" style="flex:1;height:7px;background:rgba(255,255,255,.04);border-radius:4px;overflow:hidden">
+        <div class="fill" style="height:100%;width:89%;border-radius:4px;background:#ef4444"></div>
+      </div>
+      <span style="color:#555;font-size:.5rem;width:30px;text-align:right">89%</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:.2rem">
+      <div class="track" style="flex:1;height:7px;background:rgba(255,255,255,.04);border-radius:4px;overflow:hidden">
+        <div class="fill" style="height:100%;width:11%;border-radius:4px;background:rgba(239,68,68,.3)"></div>
+      </div>
+      <span style="color:#555;font-size:.5rem;width:30px;text-align:right">11%</span>
+    </div>
+  </div>
+</div> <div style="display:flex;align-items:center;gap:.25rem;margin-bottom:.1rem;font-size:.6rem">
+  <span style="width:60px;text-align:right;color:#888;flex-shrink:0">SPACE</span>
+  <div style="flex:1;display:flex;flex-direction:column;gap:2px">
+    <div style="display:flex;align-items:center;gap:.2rem">
+      <div class="track" style="flex:1;height:7px;background:rgba(255,255,255,.04);border-radius:4px;overflow:hidden">
+        <div class="fill" style="height:100%;width:62%;border-radius:4px;background:#3b82f6"></div>
+      </div>
+      <span style="color:#555;font-size:.5rem;width:30px;text-align:right">62%</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:.2rem">
+      <div class="track" style="flex:1;height:7px;background:rgba(255,255,255,.04);border-radius:4px;overflow:hidden">
+        <div class="fill" style="height:100%;width:38%;border-radius:4px;background:rgba(59,130,246,.3)"></div>
+      </div>
+      <span style="color:#555;font-size:.5rem;width:30px;text-align:right">38%</span>
+    </div>
+  </div>
+</div> <div style="display:flex;align-items:center;gap:.25rem;margin-bottom:.1rem;font-size:.6rem">
+  <span style="width:60px;text-align:right;color:#888;flex-shrink:0">HMXOT</span>
+  <div style="flex:1;display:flex;flex-direction:column;gap:2px">
+    <div style="display:flex;align-items:center;gap:.2rem">
+      <div class="track" style="flex:1;height:7px;background:rgba(255,255,255,.04);border-radius:4px;overflow:hidden">
+        <div class="fill" style="height:100%;width:78%;border-radius:4px;background:#00d4ff"></div>
+      </div>
+      <span style="color:#555;font-size:.5rem;width:30px;text-align:right">78%</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:.2rem">
+      <div class="track" style="flex:1;height:7px;background:rgba(255,255,255,.04);border-radius:4px;overflow:hidden">
+        <div class="fill" style="height:100%;width:22%;border-radius:4px;background:rgba(0,212,255,.3)"></div>
+      </div>
+      <span style="color:#555;font-size:.5rem;width:30px;text-align:right">22%</span>
+    </div>
+  </div>
+</div> <div style="display:flex;align-items:center;gap:.25rem;margin-bottom:.1rem;font-size:.6rem">
+  <span style="width:60px;text-align:right;color:#888;flex-shrink:0">RSIS3</span>
+  <div style="flex:1;display:flex;flex-direction:column;gap:2px">
+    <div style="display:flex;align-items:center;gap:.2rem">
+      <div class="track" style="flex:1;height:7px;background:rgba(255,255,255,.04);border-radius:4px;overflow:hidden">
+        <div class="fill" style="height:100%;width:91%;border-radius:4px;background:#ff8c00"></div>
+      </div>
+      <span style="color:#555;font-size:.5rem;width:30px;text-align:right">91%</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:.2rem">
+      <div class="track" style="flex:1;height:7px;background:rgba(255,255,255,.04);border-radius:4px;overflow:hidden">
+        <div class="fill" style="height:100%;width:9%;border-radius:4px;background:rgba(255,140,0,.3)"></div>
+      </div>
+      <span style="color:#555;font-size:.5rem;width:30px;text-align:right">9%</span>
+    </div>
+  </div>
+</div> <div style="display:flex;align-items:center;gap:.25rem;margin-bottom:.1rem;font-size:.6rem">
+  <span style="width:60px;text-align:right;color:#888;flex-shrink:0">GOLF</span>
+  <div style="flex:1;display:flex;flex-direction:column;gap:2px">
+    <div style="display:flex;align-items:center;gap:.2rem">
+      <div class="track" style="flex:1;height:7px;background:rgba(255,255,255,.04);border-radius:4px;overflow:hidden">
+        <div class="fill" style="height:100%;width:67%;border-radius:4px;background:#eab308"></div>
+      </div>
+      <span style="color:#555;font-size:.5rem;width:30px;text-align:right">67%</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:.2rem">
+      <div class="track" style="flex:1;height:7px;background:rgba(255,255,255,.04);border-radius:4px;overflow:hidden">
+        <div class="fill" style="height:100%;width:33%;border-radius:4px;background:rgba(234,179,8,.3)"></div>
+      </div>
+      <span style="color:#555;font-size:.5rem;width:30px;text-align:right">33%</span>
+    </div>
+  </div>
+</div> <div style="display:flex;align-items:center;gap:.25rem;margin-bottom:.1rem;font-size:.6rem">
+  <span style="width:60px;text-align:right;color:#888;flex-shrink:0">MyRSIKB</span>
+  <div style="flex:1;display:flex;flex-direction:column;gap:2px">
+    <div style="display:flex;align-items:center;gap:.2rem">
+      <div class="track" style="flex:1;height:7px;background:rgba(255,255,255,.04);border-radius:4px;overflow:hidden">
+        <div class="fill" style="height:100%;width:58%;border-radius:4px;background:#22c55e"></div>
+      </div>
+      <span style="color:#555;font-size:.5rem;width:30px;text-align:right">58%</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:.2rem">
+      <div class="track" style="flex:1;height:7px;background:rgba(255,255,255,.04);border-radius:4px;overflow:hidden">
+        <div class="fill" style="height:100%;width:42%;border-radius:4px;background:rgba(34,197,94,.3)"></div>
+      </div>
+      <span style="color:#555;font-size:.5rem;width:30px;text-align:right">42%</span>
+    </div>
+  </div>
+</div>
+</div>
+<div class="chart-view hidden" id="code-data-perproj">
+  <div class="mini-stack-row"><div class="mini-stack"><div class="ms-title">MyKB</div>
+  <div class="ms-bar"><div class="seg" style="width:73%;background:#a855f7"></div><div class="seg" style="width:27%;background:rgba(168,85,247,.3)"></div></div>
+  <div class="ms-leg">C:73% D:27%</div></div><div class="mini-stack"><div class="ms-title">VEPA2</div>
+  <div class="ms-bar"><div class="seg" style="width:89%;background:#ef4444"></div><div class="seg" style="width:11%;background:rgba(239,68,68,.3)"></div></div>
+  <div class="ms-leg">C:89% D:11%</div></div><div class="mini-stack"><div class="ms-title">SPACE</div>
+  <div class="ms-bar"><div class="seg" style="width:62%;background:#3b82f6"></div><div class="seg" style="width:38%;background:rgba(59,130,246,.3)"></div></div>
+  <div class="ms-leg">C:62% D:38%</div></div><div class="mini-stack"><div class="ms-title">HMXOT</div>
+  <div class="ms-bar"><div class="seg" style="width:78%;background:#00d4ff"></div><div class="seg" style="width:22%;background:rgba(0,212,255,.3)"></div></div>
+  <div class="ms-leg">C:78% D:22%</div></div><div class="mini-stack"><div class="ms-title">RSIS3</div>
+  <div class="ms-bar"><div class="seg" style="width:91%;background:#ff8c00"></div><div class="seg" style="width:9%;background:rgba(255,140,0,.3)"></div></div>
+  <div class="ms-leg">C:91% D:9%</div></div><div class="mini-stack"><div class="ms-title">GOLF</div>
+  <div class="ms-bar"><div class="seg" style="width:67%;background:#eab308"></div><div class="seg" style="width:33%;background:rgba(234,179,8,.3)"></div></div>
+  <div class="ms-leg">C:67% D:33%</div></div><div class="mini-stack"><div class="ms-title">MyRSIKB</div>
+  <div class="ms-bar"><div class="seg" style="width:58%;background:#22c55e"></div><div class="seg" style="width:42%;background:rgba(34,197,94,.3)"></div></div>
+  <div class="ms-leg">C:58% D:42%</div></div></div>
 </div></div>
 </div>
 <div class="card">
