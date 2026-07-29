@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>COSMOS Control — RSIS3 + MyKB</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0f1118;color:#e0e0e0;min-height:100vh;padding:.6rem}
+.container{width:100%}
+h1{font-size:1.3rem;font-weight:700;margin-bottom:.05rem;background:linear-gradient(90deg,#7b2fff,#ff8c00,#00ff9f);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.subtitle{color:#666;font-size:.65rem;margin-bottom:.4rem}
+.back{display:inline-block;padding:3px 12px;border-radius:8px;border:1px solid rgba(255,255,255,.1);font-size:.7rem;margin-bottom:.4rem;color:#888;text-decoration:none}
+.back:hover{border-color:rgba(123,47,255,.3)}
+
+.layout{display:flex;gap:.5rem;min-height:60vh}
+.layout-sidebar{width:300px;min-width:220px;flex-shrink:0}
+.layout-main{flex:1}
+.layout-right{width:320px;min-width:250px;flex-shrink:0}
+
+.card{background:#161822;border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:.5rem;margin-bottom:.5rem}
+.card-hdr{font-size:.65rem;font-weight:600;color:#ccc;margin-bottom:.3rem;display:flex;align-items:center;gap:.3rem}
+.card-hdr .badge{font-size:.45rem;padding:1px 6px;border-radius:6px;font-weight:600;margin-left:auto}
+
+/* RSIS3 Status panel */
+.status-row{display:flex;align-items:center;gap:.3rem;padding:.15rem 0;font-size:.6rem;border-bottom:1px solid rgba(255,255,255,.04)}
+.status-row:last-child{border:0}
+.status-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.status-dot.green{background:#00ff9f}
+.status-dot.red{background:#ef4444}
+.status-dot.yellow{background:#eab308}
+.status-lbl{color:#888;width:70px;flex-shrink:0}
+.status-val{color:#ccc;flex:1}
+.ctrl-btn{padding:3px 12px;border-radius:6px;font-size:.6rem;font-weight:600;cursor:pointer;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:#aaa;transition:all .15s}
+.ctrl-btn:hover{border-color:rgba(123,47,255,.3);color:#ccc;background:rgba(123,47,255,.08)}
+.ctrl-btn.primary{background:rgba(123,47,255,.15);border-color:rgba(123,47,255,.3);color:#a855f7}
+.ctrl-btn.primary:hover{background:rgba(123,47,255,.25);color:#c084fc}
+.ctrl-btn.danger{background:rgba(239,68,68,.1);border-color:rgba(239,68,68,.2);color:#ef4444}
+.ctrl-btn.danger:hover{background:rgba(239,68,68,.2)}
+.ctrl-btn:disabled{opacity:.3;cursor:not-allowed}
+
+.conn-bar{display:flex;gap:.3rem;align-items:center;margin-bottom:.3rem;font-size:.6rem;color:#888}
+.conn-input{flex:1;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:6px;padding:.2rem .4rem;font-size:.6rem;color:#ccc;outline:none;font-family:monospace}
+.conn-input:focus{border-color:rgba(123,47,255,.3)}
+
+/* MyKB tree mini */
+.mytree-body{max-height:40vh;overflow-y:auto;font-size:.6rem}
+.mytree-body::-webkit-scrollbar{width:3px}
+.mytree-body::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);border-radius:4px}
+.mt-row{display:flex;align-items:center;gap:.2rem;padding:.12rem .3rem;cursor:pointer;transition:all .08s;border-left:2px solid transparent}
+.mt-row:hover{background:rgba(123,47,255,.05);border-left-color:rgba(123,47,255,.25)}
+.mt-row .mt-arrow{width:.7rem;font-size:.4rem;color:#555;flex-shrink:0;transition:transform .1s}
+.mt-row .mt-arrow.open{transform:rotate(90deg)}
+.mt-row .mt-icon{font-size:.5rem;width:.7rem;text-align:center;flex-shrink:0}
+.mt-row .mt-name{color:#ccc;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mt-row .mt-count{color:#555;font-size:.4rem;flex-shrink:0}
+.mt-children{display:none}
+.mt-children.open{display:block}
+.my-search{width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:6px;padding:.2rem .35rem;font-size:.6rem;color:#ccc;outline:none;font-family:inherit;margin-bottom:.2rem}
+.my-search:focus{border-color:rgba(123,47,255,.3)}
+
+/* Content panel */
+.cp-header{font-size:.6rem;font-weight:600;color:#a855f7;margin-bottom:.3rem}
+.cp-body{font-size:.6rem;color:#ccc;line-height:1.5;max-height:50vh;overflow-y:auto;white-space:pre-wrap;word-break:break-word}
+.cp-body pre{background:rgba(0,0,0,.3);padding:.3rem;border-radius:4px;overflow-x:auto;font-size:.55rem;margin:.15rem 0}
+.cp-body code{background:rgba(0,0,0,.3);padding:1px 4px;border-radius:3px;font-size:.55rem}
+
+/* Stats mini grid */
+.stat-mini{display:grid;grid-template-columns:1fr 1fr;gap:.25rem;margin-bottom:.25rem}
+.stat-cell{text-align:center;background:rgba(255,255,255,.03);border-radius:6px;padding:.3rem .15rem}
+.stat-num{font-size:.9rem;font-weight:800;display:block}
+.stat-lbl{font-size:.45rem;color:#777;display:block}
+
+.log-area{background:rgba(0,0,0,.2);border-radius:6px;padding:.3rem;font-size:.5rem;color:#888;max-height:15vh;overflow-y:auto;font-family:monospace;line-height:1.4;margin-top:.2rem}
+
+@media(max-width:800px){.layout{flex-direction:column}.layout-sidebar,.layout-right{width:100%}}
+</style>
+</head>
+<body>
+<div class="container">
+<a href="index.html" class="back">← Hub</a>
+<h1>🌌 COSMOS Control</h1>
+<div class="subtitle">RSIS3 API control + MyKB file navigation</div>
+
+<div class="layout">
+  <!-- LEFT: RSIS3 Control Panel -->
+  <div class="layout-sidebar">
+    <div class="card">
+      <div class="card-hdr">🔌 RSIS3 Connection <span class="badge" id="connBadge" style="background:rgba(239,68,68,.15);color:#ef4444">Disconnected</span></div>
+      <div class="conn-bar">
+        <span>Host</span>
+        <input class="conn-input" id="apiHost" value="http://127.0.0.1:8765" spellcheck="false">
+        <button class="ctrl-btn primary" id="connBtn" onclick="connectRSIS()">Connect</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-hdr">📊 RSIS3 Status</div>
+      <div id="rsisStatus">
+        <div class="status-row"><span class="status-dot red"></span><span class="status-lbl">Server</span><span class="status-val" id="svrStatus">Not connected</span></div>
+        <div class="status-row"><span class="status-dot red"></span><span class="status-lbl">Version</span><span class="status-val" id="svrVersion">—</span></div>
+        <div class="status-row"><span class="status-dot red"></span><span class="status-lbl">Uptime</span><span class="status-val" id="svrUptime">—</span></div>
+        <div class="status-row"><span class="status-dot red"></span><span class="status-lbl">Cycles</span><span class="status-val" id="svrCycles">—</span></div>
+        <div class="status-row"><span class="status-dot red"></span><span class="status-lbl">Errors</span><span class="status-val" id="svrErrors">—</span></div>
+        <div class="status-row"><span class="status-dot red"></span><span class="status-lbl">Scheduler</span><span class="status-val" id="svrScheduler">—</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-hdr">🎮 Controls</div>
+      <div style="display:flex;gap:.3rem;flex-wrap:wrap;margin-bottom:.3rem">
+        <button class="ctrl-btn primary" onclick="startPulse()">▶ Start Pulse</button>
+        <button class="ctrl-btn" onclick="createCycle()">+ New Cycle</button>
+        <button class="ctrl-btn" onclick="refreshStatus()">↻ Refresh</button>
+      </div>
+      <div style="display:flex;gap:.3rem;flex-wrap:wrap">
+        <button class="ctrl-btn" onclick="viewCycles()">📋 Cycles</button>
+        <button class="ctrl-btn" onclick="viewErrors()">⚠ Errors</button>
+        <button class="ctrl-btn" onclick="viewTelemetry()">📈 Telemetry</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-hdr">📋 Log</div>
+      <div class="log-area" id="logArea">Ready. Connect to RSIS3 to begin.<br></div>
+    </div>
+  </div>
+
+  <!-- MAIN: MyKB Explorer + Content -->
+  <div class="layout-main">
+    <div class="card">
+      <div class="card-hdr">📂 MyKB Wiki <span class="badge" style="background:rgba(168,85,247,.15);color:#a855f7" id="kbStats">⏳</span></div>
+      <input class="my-search" id="kbSearch" type="text" placeholder="Search domains, files..." oninput="filterKB(this.value)">
+      <div class="mytree-body" id="kbTreeBody">
+        <div style="padding:.5rem;text-align:center;color:#555;font-size:.6rem">⏳ Loading wiki-tree.json...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT: Content / Details -->
+  <div class="layout-right">
+    <div class="card">
+      <div class="card-hdr" id="contentHeader">📄 Content</div>
+      <div class="cp-body" id="contentBody">
+        <div style="color:#555;text-align:center;padding:1rem;font-size:.6rem">Select a file from the wiki tree to view content, or connect to RSIS3 for API data.</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-hdr">📊 API Results</div>
+      <div class="cp-body" id="apiResults" style="font-size:.5rem;color:#888">
+        <div style="color:#555;text-align:center;padding:.5rem;font-size:.6rem">API responses appear here.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// === STATE ===
+let API = '';
+let connected = false;
+let wikiTree = null;
+let allDomains = [];
+
+// === RSIS3 Connection ===
+async function connectRSIS() {
+  const host = document.getElementById('apiHost').value.trim();
+  API = host.replace(/\/+$/, '');
+  log('Connecting to ' + API + '...');
+  try {
+    const resp = await fetch(API + '/api/info');
+    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+    const data = await resp.json();
+    connected = true;
+    document.getElementById('connBadge').textContent = 'Connected';
+    document.getElementById('connBadge').style.background = 'rgba(0,255,159,.15)';
+    document.getElementById('connBadge').style.color = '#00ff9f';
+    document.getElementById('svrStatus').innerHTML = '<span class="status-dot green"></span>';
+    document.getElementById('svrStatus').textContent = ' Online';
+    document.getElementById('svrVersion').textContent = data.version || '—';
+    document.getElementById('svrUptime').textContent = data.uptime ? Math.floor(data.uptime/60)+'m' : '—';
+    document.getElementById('svrCycles').textContent = data.cycle_count || data.total_cycles || '—';
+    document.getElementById('svrErrors').textContent = data.error_count || data.errors || '—';
+    log('✅ Connected to RSIS3 v' + (data.version||'?'));
+    refreshStatus();
+  } catch(e) {
+    connected = false;
+    log('❌ Connection failed: ' + e.message);
+    document.getElementById('connBadge').textContent = 'Disconnected';
+    document.getElementById('connBadge').style.background = 'rgba(239,68,68,.15)';
+    document.getElementById('connBadge').style.color = '#ef4444';
+  }
+}
+
+async function refreshStatus() {
+  if (!connected) { log('Not connected'); return; }
+  try {
+    // Get metrics
+    const mResp = await fetch(API + '/api/metrics');
+    if (mResp.ok) {
+      const m = await mResp.json();
+      document.getElementById('svrCycles').textContent = m.total_cycles || (m.cycles && m.cycles.length) || '—';
+      if (m.cycles) document.getElementById('svrCycles').textContent = m.cycles.length;
+    }
+    // Get scheduler status
+    const sResp = await fetch(API + '/api/scheduler/status');
+    if (sResp.ok) {
+      const s = await sResp.json();
+      document.getElementById('svrScheduler').textContent = s.running ? 'Running' : 'Idle';
+      document.getElementById('svrScheduler').style.color = s.running ? '#00ff9f' : '#eab308';
+    }
+    // Get errors count
+    const eResp = await fetch(API + '/api/errors?limit=1');
+    if (eResp.ok) {
+      const e = await eResp.json();
+      document.getElementById('svrErrors').textContent = e.total || e.length || '0';
+    }
+    log('↻ Status refreshed');
+  } catch(e) {
+    log('⚠ Refresh error: ' + e.message);
+  }
+}
+
+async function startPulse() {
+  if (!connected) { log('Not connected'); return; }
+  log('▶ Starting pulse cycle...');
+  try {
+    const resp = await fetch(API + '/api/pulse/start', {method:'POST', headers:{'Content-Type':'application/json'}, body:'{}'});
+    const data = await resp.json();
+    log('Pulse result: ' + JSON.stringify(data).slice(0,200));
+    document.getElementById('apiResults').innerHTML = '<pre>' + escape(JSON.stringify(data, null, 2)) + '</pre>';
+  } catch(e) {
+    log('⚠ Pulse error: ' + e.message);
+  }
+}
+
+async function createCycle() {
+  if (!connected) { log('Not connected'); return; }
+  log('+ Creating cycle...');
+  try {
+    const resp = await fetch(API + '/api/cycles', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({goal:'manual from cosmos-control'})});
+    const data = await resp.json();
+    log('Cycle created: ' + (data.cycle_id||JSON.stringify(data).slice(0,60)));
+  } catch(e) {
+    log('⚠ Cycle error: ' + e.message);
+  }
+}
+
+async function viewCycles() {
+  if (!connected) { log('Not connected'); return; }
+  log('📋 Fetching cycles...');
+  try {
+    const resp = await fetch(API + '/api/cycles?limit=10');
+    const data = await resp.json();
+    document.getElementById('apiResults').innerHTML = '<pre>' + escape(JSON.stringify(data, null, 2)) + '</pre>';
+  } catch(e) {
+    log('⚠ Error: ' + e.message);
+  }
+}
+
+async function viewErrors() {
+  if (!connected) { log('Not connected'); return; }
+  log('⚠ Fetching errors...');
+  try {
+    const resp = await fetch(API + '/api/errors?limit=10');
+    const data = await resp.json();
+    document.getElementById('apiResults').innerHTML = '<pre>' + escape(JSON.stringify(data, null, 2)) + '</pre>';
+  } catch(e) {
+    log('⚠ Error: ' + e.message);
+  }
+}
+
+async function viewTelemetry() {
+  if (!connected) { log('Not connected'); return; }
+  log('📈 Fetching telemetry...');
+  try {
+    const resp = await fetch(API + '/api/telemetry?limit=10');
+    const data = await resp.json();
+    document.getElementById('apiResults').innerHTML = '<pre>' + escape(JSON.stringify(data, null, 2)) + '</pre>';
+  } catch(e) {
+    log('⚠ Error: ' + e.message);
+  }
+}
+
+function log(msg) {
+  const el = document.getElementById('logArea');
+  el.innerHTML += new Date().toLocaleTimeString() + ' ' + msg + '<br>';
+  el.scrollTop = el.scrollHeight;
+}
+
+// === MYKB FILE TREE ===
+async function initKB() {
+  try {
+    const resp = await fetch('wiki-tree.json');
+    wikiTree = await resp.json();
+    allDomains = (wikiTree.children || []).filter(n => n.type === 'dir');
+    document.getElementById('kbStats').textContent = allDomains.length + ' domains · ' + (wikiTree.stats?.total_files||'—') + ' files';
+    renderKB();
+  } catch(e) {
+    document.getElementById('kbTreeBody').innerHTML = '<div style="padding:.5rem;text-align:center;color:#ef4444;font-size:.6rem">❌ Failed to load: ' + e.message + '</div>';
+  }
+}
+
+function renderKB(filter) {
+  const body = document.getElementById('kbTreeBody');
+  body.innerHTML = '';
+  const sorted = allDomains.sort((a,b) => (b.count||0) - (a.count||0));
+  sorted.forEach(d => {
+    if (filter && !matchesFilter(d, filter)) return;
+    body.appendChild(makeKBNode(d, filter, 0));
+  });
+}
+
+function makeKBNode(entry, filter, depth) {
+  const node = document.createElement('div');
+  const row = document.createElement('div');
+  row.className = 'mt-row';
+  const indent = depth * .3;
+  
+  if (entry.type === 'dir') {
+    row.innerHTML = '<span class="mt-arrow">▶</span><span class="mt-icon">📁</span><span class="mt-name" title="'+escape(entry.name)+'">'+escape(entry.name)+'</span><span class="mt-count">'+ (entry.count||0) +'</span>';
+    row.style.paddingLeft = (indent + .3) + 'rem';
+    const children = document.createElement('div');
+    children.className = 'mt-children';
+    let open = false;
+    
+    row.addEventListener('click', (ev) => {
+      ev.stopPropagation();
+      open = !open;
+      row.querySelector('.mt-arrow').classList.toggle('open');
+      children.classList.toggle('open');
+      if (open && children.children.length === 0) {
+        (entry.children || []).forEach(ch => children.appendChild(makeKBNode(ch, filter, depth + 1)));
+      }
+      showDirContent(entry);
+    });
+    
+    if (filter) {
+      children.classList.add('open');
+      row.querySelector('.mt-arrow').classList.add('open');
+      (entry.children || []).forEach(ch => children.appendChild(makeKBNode(ch, filter, depth + 1)));
+    }
+    
+    node.appendChild(row);
+    node.appendChild(children);
+  } else {
+    row.innerHTML = '<span class="mt-arrow" style="visibility:hidden">▶</span><span class="mt-icon">📄</span><span class="mt-name" title="'+escape(entry.title||entry.name)+'">'+escape(entry.title||entry.name)+'</span>';
+    row.style.paddingLeft = (indent + .75) + 'rem';
+    row.addEventListener('click', (ev) => {
+      ev.stopPropagation();
+      loadFileContent(entry);
+    });
+    node.appendChild(row);
+  }
+  return node;
+}
+
+function showDirContent(dir) {
+  const header = document.getElementById('contentHeader');
+  const body = document.getElementById('contentBody');
+  header.innerHTML = '📁 ' + escape(dir.name) + ' <span style="font-weight:400;color:#555;font-size:.5rem">' + (dir.count||0) + ' items</span>';
+  
+  let html = '';
+  const dirs = (dir.children||[]).filter(c => c.type === 'dir');
+  const files = (dir.children||[]).filter(c => c.type === 'file');
+  
+  if (dirs.length > 0) {
+    html += '<div style="font-size:.5rem;color:#888;margin:.15rem 0;text-transform:uppercase;letter-spacing:.3px">Subcategories</div>';
+    dirs.forEach(d => {
+      html += '<div style="padding:.1rem .2rem;font-size:.55rem;color:#aaa">📂 ' + escape(d.name) + ' <span style="color:#555">('+ (d.count||0) +')</span></div>';
+    });
+  }
+  if (files.length > 0) {
+    html += '<div style="font-size:.5rem;color:#888;margin:.15rem 0;text-transform:uppercase;letter-spacing:.3px">Files</div>';
+    files.forEach(f => {
+      const size = f.size ? formatKB(f.size) : '';
+      html += '<div style="padding:.1rem .2rem;font-size:.55rem;color:#999;cursor:pointer" onclick="loadFileContent(treeFileRef[\''+escape(f.name)+'\'])">📄 ' + escape(f.title||f.name) + ' <span style="color:#555">' + size + '</span></div>';
+    });
+  }
+  if (!dirs.length && !files.length) html += '<div style="font-size:.55rem;color:#555;padding:.3rem;text-align:center">Empty</div>';
+  body.innerHTML = html;
+}
+
+async function loadFileContent(entry) {
+  const header = document.getElementById('contentHeader');
+  const body = document.getElementById('contentBody');
+  header.innerHTML = '📄 ' + escape(entry.title||entry.name) + ' <span style="font-weight:400;color:#555;font-size:.5rem">' + escape(entry.path||'') + '</span>';
+  body.innerHTML = '<div style="color:#888;font-size:.6rem">⏳ Loading...</div>';
+  
+  // Show preview first
+  let text = entry.preview || '';
+  body.innerHTML = '<div class="cp-body">' + renderMD(text || '*Empty*') + '</div>';
+  
+  // Try fetch full content
+  try {
+    const resp = await fetch('wiki-content/' + (entry.path || ''));
+    if (resp.ok) {
+      text = await resp.text();
+      body.innerHTML = '<div class="cp-body">' + renderMD(text) + '</div>';
+    }
+  } catch(e) {}
+}
+
+function renderMD(t) {
+  if (!t) return '<span style="color:#555">—</span>';
+  let html = '';
+  // Frontmatter
+  t = t.replace(/^---\n[\s\S]*?\n(?:---|\.\.\.)\n?/, m => { html += '<div style="font-size:.45rem;color:#444;background:rgba(255,255,255,.02);padding:.2rem;border-radius:4px;margin-bottom:.2rem">' + escape(m) + '</div>'; return ''; });
+  // Headers
+  t = t.replace(/^### (.+)$/gm, '<br><b style="color:#a855f7">$1</b>');
+  t = t.replace(/^## (.+)$/gm, '<br><b style="color:#7b2fff">$1</b>');
+  t = t.replace(/^# (.+)$/gm, '<br><b style="color:#fff">$1</b>');
+  // Bold/italic
+  t = t.replace(/\*\*(.+?)\*\*/g, '<b>$1</b>');
+  t = t.replace(/\*(.+?)\*/g, '<i>$1</i>');
+  // Code blocks
+  t = t.replace(/```(\w*)\n([\s\S]*?)```/g, (m, lang, code) => '<pre>'+escape(code)+'</pre>');
+  t = t.replace(/`([^`]+)`/g, '<code>$1</code>');
+  // Lists
+  t = t.replace(/^- (.+)$/gm, '• $1');
+  t = t.replace(/\n\n/g, '<br><br>');
+  t = t.replace(/\n/g, '<br>');
+  return html + t;
+}
+
+function matchesFilter(node, q) {
+  if (!q) return true;
+  q = q.toLowerCase();
+  if ((node.name||'').toLowerCase().includes(q)) return true;
+  if ((node.title||'').toLowerCase().includes(q)) return true;
+  if ((node.doc_type||'').toLowerCase().includes(q)) return true;
+  if ((node.path||'').toLowerCase().includes(q)) return true;
+  if (node.children) return node.children.some(c => matchesFilter(c, q));
+  return false;
+}
+
+function filterKB(q) { renderKB(q.toLowerCase()); }
+
+function escape(s) { if (!s) return ''; return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function formatKB(b) { if (!b) return ''; if (b<1024) return b+'B'; if (b<1048576) return (b/1024).toFixed(1)+'KB'; return (b/1048576).toFixed(1)+'MB'; }
+
+// File reference lookup for dir index clicks
+var treeFileRef = {};
+
+function buildFileRefs(entries) {
+  entries.forEach(e => {
+    if (e.type === 'file' && e.name) treeFileRef[e.name] = e;
+    if (e.children) buildFileRefs(e.children);
+  });
+}
+
+// === INIT ===
+document.addEventListener('DOMContentLoaded', () => {
+  initKB();
+  // Build file refs when data loads
+  const origRender = renderKB;
+  renderKB = function(f) {
+    if (wikiTree) buildFileRefs(wikiTree.children || []);
+    origRender(f);
+  };
+});
+</script>
+</body>
+</html>
