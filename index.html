@@ -7,7 +7,7 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{width:100%;max-width:100%;overflow-x:hidden}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0f1118;color:#e0e0e0;padding:.6rem}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:#0f1118;color:#e0e0e0;padding:.6rem}
 .container{width:100%}
 h1{font-size:1.3rem;font-weight:700;margin-bottom:.05rem;background:linear-gradient(90deg,#7b2fff,#ff8c00,#00ff9f);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .subtitle{color:#666;font-size:.65rem;margin-bottom:.3rem}
@@ -15,7 +15,7 @@ h1{font-size:1.3rem;font-weight:700;margin-bottom:.05rem;background:linear-gradi
 .filter-btn{padding:3px 16px;border-radius:12px;font-size:.7rem;font-weight:600;cursor:pointer;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:#888;transition:all .2s;text-decoration:none;display:inline-flex;align-items:center;gap:.3rem}
 .filter-btn:hover{border-color:rgba(123,47,255,.3);color:#ccc}
 .filter-btn.active{background:rgba(123,47,255,.15);border-color:#7b2fff;color:#a855f7}
-.card{background:#161822;border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:.6rem;width:100%}
+.card{background:#161822;border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:.6rem;width:100%;margin-bottom:.5rem}
 .card-header{font-size:.7rem;font-weight:600;color:#ccc;margin-bottom:.3rem;display:flex;align-items:center;gap:.35rem;flex-wrap:wrap}
 .card-header .icon{font-size:.8rem}
 .hdr-sub{font-weight:400;font-size:.6rem;color:#666;margin-left:.4rem}
@@ -31,10 +31,10 @@ h1{font-size:1.3rem;font-weight:700;margin-bottom:.05rem;background:linear-gradi
 .stacked-legend .leg-item{display:flex;align-items:center;gap:.2rem;color:#999}
 .stacked-legend .leg-swatch{width:7px;height:7px;border-radius:2px;flex-shrink:0}
 .comp-row{display:flex;align-items:center;gap:.25rem;margin-bottom:.15rem;font-size:.6rem}
-.comp-row .lbl{width:45px;text-align:right;color:#888;flex-shrink:0}
+.comp-row .lbl{width:50px;text-align:right;color:#888;flex-shrink:0}
 .comp-row .track{flex:1;height:8px;background:rgba(255,255,255,.04);border-radius:4px;overflow:hidden}
 .comp-row .fill{height:100%;border-radius:4px;transition:width .5s}
-.comp-row .pct{color:#555;font-size:.55rem;width:32px;text-align:right}
+.comp-row .pct{color:#555;font-size:.55rem;width:36px;text-align:right}
 .donut-wrap{display:flex;align-items:center;gap:.5rem}
 .donut{width:90px;height:90px;border-radius:50%;flex-shrink:0;overflow:hidden}
 .donut-legend{font-size:.55rem;flex:1;min-width:0}
@@ -46,16 +46,22 @@ h1{font-size:1.3rem;font-weight:700;margin-bottom:.05rem;background:linear-gradi
 .stat-cell{text-align:center;background:rgba(255,255,255,.03);border-radius:8px;padding:.5rem .2rem}
 .stat-big{font-size:1.1rem;font-weight:800;color:#e0e0e0;display:block}
 .stat-sm{font-size:.55rem;color:#777;display:block;margin-top:1px}
-.donut-row{display:flex;gap:.5rem;width:100%}
+.donut-row{display:flex;gap:.5rem;width:100%;margin-bottom:.5rem}
 .donut-row .donut-card{flex:1 1 calc(50% - .25rem);background:#161822;border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:.6rem;min-width:280px}
 .footer{text-align:center;color:#222;font-size:.5rem;margin-top:.5rem}
 .module-label{font-size:.8rem;font-weight:700;color:#ccc;margin:.8rem 0 .4rem 0;padding-bottom:.2rem;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:.3rem}
 .module-label .icon{font-size:.9rem}
 .chart-view.hidden{display:none!important}
-.stat-flex{display:flex;flex-wrap:wrap;gap:.5rem}
+.stat-flex{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:.5rem}
 .stat-card{flex:1 1 calc(50% - .25rem);background:#161822;border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:.6rem;min-width:280px}
 .proj-grid{display:grid;grid-template-columns:1fr 1fr;gap:.35rem}
 .proj-card{background:#161822;border:1px solid rgba(255,255,255,.06);border-radius:8px;padding:.4rem .5rem;text-decoration:none;color:inherit;transition:border-color .2s;cursor:pointer;display:block}
+.mini-stack-row{display:flex;flex-wrap:wrap;gap:.5rem;padding:.2rem 0}
+.mini-stack{flex:1 1 calc(33% - .35rem);min-width:160px;background:rgba(255,255,255,.02);border-radius:6px;padding:.3rem}
+.mini-stack .ms-title{font-size:.55rem;color:#999;margin-bottom:2px}
+.mini-stack .ms-bar{display:flex;height:16px;border-radius:4px;overflow:hidden}
+.mini-stack .ms-bar .seg{height:100%;min-width:2px}
+.mini-stack .ms-leg{font-size:.5rem;color:#777;margin-top:1px}
 @media(max-width:500px){.proj-grid{grid-template-columns:1fr}}
 </style>
 </head>
@@ -70,43 +76,34 @@ h1{font-size:1.3rem;font-weight:700;margin-bottom:.05rem;background:linear-gradi
 <div class="subtitle">All projects · comprehensive overview</div>
 <!-- MODULE: COSMOS Ecosystem & Project Families -->
 <div class="module-label"><span class="icon">🌌</span> COSMOS Ecosystem <span class="hdr-sub">v0.1.0 · <a href="https://github.com/gemquota/cosmos" style="color:#888;text-decoration:none">gemquota/cosmos</a></span></div>
-<div class="card" style="background:linear-gradient(135deg,#161822 0%,#1a1030 50%,#161822 100%);border-color:rgba(123,47,255,.15);margin-bottom:.5rem">
+<div class="card" style="background:linear-gradient(135deg,#161822 0%,#1a1030 50%,#161822 100%);border-color:rgba(123,47,255,.15)">
 <div style="display:flex;align-items:center;gap:.6rem;margin-bottom:.6rem;flex-wrap:wrap">
 <span style="font-size:1.5rem">🌌</span>
 <div>
 <div style="font-size:.9rem;font-weight:700;color:#e0e0e0">Comprehensive Ontological System for Meta-cognitive Orchestration &amp; Synthesis</div>
 <div style="font-size:.6rem;color:#666;margin-top:1px">
 <span style="color:#a855f7">4 components</span> · <span style="color:#3b82f6">26.7k files</span> · <span style="color:#00ff9f">2.1M LOC</span> · <span style="color:#ffa500">~1.1G disk</span>
-</div>
-</div>
+</div></div>
 <div style="margin-left:auto;display:flex;gap:.3rem;flex-wrap:wrap">
 <a href="https://gemquota.github.io/cosmos/" target="_blank" style="padding:3px 12px;border-radius:8px;font-size:.6rem;font-weight:600;border:1px solid rgba(123,47,255,.3);color:#a855f7;text-decoration:none;background:rgba(123,47,255,.08)">🌌 Cosmos</a>
 <a href="https://github.com/gemquota/cosmos" target="_blank" style="padding:3px 12px;border-radius:8px;font-size:.6rem;font-weight:600;border:1px solid rgba(255,255,255,.1);color:#888;text-decoration:none">GitHub</a>
-</div>
-</div>
+</div></div></div>
 <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:.4rem;margin-bottom:.5rem">
 <a href="mykb.html" style="display:block;background:rgba(168,85,247,.08);border:1px solid rgba(168,85,247,.15);border-radius:8px;padding:.4rem .5rem;text-decoration:none;transition:all .15s">
 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.15rem"><span style="font-weight:700;font-size:.7rem;color:#a855f7">📚 myKB</span><span style="font-size:.5rem;padding:1px 8px;border-radius:8px;background:rgba(0,255,159,.15);color:#00ff9f;border:1px solid rgba(0,255,159,.25);font-weight:600">LIVE</span></div>
-<div style="font-size:.55rem;color:#999;margin-bottom:.1rem">Knowledge OS · 2,442 entities · 3,351 files</div>
-<div style="font-size:.5rem;color:#666">Memory layer. Obsidian wiki with search, graph, Git history</div></a>
+<div style="font-size:.55rem;color:#999;margin-bottom:.1rem">Knowledge OS · 2,442 entities · 3,351 files</div><div style="font-size:.5rem;color:#666">Memory layer. Obsidian wiki with search, graph, Git history</div></a>
 <a href="myrsikb.html" style="display:block;background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.15);border-radius:8px;padding:.4rem .5rem;text-decoration:none;transition:all .15s">
 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.15rem"><span style="font-weight:700;font-size:.7rem;color:#22c55e">🧠 myRSIKB</span><span style="font-size:.5rem;padding:1px 8px;border-radius:8px;background:rgba(96,165,250,.15);color:#60a5fa;border:1px solid rgba(96,165,250,.25);font-weight:600">DEV</span></div>
-<div style="font-size:.55rem;color:#999;margin-bottom:.1rem">Memory Bridge · 15 entities · 44 files</div>
-<div style="font-size:.5rem;color:#666">Interface layer. Audit reports, memory consolidation pipelines</div></a>
+<div style="font-size:.55rem;color:#999;margin-bottom:.1rem">Memory Bridge · 15 entities · 44 files</div><div style="font-size:.5rem;color:#666">Interface layer. Audit reports, memory consolidation pipelines</div></a>
 <a href="rsis3.html" style="display:block;background:rgba(255,140,0,.08);border:1px solid rgba(255,140,0,.15);border-radius:8px;padding:.4rem .5rem;text-decoration:none;transition:all .15s">
 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.15rem"><span style="font-weight:700;font-size:.7rem;color:#ff8c00">🔄 RSIS3</span><span style="font-size:.5rem;padding:1px 8px;border-radius:8px;background:rgba(96,165,250,.15);color:#60a5fa;border:1px solid rgba(96,165,250,.25);font-weight:600">DEV</span></div>
-<div style="font-size:.55rem;color:#999;margin-bottom:.1rem">Cognitive Engine · 180 entities · 627 files</div>
-<div style="font-size:.5rem;color:#666">Mind layer. 3-loop RSI: L1 execution, L2 improvement, L3 evolution</div></a>
+<div style="font-size:.55rem;color:#999;margin-bottom:.1rem">Cognitive Engine · 180 entities · 627 files</div><div style="font-size:.5rem;color:#666">Mind layer. 3-loop RSI: L1 execution, L2 improvement, L3 evolution</div></a>
 <a href="space.html" style="display:block;background:rgba(59,130,246,.08);border:1px solid rgba(59,130,246,.15);border-radius:8px;padding:.4rem .5rem;text-decoration:none;transition:all .15s">
 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.15rem"><span style="font-weight:700;font-size:.7rem;color:#3b82f6">🚀 SPACE</span><span style="font-size:.5rem;padding:1px 8px;border-radius:8px;background:rgba(0,255,159,.15);color:#00ff9f;border:1px solid rgba(0,255,159,.25);font-weight:600">LIVE</span></div>
-<div style="font-size:.55rem;color:#999;margin-bottom:.1rem">Prompt Engine · 420 entities · 9,901 files</div>
-<div style="font-size:.5rem;color:#666">Tool layer. 326-probe spec generation, TypeScript + Node</div></a>
+<div style="font-size:.55rem;color:#999;margin-bottom:.1rem">Prompt Engine · 420 entities · 9,901 files</div><div style="font-size:.5rem;color:#666">Tool layer. 326-probe spec generation, TypeScript + Node</div></a>
 </div>
 <div style="display:flex;align-items:center;gap:.3rem;font-size:.6rem;color:#666;padding-top:.3rem;border-top:1px solid rgba(255,255,255,.04)">
-<span>🔗 Active Triad:</span>
-<span style="color:#ff8c00;font-weight:600">rsis3</span><span style="color:#555">+</span>
-<span style="color:#a855f7;font-weight:600">mykb</span><span style="color:#555">+</span>
-<span style="color:#22c55e;font-weight:600">myrsikb</span>
+<span>🔗 Active Triad:</span><span style="color:#ff8c00;font-weight:600">rsis3</span><span style="color:#555">+</span><span style="color:#a855f7;font-weight:600">mykb</span><span style="color:#555">+</span><span style="color:#22c55e;font-weight:600">myrsikb</span>
 <span style="margin-left:auto;color:#555">Updated 2026-07-29</span>
 </div></div>
 <div class="module-label"><span class="icon">🗂️</span> Other Projects</div>
@@ -114,7 +111,7 @@ h1{font-size:1.3rem;font-weight:700;margin-bottom:.05rem;background:linear-gradi
 <a href="vepa.html" class="proj-card" style="border-left:3px solid #ef4444">
 <div class="p-row"><span style="font-weight:700;font-size:.8rem;color:#ef4444">VEPA2</span>
 <span class="p-badge beta" style="font-size:.5rem;padding:1px 8px;border-radius:8px;background:rgba(255,165,0,.15);color:#ffa500;border:1px solid rgba(255,165,0,.25);font-weight:600;letter-spacing:.3px">BETA</span></div>
-<div style="font-size:.6rem;color:#777;margin:.1rem 0 .2rem">Multi-agent orchestration — 680 agents, delegation, batch processing, overseer supervision</div>
+<div style="font-size:.6rem;color:#777;margin:.1rem 0 .2rem">Multi-agent orchestration — 680 agents, delegation, batch processing</div>
 <div style="display:flex;flex-wrap:wrap;gap:.2rem">
 <span style="font-size:.5rem;padding:1px 6px;border-radius:8px;background:rgba(255,255,255,.06);color:#999;border:1px solid rgba(255,255,255,.04)">TS</span>
 <span style="font-size:.5rem;padding:1px 6px;border-radius:8px;background:rgba(255,255,255,.06);color:#999;border:1px solid rgba(255,255,255,.04)">Agents</span>
@@ -122,7 +119,7 @@ h1{font-size:1.3rem;font-weight:700;margin-bottom:.05rem;background:linear-gradi
 <a href="hmxot.html" class="proj-card" style="border-left:3px solid #00d4ff">
 <div class="p-row"><span style="font-weight:700;font-size:.8rem;color:#00d4ff">HMXOT</span>
 <span class="p-badge stable" style="font-size:.5rem;padding:1px 8px;border-radius:8px;background:rgba(168,85,247,.15);color:#a855f7;border:1px solid rgba(168,85,247,.25);font-weight:600;letter-spacing:.3px">STABLE</span></div>
-<div style="font-size:.6rem;color:#777;margin:.1rem 0 .2rem">Org toolkit — 320 entities across tools, templates, and workflow automation</div>
+<div style="font-size:.6rem;color:#777;margin:.1rem 0 .2rem">Org toolkit — 320 entities across tools, templates, automation</div>
 <div style="display:flex;flex-wrap:wrap;gap:.2rem">
 <span style="font-size:.5rem;padding:1px 6px;border-radius:8px;background:rgba(255,255,255,.06);color:#999;border:1px solid rgba(255,255,255,.04)">TS</span>
 <span style="font-size:.5rem;padding:1px 6px;border-radius:8px;background:rgba(255,255,255,.06);color:#999;border:1px solid rgba(255,255,255,.04)">Auto</span>
@@ -130,42 +127,89 @@ h1{font-size:1.3rem;font-weight:700;margin-bottom:.05rem;background:linear-gradi
 <a href="golf.html" class="proj-card" style="border-left:3px solid #eab308">
 <div class="p-row"><span style="font-weight:700;font-size:.8rem;color:#eab308">GOLF</span>
 <span class="p-badge beta" style="font-size:.5rem;padding:1px 8px;border-radius:8px;background:rgba(255,165,0,.15);color:#ffa500;border:1px solid rgba(255,165,0,.25);font-weight:600;letter-spacing:.3px">BETA</span></div>
-<div style="font-size:.6rem;color:#777;margin:.1rem 0 .2rem">Game/simulation — 90 entities with physics, scoring, interactive gameplay</div>
+<div style="font-size:.6rem;color:#777;margin:.1rem 0 .2rem">Game/simulation — 90 entities with physics, scoring, gameplay</div>
 <div style="display:flex;flex-wrap:wrap;gap:.2rem">
 <span style="font-size:.5rem;padding:1px 6px;border-radius:8px;background:rgba(255,255,255,.06);color:#999;border:1px solid rgba(255,255,255,.04)">TS</span>
 <span style="font-size:.5rem;padding:1px 6px;border-radius:8px;background:rgba(255,255,255,.06);color:#999;border:1px solid rgba(255,255,255,.04)">Game</span>
+</div></a>
+<a href="ace.html" class="proj-card" style="border-left:3px solid #06b6d4">
+<div class="p-row"><span style="font-weight:700;font-size:.8rem;color:#06b6d4">ACE</span>
+<span class="p-badge dev" style="font-size:.5rem;padding:1px 8px;border-radius:8px;background:rgba(96,165,250,.15);color:#60a5fa;border:1px solid rgba(96,165,250,.25);font-weight:600;letter-spacing:.3px">DEV</span></div>
+<div style="font-size:.6rem;color:#777;margin:.1rem 0 .2rem">Agent framework — sovereign primes, capability sandbox, planning</div>
+<div style="display:flex;flex-wrap:wrap;gap:.2rem">
+<span style="font-size:.5rem;padding:1px 6px;border-radius:8px;background:rgba(255,255,255,.06);color:#999;border:1px solid rgba(255,255,255,.04)">Python</span>
+<span style="font-size:.5rem;padding:1px 6px;border-radius:8px;background:rgba(255,255,255,.06);color:#999;border:1px solid rgba(255,255,255,.04)">Agents</span>
+</div></a>
+<a href="slotrpg.html" class="proj-card" style="border-left:3px solid #f97316">
+<div class="p-row"><span style="font-weight:700;font-size:.8rem;color:#f97316">SLOTRPG</span>
+<span class="p-badge dev" style="font-size:.5rem;padding:1px 8px;border-radius:8px;background:rgba(96,165,250,.15);color:#60a5fa;border:1px solid rgba(96,165,250,.25);font-weight:600;letter-spacing:.3px">DEV</span></div>
+<div style="font-size:.6rem;color:#777;margin:.1rem 0 .2rem">Slot-based RPG engine — v3 classic, v7 modular with specs</div>
+<div style="display:flex;flex-wrap:wrap;gap:.2rem">
+<span style="font-size:.5rem;padding:1px 6px;border-radius:8px;background:rgba(255,255,255,.06);color:#999;border:1px solid rgba(255,255,255,.04)">TS</span>
+<span style="font-size:.5rem;padding:1px 6px;border-radius:8px;background:rgba(255,255,255,.06);color:#999;border:1px solid rgba(255,255,255,.04)">Game</span>
+</div></a>
+<a href="gog.html" class="proj-card" style="border-left:3px solid #84cc16">
+<div class="p-row"><span style="font-weight:700;font-size:.8rem;color:#84cc16">GOG</span>
+<span class="p-badge dev" style="font-size:.5rem;padding:1px 8px;border-radius:8px;background:rgba(96,165,250,.15);color:#60a5fa;border:1px solid rgba(96,165,250,.25);font-weight:600;letter-spacing:.3px">DEV</span></div>
+<div style="font-size:.6rem;color:#777;margin:.1rem 0 .2rem">Game-oriented generalist — docs, ideas, utilities</div>
+<div style="display:flex;flex-wrap:wrap;gap:.2rem">
+<span style="font-size:.5rem;padding:1px 6px;border-radius:8px;background:rgba(255,255,255,.06);color:#999;border:1px solid rgba(255,255,255,.04)">Python</span>
+<span style="font-size:.5rem;padding:1px 6px;border-radius:8px;background:rgba(255,255,255,.06);color:#999;border:1px solid rgba(255,255,255,.04)">Docs</span>
+</div></a>
+<a href="ww.html" class="proj-card" style="border-left:3px solid #ec4899">
+<div class="p-row"><span style="font-weight:700;font-size:.8rem;color:#ec4899">WW</span>
+<span class="p-badge dev" style="font-size:.5rem;padding:1px 8px;border-radius:8px;background:rgba(96,165,250,.15);color:#60a5fa;border:1px solid rgba(96,165,250,.25);font-weight:600;letter-spacing:.3px">DEV</span></div>
+<div style="font-size:.6rem;color:#777;margin:.1rem 0 .2rem">Web workspace — 157 files across tools and experiments</div>
+<div style="display:flex;flex-wrap:wrap;gap:.2rem">
+<span style="font-size:.5rem;padding:1px 6px;border-radius:8px;background:rgba(255,255,255,.06);color:#999;border:1px solid rgba(255,255,255,.04)">TS</span>
+<span style="font-size:.5rem;padding:1px 6px;border-radius:8px;background:rgba(255,255,255,.06);color:#999;border:1px solid rgba(255,255,255,.04)">Web</span>
+</div></a>
+<a href="aiscii.html" class="proj-card" style="border-left:3px solid #8b5cf6">
+<div class="p-row"><span style="font-weight:700;font-size:.8rem;color:#8b5cf6">AISCII</span>
+<span class="p-badge dev" style="font-size:.5rem;padding:1px 8px;border-radius:8px;background:rgba(96,165,250,.15);color:#60a5fa;border:1px solid rgba(96,165,250,.25);font-weight:600;letter-spacing:.3px">DEV</span></div>
+<div style="font-size:.6rem;color:#777;margin:.1rem 0 .2rem">ASCII art generation — v1 archived, v2 active</div>
+<div style="display:flex;flex-wrap:wrap;gap:.2rem">
+<span style="font-size:.5rem;padding:1px 6px;border-radius:8px;background:rgba(255,255,255,.06);color:#999;border:1px solid rgba(255,255,255,.04)">Python</span>
+<span style="font-size:.5rem;padding:1px 6px;border-radius:8px;background:rgba(255,255,255,.06);color:#999;border:1px solid rgba(255,255,255,.04)">Viz</span>
+</div></a>
+<a href="sim.html" class="proj-card" style="border-left:3px solid #14b8a6">
+<div class="p-row"><span style="font-weight:700;font-size:.8rem;color:#14b8a6">SIM</span>
+<span class="p-badge beta" style="font-size:.5rem;padding:1px 8px;border-radius:8px;background:rgba(255,165,0,.15);color:#ffa500;border:1px solid rgba(255,165,0,.25);font-weight:600;letter-spacing:.3px">BETA</span></div>
+<div style="font-size:.6rem;color:#777;margin:.1rem 0 .2rem">Simulation suite — grav, matter, phys, spa, gol, boids, more</div>
+<div style="display:flex;flex-wrap:wrap;gap:.2rem">
+<span style="font-size:.5rem;padding:1px 6px;border-radius:8px;background:rgba(255,255,255,.06);color:#999;border:1px solid rgba(255,255,255,.04)">Python</span>
+<span style="font-size:.5rem;padding:1px 6px;border-radius:8px;background:rgba(255,255,255,.06);color:#999;border:1px solid rgba(255,255,255,.04)">Sim</span>
 </div></a>
 </div></div>
 <!-- MODULE: Stats & Activity -->
 <div class="module-label"><span class="icon">📈</span> Stats &amp; Activity <span class="hdr-sub">small cards + donuts</span></div>
 <div class="stat-flex">
 <div class="stat-card"><div class="card-header"><span class="icon">📊</span> Git Activity</div><div class="stat-grid">
-<div class="stat-cell"><span class="stat-big" style="color:#00d4ff">17</span><span class="stat-sm">HMXOT commits</span></div>
-<div class="stat-cell"><span class="stat-big" style="color:#a855f7">10</span><span class="stat-sm">MyKB commits</span></div>
-<div class="stat-cell"><span class="stat-big" style="color:#3b82f6">6</span><span class="stat-sm">SPACE commits</span></div>
-<div class="stat-cell"><span class="stat-big" style="color:#ff8c00">5</span><span class="stat-sm">RSIS3 commits</span></div>
-<div class="stat-cell"><span class="stat-big" style="color:#ef4444">3</span><span class="stat-sm">VEPA2 commits</span></div>
-<div class="stat-cell"><span class="stat-big" style="color:#555">0</span><span class="stat-sm">GOLF / MyRSIKB</span></div>
+<div class="stat-cell"><span class="stat-big" style="color:#00d4ff">17</span><span class="stat-sm">HMXOT</span></div>
+<div class="stat-cell"><span class="stat-big" style="color:#a855f7">10</span><span class="stat-sm">MyKB</span></div>
+<div class="stat-cell"><span class="stat-big" style="color:#3b82f6">6</span><span class="stat-sm">SPACE</span></div>
+<div class="stat-cell"><span class="stat-big" style="color:#ff8c00">5</span><span class="stat-sm">RSIS3</span></div>
+<div class="stat-cell"><span class="stat-big" style="color:#ef4444">3</span><span class="stat-sm">VEPA2</span></div>
+<div class="stat-cell"><span class="stat-big" style="color:#555">0</span><span class="stat-sm">GOLF/MyRSIKB</span></div>
 </div></div>
 <div class="stat-card"><div class="card-header"><span class="icon">📈</span> Stats Snapshot</div><div class="stat-grid">
-<div class="stat-cell"><span class="stat-big" style="color:#a855f7">7</span><span class="stat-sm">Projects</span></div>
-<div class="stat-cell"><span class="stat-big" style="color:#3b82f6">26.7k</span><span class="stat-sm">Total Files</span></div>
-<div class="stat-cell"><span class="stat-big" style="color:#eab308">2.1M</span><span class="stat-sm">Lines of Code</span></div>
-<div class="stat-cell"><span class="stat-big" style="color:#00d4ff">4,147</span><span class="stat-sm">Entities</span></div>
-<div class="stat-cell"><span class="stat-big" style="color:#ff8c00">~1.1G</span><span class="stat-sm">Disk Usage</span></div>
+<div class="stat-cell"><span class="stat-big" style="color:#a855f7">15+</span><span class="stat-sm">Projects</span></div>
+<div class="stat-cell"><span class="stat-big" style="color:#3b82f6">~35k</span><span class="stat-sm">Total Files</span></div>
+<div class="stat-cell"><span class="stat-big" style="color:#eab308">~3M</span><span class="stat-sm">Lines of Code</span></div>
+<div class="stat-cell"><span class="stat-big" style="color:#00d4ff">~5k</span><span class="stat-sm">Entities</span></div>
+<div class="stat-cell"><span class="stat-big" style="color:#ff8c00">~2G</span><span class="stat-sm">Disk Usage</span></div>
 <div class="stat-cell"><span class="stat-big" style="color:#22c55e">3</span><span class="stat-sm">Active Today</span></div>
 </div></div>
 <div class="stat-card"><div class="card-header"><span class="icon">🧩</span> Entity Stats</div><div class="stat-grid">
-<div class="stat-cell"><span class="stat-big" style="color:#a855f7">2,442</span><span class="stat-sm">MyKB entities</span></div>
-<div class="stat-cell"><span class="stat-big" style="color:#ef4444">680</span><span class="stat-sm">VEPA2 agents</span></div>
-<div class="stat-cell"><span class="stat-big" style="color:#3b82f6">420</span><span class="stat-sm">SPACE specs</span></div>
-<div class="stat-cell"><span class="stat-big" style="color:#00d4ff">320</span><span class="stat-sm">HMXOT entities</span></div>
-<div class="stat-cell"><span class="stat-big" style="color:#ff8c00">180</span><span class="stat-sm">RSIS3 loops</span></div>
-<div class="stat-cell"><span class="stat-big" style="color:#eab308">90</span><span class="stat-sm">GOLF sims</span></div>
-<div class="stat-cell"><span class="stat-big" style="color:#22c55e">15</span><span class="stat-sm">MyRSIKB seeds</span></div>
-<div class="stat-cell"><span class="stat-big" style="color:#555">4,147</span><span class="stat-sm">Total entities</span></div>
+<div class="stat-cell"><span class="stat-big" style="color:#a855f7">2,442</span><span class="stat-sm">MyKB</span></div>
+<div class="stat-cell"><span class="stat-big" style="color:#ef4444">680</span><span class="stat-sm">VEPA2</span></div>
+<div class="stat-cell"><span class="stat-big" style="color:#3b82f6">420</span><span class="stat-sm">SPACE</span></div>
+<div class="stat-cell"><span class="stat-big" style="color:#00d4ff">320</span><span class="stat-sm">HMXOT</span></div>
+<div class="stat-cell"><span class="stat-big" style="color:#ff8c00">180</span><span class="stat-sm">RSIS3</span></div>
+<div class="stat-cell"><span class="stat-big" style="color:#eab308">90</span><span class="stat-sm">GOLF</span></div>
+<div class="stat-cell"><span class="stat-big" style="color:#22c55e">15</span><span class="stat-sm">MyRSIKB</span></div>
 </div></div>
-</div><!-- /stat-flex -->
+</div>
 <div class="donut-row">
 <div class="donut-card"><div class="card-header"><span class="icon">🥧</span> Entity Distribution</div><div class="donut-wrap">
 <svg class="donut" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="none" stroke="rgba(255,255,255,.04)" stroke-width="16"/>
@@ -195,9 +239,8 @@ h1{font-size:1.3rem;font-weight:700;margin-bottom:.05rem;background:linear-gradi
 <div class="row"><span class="swatch" style="background:#3b82f6"></span><span class="lbl">Python</span><span class="cnt">425k</span></div>
 <div class="row"><span class="swatch" style="background:#a855f7"></span><span class="lbl">Markdown</span><span class="cnt">310k</span></div>
 <div class="row"><span class="swatch" style="background:rgba(255,255,255,.08)"></span><span class="lbl">Other</span><span class="cnt">~50k</span></div>
-<div class="row" style="margin-top:4px;font-size:.5rem;color:#555"><span class="lbl">Total 2.1M lines across all projects</span></div>
-</div></div></div>
-</div><!-- /donut-row -->
+<div class="row" style="margin-top:4px;font-size:.5rem;color:#555"><span class="lbl">Total ~2.5M lines</span></div></div></div></div>
+</div>
 <!-- MODULE: Charts -->
 <div class="module-label"><span class="icon">📊</span> Charts <span class="hdr-sub">all stacked · click toggle for separate horizontal bars</span></div>
 <div class="card">
@@ -235,7 +278,7 @@ h1{font-size:1.3rem;font-weight:700;margin-bottom:.05rem;background:linear-gradi
 </div>
 <div class="card">
 <div class="card-header">
-<span class="icon">📦</span> Entity Count <span class="hdr-sub">(excl. MyKB for scale)</span>
+<span class="icon">📦</span> Entity Count <span class="hdr-sub">(excl. MyKB)</span>
 <span class="chart-toggle" data-target="entity-count" onclick="toggleChart('entity-count')">▤ Separate</span>
 </div>
 <div id="entity-count-stacked" class="chart-view">
@@ -265,7 +308,7 @@ h1{font-size:1.3rem;font-weight:700;margin-bottom:.05rem;background:linear-gradi
 </div>
 <div class="card">
 <div class="card-header">
-<span class="icon">📄</span> File Count (on disk)
+<span class="icon">📄</span> File Count
 <span class="chart-toggle" data-target="file-count" onclick="toggleChart('file-count')">▤ Separate</span>
 </div>
 <div id="file-count-stacked" class="chart-view">
@@ -331,8 +374,8 @@ h1{font-size:1.3rem;font-weight:700;margin-bottom:.05rem;background:linear-gradi
 </div>
 <div class="card">
 <div class="card-header">
-<span class="icon">🔀</span> Code vs Data (by project)
-<span class="chart-toggle" data-target="code-data" onclick="toggleChart('code-data')">▤ Separate</span>
+<span class="icon">🔀</span> Code vs Data <span class="hdr-sub">per project · 3 views</span>
+<span class="chart-toggle" data-target="code-data" onclick="toggleChart3('code-data')">▤ Separate</span>
 </div>
 <div id="code-data-stacked" class="chart-view">
 <div class="stacked-bar-wrap"><div class="stacked-bar">
@@ -367,6 +410,7 @@ h1{font-size:1.3rem;font-weight:700;margin-bottom:.05rem;background:linear-gradi
 <span class="leg-item"><span class="leg-swatch" style="background:rgba(34,197,94,.3)"></span> MyRSIKB Data: </span>
 </div></div></div>
 <div id="code-data-grouped" class="chart-view hidden">
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:.4rem">
 <div class="comp-row"><span class="lbl">MyKB Code</span><div class="track"><div class="fill" style="width:73%;background:#a855f7"></div></div><span class="pct">73%</span></div>
 <div class="comp-row"><span class="lbl">MyKB Data</span><div class="track"><div class="fill" style="width:27%;background:rgba(168,85,247,.3)"></div></div><span class="pct">27%</span></div>
 <div class="comp-row"><span class="lbl">VEPA2 Code</span><div class="track"><div class="fill" style="width:89%;background:#ef4444"></div></div><span class="pct">89%</span></div>
@@ -381,7 +425,17 @@ h1{font-size:1.3rem;font-weight:700;margin-bottom:.05rem;background:linear-gradi
 <div class="comp-row"><span class="lbl">GOLF Data</span><div class="track"><div class="fill" style="width:33%;background:rgba(234,179,8,.3)"></div></div><span class="pct">33%</span></div>
 <div class="comp-row"><span class="lbl">MyRSIKB Code</span><div class="track"><div class="fill" style="width:58%;background:#22c55e"></div></div><span class="pct">58%</span></div>
 <div class="comp-row"><span class="lbl">MyRSIKB Data</span><div class="track"><div class="fill" style="width:42%;background:rgba(34,197,94,.3)"></div></div><span class="pct">42%</span></div>
-</div>
+</div></div>
+<div id="code-data-perproj" class="chart-view hidden">
+<div class="mini-stack-row">
+<div class="mini-stack"><div class="ms-title">MyKB</div><div class="ms-bar"><div class="seg" style="width:73%;background:#a855f7"></div><div class="seg" style="width:27%;background:rgba(168,85,247,.3)"></div></div><div class="ms-leg">Code 73% · Data 27%</div></div>
+<div class="mini-stack"><div class="ms-title">VEPA2</div><div class="ms-bar"><div class="seg" style="width:89%;background:#ef4444"></div><div class="seg" style="width:11%;background:rgba(239,68,68,.3)"></div></div><div class="ms-leg">Code 89% · Data 11%</div></div>
+<div class="mini-stack"><div class="ms-title">SPACE</div><div class="ms-bar"><div class="seg" style="width:62%;background:#3b82f6"></div><div class="seg" style="width:38%;background:rgba(59,130,246,.3)"></div></div><div class="ms-leg">Code 62% · Data 38%</div></div>
+<div class="mini-stack"><div class="ms-title">HMXOT</div><div class="ms-bar"><div class="seg" style="width:78%;background:#00d4ff"></div><div class="seg" style="width:22%;background:rgba(0,212,255,.3)"></div></div><div class="ms-leg">Code 78% · Data 22%</div></div>
+<div class="mini-stack"><div class="ms-title">RSIS3</div><div class="ms-bar"><div class="seg" style="width:91%;background:#ff8c00"></div><div class="seg" style="width:9%;background:rgba(255,140,0,.3)"></div></div><div class="ms-leg">Code 91% · Data 9%</div></div>
+<div class="mini-stack"><div class="ms-title">GOLF</div><div class="ms-bar"><div class="seg" style="width:67%;background:#eab308"></div><div class="seg" style="width:33%;background:rgba(234,179,8,.3)"></div></div><div class="ms-leg">Code 67% · Data 33%</div></div>
+<div class="mini-stack"><div class="ms-title">MyRSIKB</div><div class="ms-bar"><div class="seg" style="width:58%;background:#22c55e"></div><div class="seg" style="width:42%;background:rgba(34,197,94,.3)"></div></div><div class="ms-leg">Code 58% · Data 42%</div></div>
+</div></div>
 </div>
 <div class="card">
 <div class="card-header">
@@ -450,18 +504,18 @@ h1{font-size:1.3rem;font-weight:700;margin-bottom:.05rem;background:linear-gradi
 <div class="seg" style="width:25.6%;background:#00d4ff" title="HMXOT: Today"></div>
 <div class="seg" style="width:25.6%;background:#a855f7" title="MyKB: Today"></div>
 <div class="seg" style="width:25.6%;background:#eab308" title="GOLF: Today"></div>
-<div class="seg" style="width:7.7%;background:#3b82f6" title="SPACE: 1d ago"></div>
-<div class="seg" style="width:7.7%;background:#22c55e" title="MyRSIKB: 2d ago"></div>
-<div class="seg" style="width:5.1%;background:#ff8c00" title="RSIS3: 8d ago"></div>
-<div class="seg" style="width:2.6%;background:#ef4444" title="VEPA2: 12d ago"></div>
+<div class="seg" style="width:7.7%;background:#3b82f6" title="SPACE: 1d"></div>
+<div class="seg" style="width:7.7%;background:#22c55e" title="MyRSIKB: 2d"></div>
+<div class="seg" style="width:5.1%;background:#ff8c00" title="RSIS3: 8d"></div>
+<div class="seg" style="width:2.6%;background:#ef4444" title="VEPA2: 12d"></div>
 </div><div class="stacked-legend">
 <span class="leg-item"><span class="leg-swatch" style="background:#00d4ff"></span> HMXOT: Today</span>
 <span class="leg-item"><span class="leg-swatch" style="background:#a855f7"></span> MyKB: Today</span>
 <span class="leg-item"><span class="leg-swatch" style="background:#eab308"></span> GOLF: Today</span>
-<span class="leg-item"><span class="leg-swatch" style="background:#3b82f6"></span> SPACE: 1d ago</span>
-<span class="leg-item"><span class="leg-swatch" style="background:#22c55e"></span> MyRSIKB: 2d ago</span>
-<span class="leg-item"><span class="leg-swatch" style="background:#ff8c00"></span> RSIS3: 8d ago</span>
-<span class="leg-item"><span class="leg-swatch" style="background:#ef4444"></span> VEPA2: 12d ago</span>
+<span class="leg-item"><span class="leg-swatch" style="background:#3b82f6"></span> SPACE: 1d</span>
+<span class="leg-item"><span class="leg-swatch" style="background:#22c55e"></span> MyRSIKB: 2d</span>
+<span class="leg-item"><span class="leg-swatch" style="background:#ff8c00"></span> RSIS3: 8d</span>
+<span class="leg-item"><span class="leg-swatch" style="background:#ef4444"></span> VEPA2: 12d</span>
 </div></div></div>
 <div id="activity-grouped" class="chart-view hidden">
 <div class="comp-row"><span class="lbl">HMXOT</span><div class="track"><div class="fill" style="width:100%;background:#00d4ff"></div></div><span class="pct">Today</span></div>
@@ -475,7 +529,7 @@ h1{font-size:1.3rem;font-weight:700;margin-bottom:.05rem;background:linear-gradi
 </div>
 <div class="card">
 <div class="card-header">
-<span class="icon">📏</span> Project Size Comparison
+<span class="icon">📏</span> Project Size (LOC)
 <span class="chart-toggle" data-target="size" onclick="toggleChart('size')">▤ Separate</span>
 </div>
 <div id="size-stacked" class="chart-view">
@@ -508,7 +562,7 @@ h1{font-size:1.3rem;font-weight:700;margin-bottom:.05rem;background:linear-gradi
 </div>
 <div class="card">
 <div class="card-header">
-<span class="icon">🧠</span> Entity Density <span class="hdr-sub">(entities per 100 files)</span>
+<span class="icon">🧠</span> Entity Density <span class="hdr-sub">per 100 files</span>
 <span class="chart-toggle" data-target="density" onclick="toggleChart('density')">▤ Separate</span>
 </div>
 <div id="density-stacked" class="chart-view">
@@ -539,10 +593,35 @@ h1{font-size:1.3rem;font-weight:700;margin-bottom:.05rem;background:linear-gradi
 <div class="comp-row"><span class="lbl">GOLF</span><div class="track"><div class="fill" style="width:5%;background:#eab308"></div></div><span class="pct">3.5</span></div>
 </div>
 </div>
-<div class="footer">Generated 2026-07-29 · <a href="https://gemquota.github.io/hub/">Hub Dashboard</a> · <a href="https://github.com/gemquota/hub">GitHub</a></div>
+<!-- MODULE: Multi-Version Projects -->
+<div class="module-label"><span class="icon">📋</span> Multi-Version Projects <span class="hdr-sub">sub-dashboards for each version</span></div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:.5rem">
+<div class="card" style="border-left:3px solid #f97316;padding:.5rem">
+<div style="font-size:.75rem;font-weight:600;color:#f97316;margin-bottom:.3rem">🎰 SLOTRPG slotrpg</div>
+<div style="font-size:.55rem;color:#777;margin-bottom:.3rem">Versions: v3, v7</div>
+<div style="display:flex;flex-wrap:wrap;gap:.3rem">
+<a href="slotrpg-v3.html" style="font-size:.55rem;padding:3px 10px;border-radius:6px;background:rgba(255,255,255,.04);color:#bbb;text-decoration:none;border:1px solid rgba(255,255,255,.08)">v3: Classic engine</a>
+<a href="slotrpg-v7.html" style="font-size:.55rem;padding:3px 10px;border-radius:6px;background:rgba(255,255,255,.04);color:#bbb;text-decoration:none;border:1px solid rgba(255,255,255,.08)">v7: Modular rewrite</a>
+</div></div>
+<div class="card" style="border-left:3px solid #8b5cf6;padding:.5rem">
+<div style="font-size:.75rem;font-weight:600;color:#8b5cf6;margin-bottom:.3rem">🌈 Spectrum spectrum</div>
+<div style="font-size:.55rem;color:#777;margin-bottom:.3rem">Versions: v2</div>
+<div style="display:flex;flex-wrap:wrap;gap:.3rem">
+<a href="spectrum-v2.html" style="font-size:.55rem;padding:3px 10px;border-radius:6px;background:rgba(255,255,255,.04);color:#bbb;text-decoration:none;border:1px solid rgba(255,255,255,.08)">v2: Active</a>
+</div></div>
+<div class="card" style="border-left:3px solid #8b5cf6;padding:.5rem">
+<div style="font-size:.75rem;font-weight:600;color:#8b5cf6;margin-bottom:.3rem">🔤 AISCII aiscii</div>
+<div style="font-size:.55rem;color:#777;margin-bottom:.3rem">Versions: v1, v2</div>
+<div style="display:flex;flex-wrap:wrap;gap:.3rem">
+<a href="aiscii-v1.html" style="font-size:.55rem;padding:3px 10px;border-radius:6px;background:rgba(255,255,255,.04);color:#bbb;text-decoration:none;border:1px solid rgba(255,255,255,.08)">v1: Archived</a>
+<a href="aiscii-v2.html" style="font-size:.55rem;padding:3px 10px;border-radius:6px;background:rgba(255,255,255,.04);color:#bbb;text-decoration:none;border:1px solid rgba(255,255,255,.08)">v2: Active</a>
+</div></div>
 </div>
+<div class="footer">Generated 2026-07-29 · <a href="https://gemquota.github.io/hub/">Hub Dashboard</a> · <a href="https://github.com/gemquota/hub">GitHub</a> · 15+ projects tracked</div>
+
 <script>
 function toggleChart(n){var s=document.getElementById(n+'-stacked'),g=document.getElementById(n+'-grouped'),b=document.querySelector('.chart-toggle[data-target="'+n+'"]');if(!s||!g||!b)return;s.classList.contains('hidden')?(g.classList.add('hidden'),s.classList.remove('hidden'),b.textContent='\u25A4 Separate',b.classList.remove('active')):(s.classList.add('hidden'),g.classList.remove('hidden'),b.textContent='\u25A6 Stacked',b.classList.add('active'))}
+function toggleChart3(n){var s=document.getElementById(n+'-stacked'),g=document.getElementById(n+'-grouped'),p=document.getElementById(n+'-perproj'),b=document.querySelector('.chart-toggle[data-target="'+n+'"]');if(!s||!g||!b||!p)return;if(!s.classList.contains('hidden')){s.classList.add('hidden');g.classList.remove('hidden');b.textContent='\u25A6 By-Project';b.classList.add('active')}else if(!g.classList.contains('hidden')){g.classList.add('hidden');p.classList.remove('hidden');b.textContent='\u25A4 Stacked';b.classList.remove('active')}else{p.classList.add('hidden');s.classList.remove('hidden');b.textContent='\u25A4 Separate';b.classList.remove('active')}}
 </script>
 </body>
 </html>
