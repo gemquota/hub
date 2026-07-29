@@ -1,0 +1,79 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>RSIS — Evolution History</title><style>
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0f1118;color:#e0e0e0;padding:.6rem;margin:0}
+.container{max-width:900px;margin:0 auto}
+.back{display:inline-block;padding:3px 12px;border-radius:8px;border:1px solid rgba(255,255,255,.1);font-size:.7rem;margin-bottom:.6rem;color:#888;text-decoration:none}
+h1{font-size:1.3rem;font-weight:700;color:#ff8c00;margin-bottom:.1rem}
+.sub{color:#666;font-size:.65rem;margin-bottom:.6rem;line-height:1.4}
+.card{background:#161822;border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:.6rem;margin-bottom:.5rem}
+.card-hdr{font-size:.7rem;font-weight:600;color:#ccc;margin-bottom:.3rem}
+.ver-grid{display:grid;grid-template-columns:1fr 1fr;gap:.5rem}
+.ver-card{display:block;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:.6rem;text-decoration:none;color:inherit;transition:border-color .15s}
+.ver-card:hover{border-color:#ff8c00}
+.ver-title{font-size:.9rem;font-weight:700;color:#ff8c00}
+.ver-meta{font-size:.6rem;color:#777;margin:.15rem 0}
+.ver-desc{font-size:.6rem;color:#999;line-height:1.4}
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:.5rem;margin-bottom:.5rem}
+.stat-card{background:rgba(255,255,255,.03);border-radius:8px;padding:.5rem;text-align:center}
+.stat-num{font-size:1.3rem;font-weight:800;color:#ff8c00;display:block}
+.stat-lbl{font-size:.55rem;color:#777;display:block;margin-top:2px}
+.footer{text-align:center;color:#222;font-size:.5rem;margin-top:.5rem}
+.pills{display:flex;gap:.3rem;flex-wrap:wrap;margin:.3rem 0}
+.pill{font-size:.5rem;padding:1px 8px;border-radius:8px;background:rgba(139,92,246,.2);color:#a78bfa;border:1px solid rgba(139,92,246,.3);font-weight:600}
+.timeline{position:relative;padding-left:1.5rem;margin:.3rem 0}
+.timeline::before{content:'';position:absolute;left:6px;top:0;bottom:0;width:2px;background:rgba(255,140,0,.3)}
+.tl-item{position:relative;margin-bottom:.5rem;padding-left:.3rem}
+.tl-item::before{content:'';position:absolute;left:-1.1rem;top:.3rem;width:8px;height:8px;border-radius:50%;background:#ff8c00}
+.tl-ver{font-size:.65rem;font-weight:600;color:#ff8c00}
+.tl-desc{font-size:.55rem;color:#888;line-height:1.3}
+</style></head><body><div class="container">
+<a href="../index.html" class="back">← Back to Hub</a>
+<h1>🧬 RSIS Evolution</h1>
+<div class="sub">Recursive Self-Improvement System · 3 major versions · <code style="color:#888">v1 → v2 (rsisb) → v3 (rsis3)</code></div>
+
+<div class="stat-grid">
+<div class="stat-card"><span class="stat-num">4</span><span class="stat-lbl">Versions</span></div>
+<div class="stat-card"><span class="stat-num">708</span><span class="stat-lbl">Total Files</span></div>
+<div class="stat-card"><span class="stat-num">3-Loop</span><span class="stat-lbl">Architecture</span></div>
+</div>
+
+<div class="card"><div class="card-hdr">📜 Version Timeline</div>
+<div class="timeline">
+<div class="tl-item"><div class="tl-ver">v1 — RSIS (Original)</div><div class="tl-desc">117 files · Original standalone RSI system · Dashboard, evaluator, rack, telemetry · v0.0.10</div></div>
+<div class="tl-item"><div class="tl-ver">v2 — RSISb (Modular Evolution)</div><div class="tl-desc">170 files · Added modular knowledge rack, RRP protocol engine, pulse engine, test runner, identity system · Phase A/B automation</div></div>
+<div class="tl-item"><div class="tl-ver">v3 — RSIS3 (Current Python)</div><div class="tl-desc">309 files · Three-loop architecture (L1-L3) · Full test suite, scheduler, audits, recovery manager · 6 evaluation phases</div></div>
+<div class="tl-item"><div class="tl-ver">v3 TS — @cosmos/rsis3 (TypeScript Port)</div><div class="tl-desc">112 files · Ported to TypeScript as cosmos-ts package · Integrated with COSMOS ecosystem</div></div>
+</div></div>
+
+<div class="card"><div class="card-hdr">📦 Version Dashboards</div>
+<div class="ver-grid">
+<a href="rsis-v1.html" class="ver-card">
+<div class="ver-title">v1 · RSIS</div>
+<div class="ver-meta">117 files · Python</div>
+<div class="ver-desc">Original standalone RSIS system. Dashboard, evaluator, rack module system, telemetry dashboard, vercel deployment.</div>
+<div class="pills"><span class="pill">Dashboard</span><span class="pill">Evaluator</span><span class="pill">Rack</span></div>
+</a>
+<a href="rsis-v2.html" class="ver-card">
+<div class="ver-title">v2 · RSISb</div>
+<div class="ver-meta">170 files · Python</div>
+<div class="ver-desc">Modular evolution with RRP protocol engine, pulse engine, knowledge graph, identity system, stub detector, L3 self-direction.</div>
+<div class="pills"><span class="pill">RRP</span><span class="pill">Pulse</span><span class="pill">KG</span><span class="pill">Identity</span></div>
+</a>
+<a href="rsis-v3.html" class="ver-card">
+<div class="ver-title">v3 · RSIS3</div>
+<div class="ver-meta">309 files · Python</div>
+<div class="ver-desc">Current version. Three-loop architecture, scheduler, full test suite, audits, recovery manager, modular specs.</div>
+<div class="pills"><span class="pill">L1-L3</span><span class="pill">Tests</span><span class="pill">Scheduler</span></div>
+</a>
+<a href="rsis-v3-ts.html" class="ver-card" style="border-color:rgba(49,120,198,.3)">
+<div class="ver-title" style="color:#3178c6">v3 TS · @cosmos/rsis3</div>
+<div class="ver-meta">112 files · TypeScript</div>
+<div class="ver-desc">TypeScript port in the cosmos-ts monorepo. Integrated with @cosmos/core shared types.</div>
+<div class="pills"><span class="pill">TS</span><span class="pill">Monorepo</span></div>
+</a>
+</div></div>
+
+<div class="card"><div class="card-hdr">🔧 Architecture</div>
+<p style="font-size:.65rem;color:#999;line-height:1.5">RSIS implements a three-loop self-improvement architecture: <b style="color:#ff8c00">L1</b> action loop (per-task planning/execution), <b style="color:#fb923c">L2</b> improvement loop (per-session code changes/evaluation), <b style="color:#fdba74">L3</b> evolution loop (cross-session memory consolidation/meta-strategies). The system uses an immutable AI evaluator with 4 evaluation phases.</p></div>
+
+<div class="footer"><a href="https://github.com/gemquota/hub" style="color:#222">Hub Dashboard</a> · RSIS Evolution</div>
+</div></body></html>

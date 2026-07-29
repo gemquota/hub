@@ -1,0 +1,55 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>RSISb (v2) — Dashboard</title><style>
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0f1118;color:#e0e0e0;padding:.6rem;margin:0}
+.container{max-width:1000px;margin:0 auto}
+.back{display:inline-block;padding:3px 12px;border-radius:8px;border:1px solid rgba(255,255,255,.1);font-size:.7rem;margin-bottom:.6rem;color:#888;text-decoration:none}
+h1{font-size:1.3rem;font-weight:700;color:#22c55e;margin-bottom:.1rem}
+.sub{color:#666;font-size:.65rem;margin-bottom:.6rem}
+.card{background:#161822;border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:.6rem;margin-bottom:.5rem}
+.card-hdr{font-size:.7rem;font-weight:600;color:#ccc;margin-bottom:.3rem}
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:.5rem;margin-bottom:.5rem}
+.stat-card{background:rgba(255,255,255,.03);border-radius:8px;padding:.5rem;text-align:center}
+.stat-num{font-size:1.3rem;font-weight:800;color:#22c55e;display:block}
+.stat-lbl{font-size:.55rem;color:#777;display:block;margin-top:2px}
+.comp-row{display:flex;align-items:center;gap:.25rem;margin-bottom:.15rem;font-size:.6rem}
+.comp-row .lbl{width:100px;text-align:right;color:#888;flex-shrink:0}
+.comp-row .track{flex:1;height:8px;background:rgba(255,255,255,.04);border-radius:4px;overflow:hidden}
+.comp-row .fill{height:100%;border-radius:4px}
+.comp-row .cnt{color:#555;font-size:.55rem;width:40px;text-align:right}
+.footer{text-align:center;color:#222;font-size:.5rem;margin-top:.5rem}
+.stacked-bar{display:flex;height:22px;border-radius:6px;overflow:hidden;background:rgba(255,255,255,.03)}
+.stacked-bar .seg{height:100%;min-width:2px}
+.stacked-bar .seg:first-child{border-radius:6px 0 0 6px}
+.stacked-bar .seg:last-child{border-radius:0 6px 6px 0}
+.stacked-legend{display:flex;flex-wrap:wrap;gap:.2rem .5rem;margin-top:.25rem;font-size:.55rem}
+.stacked-legend .leg-item{display:flex;align-items:center;gap:.2rem;color:#999}
+.stacked-legend .leg-swatch{width:7px;height:7px;border-radius:2px;flex-shrink:0}
+</style></head><body><div class="container">
+<a href="rsis.html" class="back">← RSIS Evolution</a>
+<h1>🧬 RSISb — v2 (Modular Evolution)</h1>
+<div class="sub">170 files · Python · modular rack + RRP protocol + pulse engine + identity</div>
+
+<div class="stat-grid">
+<div class="stat-card"><span class="stat-num">170</span><span class="stat-lbl">Files</span></div>
+<div class="stat-card"><span class="stat-num">4</span><span class="stat-lbl">Phases</span></div>
+<div class="stat-card"><span class="stat-num">Python</span><span class="stat-lbl">Stack</span></div>
+</div>
+
+<div class="card"><div class="card-hdr">🔧 Key Modules Added</div>
+<div class="comp-row"><span class="lbl">RRP Protocol</span><div class="track"><div class="fill" style="width:100%;background:#22c55e"></div></div><span class="cnt">State machine</span></div>
+<div class="comp-row"><span class="lbl">Pulse Engine</span><div class="track"><div class="fill" style="width:85%;background:#4ade80"></div></div><span class="cnt">Automation</span></div>
+<div class="comp-row"><span class="lbl">Knowledge Graph</span><div class="track"><div class="fill" style="width:75%;background:#86efac"></div></div><span class="cnt">KG edges</span></div>
+<div class="comp-row"><span class="lbl">Identity System</span><div class="track"><div class="fill" style="width:65%;background:#bbf7d0"></div></div><span class="cnt">Self-model</span></div>
+<div class="comp-row"><span class="lbl">Stub Detector</span><div class="track"><div class="fill" style="width:55%;background:#dcfce7"></div></div><span class="cnt">Code gen</span></div>
+<div class="comp-row"><span class="lbl">Test Runner</span><div class="track"><div class="fill" style="width:50%;background:#f0fdf4"></div></div><span class="cnt">70 pytest</span></div>
+</div>
+
+<div class="card"><div class="card-hdr">📊 Phase Distribution</div>
+<div class="stacked-bar"><div class="seg" style="width:35%;background:#22c55e" title="Phase A: Automation"></div><div class="seg" style="width:30%;background:#4ade80" title="Phase B: Engine"></div><div class="seg" style="width:20%;background:#86efac" title="RRP: Protocol"></div><div class="seg" style="width:15%;background:#bbf7d0" title="Identity: Self"></div></div>
+<div class="stacked-legend"><span class="leg-item"><span class="leg-swatch" style="background:#22c55e"></span>Phase A: 35%</span><span class="leg-item"><span class="leg-swatch" style="background:#4ade80"></span>Phase B: 30%</span><span class="leg-item"><span class="leg-swatch" style="background:#86efac"></span>RRP: 20%</span><span class="leg-item"><span class="leg-swatch" style="background:#bbf7d0"></span>Identity: 15%</span></div>
+</div>
+
+<div class="card"><div class="card-hdr">📝 Description</div><p style="font-size:.65rem;color:#999;line-height:1.4">RSISb was the modular evolution of RSIS, adding a full RRP (Recursive Refinement Protocol) engine with 6 use cases and 3 execution modes, pulse engine for automation, knowledge graph for entity linking, identity system with 9 value axioms, stub detector for code generation, and a 70-test pytest suite. Merged into RSIS3.</p></div>
+
+<div class="card"><div class="card-hdr">📋 Location</div><p style="font-size:.6rem;color:#888"><code>~/dev/codex/rrp+/rsisb</code> · merged into rsis3</p></div>
+<div class="footer"><a href="https://github.com/gemquota/hub" style="color:#222">Hub Dashboard</a> · RSISb v2</div>
+</div></body></html>

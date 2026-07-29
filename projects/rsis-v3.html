@@ -1,0 +1,57 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>RSIS3 v3 — Dashboard</title><style>
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0f1118;color:#e0e0e0;padding:.6rem;margin:0}
+.container{max-width:1000px;margin:0 auto}
+.back{display:inline-block;padding:3px 12px;border-radius:8px;border:1px solid rgba(255,255,255,.1);font-size:.7rem;margin-bottom:.6rem;color:#888;text-decoration:none}
+h1{font-size:1.3rem;font-weight:700;color:#ff8c00;margin-bottom:.1rem}
+.sub{color:#666;font-size:.65rem;margin-bottom:.6rem}
+.card{background:#161822;border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:.6rem;margin-bottom:.5rem}
+.card-hdr{font-size:.7rem;font-weight:600;color:#ccc;margin-bottom:.3rem}
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:.5rem;margin-bottom:.5rem}
+.stat-card{background:rgba(255,255,255,.03);border-radius:8px;padding:.5rem;text-align:center}
+.stat-num{font-size:1.3rem;font-weight:800;color:#ff8c00;display:block}
+.stat-lbl{font-size:.55rem;color:#777;display:block;margin-top:2px}
+.comp-row{display:flex;align-items:center;gap:.25rem;margin-bottom:.15rem;font-size:.6rem}
+.comp-row .lbl{width:100px;text-align:right;color:#888;flex-shrink:0}
+.comp-row .track{flex:1;height:8px;background:rgba(255,255,255,.04);border-radius:4px;overflow:hidden}
+.comp-row .fill{height:100%;border-radius:4px}
+.comp-row .cnt{color:#555;font-size:.55rem;width:40px;text-align:right}
+.footer{text-align:center;color:#222;font-size:.5rem;margin-top:.5rem}
+.stacked-bar{display:flex;height:22px;border-radius:6px;overflow:hidden;background:rgba(255,255,255,.03)}
+.stacked-bar .seg{height:100%;min-width:2px}
+.stacked-bar .seg:first-child{border-radius:6px 0 0 6px}
+.stacked-bar .seg:last-child{border-radius:0 6px 6px 0}
+.stacked-legend{display:flex;flex-wrap:wrap;gap:.2rem .5rem;margin-top:.25rem;font-size:.55rem}
+.stacked-legend .leg-item{display:flex;align-items:center;gap:.2rem;color:#999}
+.stacked-legend .leg-swatch{width:7px;height:7px;border-radius:2px;flex-shrink:0}
+</style></head><body><div class="container">
+<a href="rsis.html" class="back">← RSIS Evolution</a>
+<h1>🧬 RSIS3 — v3 (Current Python)</h1>
+<div class="sub">309 files · Python · three-loop architecture · scheduler · full test suite</div>
+
+<div class="stat-grid">
+<div class="stat-card"><span class="stat-num">309</span><span class="stat-lbl">Files</span></div>
+<div class="stat-card"><span class="stat-num">3-Loop</span><span class="stat-lbl">Arch</span></div>
+<div class="stat-card"><span class="stat-num">6</span><span class="stat-lbl">Phases</span></div>
+</div>
+
+<div class="card"><div class="card-hdr">🧱 Module Breakdown</div>
+<div class="comp-row"><span class="lbl">src/</span><div class="track"><div class="fill" style="width:100%;background:#ff8c00"></div></div><span class="cnt">Core code</span></div>
+<div class="comp-row"><span class="lbl">rack/</span><div class="track"><div class="fill" style="width:80%;background:#fb923c"></div></div><span class="cnt">Knowledge rack</span></div>
+<div class="comp-row"><span class="lbl">tests/</span><div class="track"><div class="fill" style="width:65%;background:#fdba74"></div></div><span class="cnt">Test suite</span></div>
+<div class="comp-row"><span class="lbl">specs/</span><div class="track"><div class="fill" style="width:50%;background:#fed7aa"></div></div><span class="cnt">Specs</span></div>
+<div class="comp-row"><span class="lbl">scripts/</span><div class="track"><div class="fill" style="width:40%;background:#ffedd5"></div></div><span class="cnt">Scripts</span></div>
+</div>
+
+<div class="card"><div class="card-hdr">📊 Three-Loop Architecture</div>
+<div class="stacked-bar"><div class="seg" style="width:50%;background:#ff8c00" title="L1: Action Loop"></div><div class="seg" style="width:30%;background:#fb923c" title="L2: Improvement Loop"></div><div class="seg" style="width:20%;background:#fdba74" title="L3: Evolution Loop"></div></div>
+<div class="stacked-legend"><span class="leg-item"><span class="leg-swatch" style="background:#ff8c00"></span>L1 Action: 50%</span><span class="leg-item"><span class="leg-swatch" style="background:#fb923c"></span>L2 Improvement: 30%</span><span class="leg-item"><span class="leg-swatch" style="background:#fdba74"></span>L3 Evolution: 20%</span></div>
+</div>
+
+<div class="card"><div class="card-hdr">🧪 Evaluation Phases</div>
+<p style="font-size:.6rem;color:#999;line-height:1.5">6-phase immutable evaluation: <b style="color:#ff8c00">Phase 1</b> – Requirements decomp · <b style="color:#fb923c">Phase 2</b> – AST diff compliance · <b style="color:#fdba74">Phase 3</b> – Test adequacy · <b style="color:#fed7aa">Phase 4</b> – Functional correctness · <b style="color:#ffedd5">Phase 5</b> – Cross-cutting concerns · <b style="color:#fef3c7">Phase 6</b> – Integration</p></div>
+
+<div class="card"><div class="card-hdr">📝 Description</div><p style="font-size:.65rem;color:#999;line-height:1.4">Current Python version of RSIS. Full three-loop self-improvement architecture with scheduler, 6-phase immutable AI evaluator, recovery manager, checkpoint system, and comprehensive test suite. Part of the COSMOS ecosystem as a component.</p></div>
+
+<div class="card"><div class="card-hdr">📋 Location</div><p style="font-size:.6rem;color:#888"><code>~/dev/codex/rsis3</code> · <code>~/dev/cosmos/components/rsis3</code></p></div>
+<div class="footer"><a href="https://github.com/gemquota/hub" style="color:#222">Hub Dashboard</a> · RSIS3 v3</div>
+</div></body></html>
