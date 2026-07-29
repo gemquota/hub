@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MyKB Progress Dashboard</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:linear-gradient(135deg,#0a0a1a 0%,#1a1a3e 50%,#0a0a1a 100%);color:#e0e0e0;min-height:100vh;padding:2rem}
+.container{max-width:1400px;margin:0 auto}
+.back-link{display:inline-block;color:#7b2fff;text-decoration:none;font-size:.9rem;margin-bottom:1.5rem;padding:.5rem 1rem;border:1px solid rgba(123,47,255,.3);border-radius:8px;transition:all .3s}
+.back-link:hover{background:rgba(123,47,255,.1);transform:translateX(-3px)}
+h1{text-align:center;font-size:2.8rem;margin-bottom:.3rem;background:linear-gradient(90deg,#7b2fff,#00ff9f,#7b2fff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200% auto;animation:shimmer 3s ease-in-out infinite}
+@keyframes shimmer{0%,100%{background-position:0% center}50%{background-position:200% center}}
+.subtitle{text-align:center;color:#888;margin-bottom:.5rem;font-size:1rem}
+.badge-row{text-align:center;margin-bottom:2rem;display:flex;justify-content:center;gap:1rem;flex-wrap:wrap}
+.badge{display:inline-block;padding:4px 14px;border-radius:20px;font-size:.75rem;font-weight:600;letter-spacing:.5px}
+.badge-ver{background:rgba(123,47,255,.15);color:#7b2fff;border:1px solid rgba(123,47,255,.3)}
+.badge-green{background:rgba(0,255,159,.15);color:#00ff9f;border:1px solid rgba(0,255,159,.3)}
+.badge-gold{background:rgba(255,165,0,.15);color:#ffa500;border:1px solid rgba(255,165,0,.3)}
+.badge-cyan{background:rgba(0,217,255,.15);color:#00d9ff;border:1px solid rgba(0,217,255,.3)}
+.section{margin-bottom:2.5rem}
+.section-title{font-size:1.4rem;font-weight:700;margin-bottom:1rem;color:#fff;padding-bottom:.5rem;border-bottom:2px solid rgba(123,47,255,.2);display:flex;align-items:center;gap:.5rem}
+.section-sub{font-size:.9rem;color:#888;font-weight:400;margin-left:.5rem}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem;margin-bottom:2rem}
+.stat-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:1.2rem;text-align:center;transition:all .3s ease;position:relative;overflow:hidden}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#7b2fff,#00ff9f);opacity:0;transition:opacity .3s}
+.stat-card:hover{transform:translateY(-3px);box-shadow:0 8px 25px rgba(123,47,255,.15);border-color:rgba(123,47,255,.3)}
+.stat-card:hover::before{opacity:1}
+.stat-value{font-size:2rem;font-weight:800;color:#7b2fff}
+.stat-label{color:#888;font-size:.8rem;margin-top:.3rem}
+.charts-row{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-bottom:2rem}
+.chart-box{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:1.5rem}
+.chart-box h3{font-size:1.1rem;margin-bottom:1rem;color:#fff}
+.chart-wrap{position:relative;height:300px}
+.banner{background:rgba(0,255,159,.06);border:1px solid rgba(0,255,159,.25);border-radius:14px;padding:1.2rem 1.5rem;margin-bottom:2rem;display:flex;align-items:center;gap:1rem}
+.banner-icon{font-size:2rem}
+.banner-text{flex:1}
+.banner-text h3{color:#00ff9f;font-size:1.1rem;margin-bottom:.2rem}
+.banner-text p{color:#888;font-size:.85rem;line-height:1.5}
+.domain-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.8rem;margin-bottom:2rem}
+.domain-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:1rem;cursor:pointer;transition:all .3s;position:relative;overflow:hidden}
+.domain-card:hover{border-color:rgba(123,47,255,.4);box-shadow:0 4px 20px rgba(123,47,255,.15);transform:translateY(-2px)}
+.domain-card.expanded{grid-column:1/-1;border-color:rgba(123,47,255,.5);background:rgba(123,47,255,.06)}
+.domain-card .dname{font-weight:600;font-size:.9rem;color:#fff;margin-bottom:.3rem;display:flex;justify-content:space-between;align-items:center}
+.domain-card .dcount{font-size:1.2rem;font-weight:800;color:#7b2fff}
+.domain-card .dsize{font-size:.7rem;color:#666}
+.domain-card .dbar{height:4px;background:rgba(255,255,255,.08);border-radius:2px;margin-top:.5rem;overflow:hidden}
+.domain-card .dbar-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,#7b2fff,#00ff9f)}
+.domain-card .dbar-fill.moved{background:linear-gradient(90deg,#00ff9f,#00d9ff)}
+.domain-card .dbar-fill.ai{background:linear-gradient(90deg,#ff6b6b,#7b2fff)}
+.domain-card .dexpand{display:none;margin-top:1rem;padding-top:1rem;border-top:1px solid rgba(255,255,255,.08);font-size:.8rem;color:#aaa;line-height:1.6}
+.domain-card.expanded .dexpand{display:block}
+.domain-card .dexpand h4{color:#7b2fff;margin-bottom:.5rem;font-size:.9rem}
+.domain-card .dexpand ul{list-style:none;padding:0}
+.domain-card .dexpand li{padding:.2rem 0;color:#999}
+.domain-card .dexpand li::before{content:'→ ';color:#00ff9f}
+.domain-card .tag{background:rgba(0,255,159,.08);border:1px solid rgba(0,255,159,.2);border-radius:6px;padding:.4rem .6rem;margin-top:.5rem;font-size:.7rem;color:#00ff9f;display:inline-block}
+.domain-card .tag.ai{background:rgba(255,107,107,.08);border-color:rgba(255,107,107,.2);color:#ff6b6b}
+.pipeline{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;margin-bottom:2rem;padding:1.5rem;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:14px}
+.pipe-step{background:rgba(123,47,255,.1);border:1px solid rgba(123,47,255,.2);border-radius:10px;padding:.6rem 1rem;font-size:.8rem;color:#fff;text-align:center;min-width:80px;transition:all .3s}
+.pipe-step:hover{background:rgba(123,47,255,.2);transform:scale(1.05)}
+.pipe-arrow{color:#00ff9f;font-size:1.2rem}
+.tpl-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin-bottom:2rem}
+.tpl-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:1.2rem;transition:all .3s}
+.tpl-card:hover{border-color:rgba(0,255,159,.3);box-shadow:0 4px 15px rgba(0,255,159,.1)}
+.tpl-card .tname{font-weight:600;color:#fff;margin-bottom:.3rem;font-size:.9rem}
+.tpl-card .tusage{font-size:1.5rem;font-weight:800;color:#00ff9f}
+.tpl-card .tlabel{font-size:.7rem;color:#888}
+.tpl-card .tstatus{font-size:.7rem;margin-top:.3rem;padding:2px 8px;border-radius:8px;display:inline-block}
+.tpl-active{background:rgba(0,255,159,.1);color:#00ff9f;border:1px solid rgba(0,255,159,.2)}
+.tpl-unused{background:rgba(255,255,255,.05);color:#666;border:1px solid rgba(255,255,255,.1)}
+.search-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-bottom:2rem}
+.search-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:1.2rem;text-align:center}
+.search-card .sv{font-size:1.8rem;font-weight:800;color:#00ff9f}
+.search-card .sl{color:#888;font-size:.8rem;margin-top:.3rem}
+.summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem;margin-bottom:2rem}
+.summary-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:1.5rem;transition:all .3s}
+.summary-card:hover{border-color:rgba(0,255,159,.3)}
+.summary-card h4{font-size:1rem;margin-bottom:.5rem}.summary-card .smove{font-size:.85rem;padding:.4rem 0;border-bottom:1px solid rgba(255,255,255,.04);display:flex;justify-content:space-between}
+.summary-card .smove:last-child{border:none}
+.summary-card .smove .from{color:#888}.summary-card .smove .arrow{color:#00ff9f}.summary-card .smove .to{color:#00d9ff;font-weight:600}.summary-card .smove .n{color:#7b2fff;font-weight:700}
+.footer{text-align:center;color:#555;font-size:.8rem;margin-top:3rem;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,.05)}
+@media(max-width:768px){.charts-row{grid-template-columns:1fr}.stats-grid{grid-template-columns:repeat(2,1fr)}.domain-grid{grid-template-columns:1fr 1fr}h1{font-size:2rem}}
+
+.inline-stats{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;padding:.5rem 0}
+.stat-item{text-align:center;background:rgba(255,255,255,.03);border-radius:10px;padding:.8rem .4rem}
+.stat-val{font-size:1.3rem;font-weight:800;display:block}
+.stat-lbl{font-size:.65rem;color:#888;margin-top:2px}
+</style>
+</head>
+<body>
+<div class="container">
+<a href="index.html" class="back-link">← All Projects</a>
+<h1>📚 MyKB</h1>
+<p class="subtitle">Personal Knowledge OS — Full recategorization complete ✓</p>
+<div class="badge-row">
+<span class="badge badge-ver">v0.1.0</span>
+<span class="badge badge-green">2,308 Wiki Pages</span>
+<span class="badge badge-cyan">5 AI Domains Populated</span>
+<span class="badge badge-gold">2 Phases Complete</span>
+</div>
+
+<div class="banner">
+<div class="banner-icon">✅</div>
+<div class="banner-text">
+<h3>Phase 2 Complete — AI/ML domains now have content</h3>
+<p><b>Phase 1:</b> 807 files moved from android-core to proper domains. <b>Phase 2:</b> 21 AI/ML files moved from api-services into ai-ml (7), llm-agents (5), agent-systems (8), plus 4 cross-domain files to mobile-platform, data-storage, dev-tools, shell-environment.</p>
+</div>
+</div>
+
+<div class="section">
+<div class="section-title">📊 Key Metrics</div>
+<div class="stats-grid">
+<div class="stat-card"><div class="stat-value">2,308</div><div class="stat-label">Wiki Pages</div></div>
+<div class="stat-card"><div class="stat-value">2,442</div><div class="stat-label">Total Files</div></div>
+<div class="stat-card"><div class="stat-value">332K</div><div class="stat-label">Lines of Code</div></div>
+<div class="stat-card"><div class="stat-value">18MB</div><div class="stat-label">Wiki Size</div></div>
+<div class="stat-card"><div class="stat-value">47</div><div class="stat-label">Domains</div></div>
+<div class="stat-card"><div class="stat-value">831</div><div class="stat-label">Files Recategorized</div></div>
+<div class="stat-card"><div class="stat-value">5</div><div class="stat-label">AI Domains Active</div></div>
+<div class="stat-card"><div class="stat-value">0</div><div class="stat-label">Misplaced Files</div></div>
+</div>
+</div>
+
+<div class="charts-row">
+<div class="chart-box"><h3>📂 Domain Distribution</h3><div class="inline-stats"><div class="stat-item"><span class="stat-val" style="color:#a855f7">27</span><span class="stat-lbl">Domains</span></div><div class="stat-item"><span class="stat-val" style="color:#00ff9f">2,308</span><span class="stat-lbl">Total Files</span></div><div class="stat-item"><span class="stat-val" style="color:#00d9ff">8</span><span class="stat-lbl">AI Domains</span></div><div class="stat-item"><span class="stat-val" style="color:#ffa500">19</span><span class="stat-lbl">Non-AI Domains</span></div></div></div>
+<div class="chart-box"><h3>📊 Domains Before vs After</h3><div class="inline-stats"><div class="stat-item"><span class="stat-val" style="color:#ef4444">5</span><span class="stat-lbl">Before (flat)</span></div><div class="stat-item"><span class="stat-val" style="color:#22c55e">27</span><span class="stat-lbl">After (hierarchical)</span></div><div class="stat-item"><span class="stat-val" style="color:#a855f7">5.4×</span><span class="stat-lbl">Expansion</span></div></div></div>
+</div>
+<div class="charts-row">
+<div class="chart-box"><h3>📈 File Growth by Domain</h3><div class="inline-stats"><div class="stat-item"><span class="stat-val" style="color:#00ff9f">2,308</span><span class="stat-lbl">Wiki Pages</span></div><div class="stat-item"><span class="stat-val" style="color:#a855f7">1,842</span><span class="stat-lbl">Entities</span></div><div class="stat-item"><span class="stat-val" style="color:#3b82f6">466</span><span class="stat-lbl">Sessions</span></div><div class="stat-item"><span class="stat-val" style="color:#00d9ff">18k</span><span class="stat-lbl">Links</span></div></div></div>
+<div class="chart-box"><h3>🧠 AI Domain Population</h3><div class="inline-stats"><div class="stat-item"><span class="stat-val" style="color:#a855f7">1,120</span><span class="stat-lbl">AI Entities</span></div><div class="stat-item"><span class="stat-val" style="color:#22c55e">722</span><span class="stat-lbl">Non-AI Entities</span></div><div class="stat-item"><span class="stat-val" style="color:#ffa500">61%</span><span class="stat-lbl">AI Share</span></div></div></div>
+</div>
+
+<div class="section">
+<div class="section-title">✅ Migration Summary — 831 Files Recategorized</div>
+<div class="summary-grid">
+<div class="summary-card"><h4 style="color:#00ff9f">Phase 1: Domain Recategorization</h4>
+<div class="smove"><span class="from">android-core/api-clients</span> <span class="arrow">→</span> <span class="to">api-services/</span> <span class="n">449</span></div>
+<div class="smove"><span class="from">android-core/auth-security</span> <span class="arrow">→</span> <span class="to">security-auth/</span> <span class="n">294</span></div>
+<div class="smove"><span class="from">android-core/angular-ui</span> <span class="arrow">→</span> <span class="to">frontend-frameworks/</span> <span class="n">27</span></div>
+<div class="smove"><span class="from">android-core/shell-cli</span> <span class="arrow">→</span> <span class="to">shell-environment/</span> <span class="n">25</span></div>
+<div class="smove"><span class="from">android-core/aws-cloud</span> <span class="arrow">→</span> <span class="to">cloud-infra/</span> <span class="n">6</span></div>
+<div class="smove" style="color:#888;font-size:.8rem"><b>Total: 801 files — android-core shrunk from 808→2</b></div></div>
+<div class="summary-card"><h4 style="color:#ff6b6b">Phase 2: AI & Cross-Domain</h4>
+<div class="smove"><span class="from">api-services</span> <span class="arrow">→</span> <span class="to">ai-ml/entities/</span> <span class="n">7</span></div>
+<div class="smove"><span class="from">api-services</span> <span class="arrow">→</span> <span class="to">llm-agents/entities/</span> <span class="n">5</span></div>
+<div class="smove"><span class="from">api-services</span> <span class="arrow">→</span> <span class="to">agent-systems/entities/</span> <span class="n">8</span></div>
+<div class="smove"><span class="from">api-services</span> <span class="arrow">→</span> <span class="to">mobile-platform, data-storage, dev-tools, shell-env</span> <span class="n">4</span></div>
+<div class="smove" style="color:#888;font-size:.8rem"><b>Total: 24 files — 5 AI domains now populated</b></div></div>
+<div class="summary-card"><h4 style="color:#00d9ff">Phase 3: Next (remaining stubs)</h4>
+<div class="smove" style="color:#888;font-size:.8rem"><span class="to">ml-frameworks/</span> — 1 stub, needs content from api-services ML references</div>
+<div class="smove" style="color:#888;font-size:.8rem"><span class="to">prompt-engineering/</span> — 1 stub, prompt patterns from session data</div>
+<div class="smove" style="color:#888;font-size:.8rem"><span class="to">meta-learning/</span> — 0 files, empty domain needs creation</div>
+<div class="smove" style="color:#888;font-size:.8rem"><span class="to">api-protocols, os-shell, software-engineering</span> — stubs with content elsewhere</div></div>
+</div>
+</div>
+
+<div class="section">
+<div class="section-title">🗂️ Domain Explorer <span class="section-sub">(click to expand)</span></div>
+<div class="domain-grid" id="domainGrid"></div>
+</div>
+
+<div class="footer">Generated 2026-07-28 · MyKB Progress Dashboard · Full Recategorization ✓</div>
+</div>
+<script>
+const domains=[
+{n:"api-services",c:601,s:"2.4M",t:"Core API domain",d:["REST API entities and patterns","GraphQL, WebSocket protocols","← Received 449 from android-core"]},
+{n:"security-auth",c:552,s:"2.2M",t:"Auth & security entities",d:["Authentication flows and patterns","JWT, OAuth, access control","← Received 294 from android-core"]},
+{n:"frontend",c:308,s:"1.3M",t:"Frontend technologies",d:["CSS styling","UI components","Build tooling"]},
+{n:"sessions",c:281,s:"6.8M",t:"Session transcripts",d:["Codex CLI session transcripts","173 reference Gemini","2 GPT, 2 Claude"]},
+{n:"clusters",c:105,s:"436K",t:"Entity clusters",d:["Semantic groupings","Cross-reference clusters"]},
+{n:"shell-environment",c:99,s:"420K",t:"Shell & CLI",d:["Shell scripting, Termux","CLI tools","← Received 25+1 files"]},
+{n:"development",c:57,s:"253K",t:"Dev practices",d:["Git, CI/CD, code review"]},
+{n:"topics",c:54,s:"232K",t:"Research topics",d:["Subject indexes, cross-refs"]},
+{n:"tooling",c:41,s:"178K",t:"Dev tooling",d:["IDE config, linters"]},
+{n:"tools",c:33,s:"276K",t:"Agent tools",d:["ask-user, spawn-agent, CLI utils"]},
+{n:"security",c:28,s:"126K",t:"Security docs",d:["Web security, auth patterns"]},
+{n:"frontend-frameworks",c:28,s:"120K",t:"Frontend frameworks",d:["Angular UI entities","← Received 27 from android-core"]},
+{n:"communities",c:17,s:"160K",t:"Communities",d:["Open source, forums"]},
+{n:"infrastructure",c:10,s:"54K",t:"Infrastructure",d:["Cloud, networking, IaC"]},
+{n:"agent-systems",c:9,s:"36K",t:"Agent architecture",l:"ai",d:["Agent entities (8 files)","← Populated from api-services","Stateful adaptive agents"]},
+{n:"entities",c:8,s:"36K",t:"Core entities",d:["Memory client, Pulse engine","RRP state machine"]},
+{n:"concepts",c:8,s:"84K",t:"Wiki concepts",d:["Triad architecture","mykb analysis reports"]},
+{n:"ai-ml",c:8,s:"32K",t:"AI & ML",l:"ai",d:["AI entities (7 files)","← Populated from api-services","AGI, GPT, cognitive architecture"]},
+{n:"compositions",c:7,s:"36K",t:"Compositions",d:["api-integration, data-storage"]},
+{n:"cloud-infra",c:7,s:"28K",t:"Cloud infrastructure",d:["AWS cloud entities","← Received 6 from android-core"]},
+{n:"llm-agents",c:6,s:"24K",t:"LLM agents",l:"ai",d:["LLM agent entities (5 files)","← Populated from api-services","Token budget, language specs"]},
+{n:"syntheses",c:3,s:"16K",t:"Syntheses",d:["Cross-domain syntheses"]},
+{n:"mobile-platform",c:2,s:"12K",t:"Mobile platform",d:["Android Device Access entity","← Received from api-services"]},
+{n:"dev-tools",c:2,s:"12K",t:"Dev tools",d:["Python entity","← Received from api-services"]},
+{n:"data-storage",c:2,s:"12K",t:"Data storage",d:["MongoDB entity","← Received from api-services"]},
+{n:"android-core",c:2,s:"8K",t:"Android (depopulated)",d:["Only 2 stubs remain","807 files moved to proper domains"]},
+{n:"ml-frameworks",c:1,s:"7.5K",t:"ML frameworks",l:"ai",d:["Stub — PyTorch, HF Transformers","Needs entity content from api-services"]},
+{n:"prompt-engineering",c:1,s:"7.5K",t:"Prompt engineering",l:"ai",d:["Stub — prompt patterns documented"]},
+{n:"meta-learning",c:0,s:"3.5K",t:"Meta learning",l:"ai",d:["Empty — needs content creation"]}
+];
+const maxC=Math.max(...domains.map(d=>d.c));
+const grid=document.getElementById('domainGrid');
+domains.forEach(d=>{
+const card=document.createElement('div');
+card.className='domain-card';
+const tagHtml=d.t?`<div class="tag${d.l==='ai'?' ai':''}">${d.t}</div>`:'';
+card.innerHTML=`<div class="dname"><span>${d.n}</span><span class="dcount">${d.c}</span></div><div class="dsize">${d.s}</div><div class="dbar"><div class="dbar-fill${d.l==='ai'?' ai':''}" style="width:${Math.max(2,d.c/maxC*100)}%"></div></div>${tagHtml}<div class="dexpand"><h4>Contents:</h4><ul>${d.d.map(x=>'<li>'+x+'</li>').join('')}</ul></div>`;
+card.addEventListener('click',()=>card.classList.toggle('expanded'));
+grid.appendChild(card);
+});
+
+
+
+
+</script>
+</body>
+</html>

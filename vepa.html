@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VEPA2 Progress Dashboard</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:linear-gradient(135deg,#0a0a1a 0%,#1a1a3e 50%,#0a0a1a 100%);color:#e0e0e0;min-height:100vh;padding:2rem}
+.container{max-width:1400px;margin:0 auto}
+.back-link{display:inline-block;color:#ff6b6b;text-decoration:none;font-size:.9rem;margin-bottom:1.5rem;padding:.5rem 1rem;border:1px solid rgba(255,107,107,.3);border-radius:8px;transition:all .3s}
+.back-link:hover{background:rgba(255,107,107,.1);transform:translateX(-3px)}
+h1{text-align:center;font-size:2.8rem;margin-bottom:.3rem;background:linear-gradient(90deg,#ff6b6b,#ffa500,#ff6b6b);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200% auto;animation:shimmer 3s ease-in-out infinite}
+@keyframes shimmer{0%,100%{background-position:0% center}50%{background-position:200% center}}
+.tagline{text-align:center;color:#888;font-style:italic;margin-bottom:.5rem;font-size:1rem}
+.subtitle{text-align:center;color:#666;margin-bottom:.5rem;font-size:1.1rem}
+.badge-row{text-align:center;margin-bottom:2rem;display:flex;justify-content:center;gap:1rem;flex-wrap:wrap}
+.badge{display:inline-block;padding:4px 14px;border-radius:20px;font-size:.75rem;font-weight:600;letter-spacing:.5px}
+.badge-ver{background:rgba(255,107,107,.15);color:#ff6b6b;border:1px solid rgba(255,107,107,.3)}
+.badge-js{background:rgba(255,165,0,.15);color:#ffa500;border:1px solid rgba(255,165,0,.3)}
+.badge-gpu{background:rgba(255,217,61,.15);color:#ffd93d;border:1px solid rgba(255,217,61,.3)}
+.section{margin-bottom:2.5rem}
+.section-title{font-size:1.4rem;font-weight:700;margin-bottom:1rem;color:#fff;padding-bottom:.5rem;border-bottom:2px solid rgba(255,107,107,.2);display:flex;align-items:center;gap:.5rem}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem;margin-bottom:2rem}
+.stat-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:1.2rem;text-align:center;transition:all .3s ease;position:relative;overflow:hidden}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#ff6b6b,#ffa500);opacity:0;transition:opacity .3s}
+.stat-card:hover{transform:translateY(-3px);box-shadow:0 8px 25px rgba(255,107,107,.15);border-color:rgba(255,107,107,.3)}
+.stat-card:hover::before{opacity:1}
+.stat-value{font-size:2rem;font-weight:800;color:#ff6b6b}
+.stat-label{color:#888;font-size:.8rem;margin-top:.3rem}
+.charts-row{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-bottom:2rem}
+.chart-box{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:1.5rem}
+.chart-box h3{font-size:1.1rem;margin-bottom:1rem;color:#fff}
+.chart-wrap{position:relative;height:300px}
+.dna-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem;margin-bottom:2rem}
+.dna-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:1.5rem;transition:all .3s;position:relative;overflow:hidden}
+.dna-card::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#ff6b6b,#ffa500);opacity:0;transition:opacity .3s}
+.dna-card:hover{border-color:rgba(255,107,107,.3);box-shadow:0 6px 20px rgba(255,107,107,.1)}
+.dna-card:hover::after{opacity:1}
+.dna-card h4{font-size:1rem;margin-bottom:.5rem;color:#ffa500}
+.dna-card .count{font-size:2rem;font-weight:800;color:#ff6b6b;margin-bottom:.3rem}
+.dna-card p{font-size:.8rem;color:#999;line-height:1.4}
+.engine-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-bottom:2rem}
+.engine-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:1rem;text-align:center;transition:all .3s}
+.engine-card:hover{border-color:rgba(255,165,0,.3);transform:translateY(-2px)}
+.engine-card h4{font-size:.9rem;color:#ffa500;margin-bottom:.3rem}
+.engine-card p{font-size:.75rem;color:#888}
+.batch-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:.8rem;margin-bottom:2rem}
+.batch-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:.8rem;display:flex;align-items:center;gap:.8rem;transition:all .3s}
+.batch-card:hover{border-color:rgba(0,255,159,.3)}
+.batch-check{width:24px;height:24px;border-radius:50%;background:rgba(0,255,159,.2);display:flex;align-items:center;justify-content:center;color:#00ff9f;font-size:.8rem;flex-shrink:0}
+.batch-info{flex:1}
+.batch-info .name{font-size:.8rem;font-weight:600;color:#fff}
+.batch-info .detail{font-size:.7rem;color:#888}
+.feature-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1rem;margin-bottom:2rem}
+.feature-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:1.5rem;transition:all .3s}
+.feature-card:hover{border-color:rgba(255,165,0,.3);box-shadow:0 6px 20px rgba(255,165,0,.1)}
+.feature-card h4{font-size:1rem;color:#ffa500;margin-bottom:.5rem}
+.feature-card p{font-size:.85rem;color:#999;line-height:1.5}
+.feature-card .tag-row{display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.5rem}
+.mini-tag{font-size:.65rem;padding:2px 8px;border-radius:10px;background:rgba(255,107,107,.1);color:#ff6b6b;border:1px solid rgba(255,107,107,.2)}
+.footer{text-align:center;color:#555;font-size:.8rem;margin-top:3rem;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,.05)}
+@media(max-width:768px){.charts-row{grid-template-columns:1fr}.stats-grid{grid-template-columns:repeat(2,1fr)}h1{font-size:2rem}}
+
+.inline-stats{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;padding:.5rem 0}
+.stat-item{text-align:center;background:rgba(255,255,255,.03);border-radius:10px;padding:.8rem .4rem}
+.stat-val{font-size:1.3rem;font-weight:800;display:block}
+.stat-lbl{font-size:.65rem;color:#888;margin-top:2px}
+</style>
+</head>
+<body>
+<div class="container">
+<a href="index.html" class="back-link">← All Projects</a>
+<h1>🌌 VEPA2</h1>
+<p class="tagline">"The universe is not made of atoms; it is made of stories. VEPA is the ink."</p>
+<p class="subtitle">Vector Emergent Physics Automata — GPU-Accelerated Emergent Simulation</p>
+<div class="badge-row">
+<span class="badge badge-ver">v2.5.0</span>
+<span class="badge badge-js">JavaScript</span>
+<span class="badge badge-gpu">Canvas2D + Web Workers</span>
+<span class="badge badge-ver">12 Species · 42 DNA Params</span>
+</div>
+
+<div class="section">
+<div class="section-title">📊 Key Metrics</div>
+<div class="stats-grid">
+<div class="stat-card"><div class="stat-value">4,685</div><div class="stat-label">Total Files</div></div>
+<div class="stat-card"><div class="stat-value">841K</div><div class="stat-label">Lines of Code</div></div>
+<div class="stat-card"><div class="stat-value">6,520</div><div class="stat-label">Src JS Lines</div></div>
+<div class="stat-card"><div class="stat-value">12</div><div class="stat-label">Species</div></div>
+<div class="stat-card"><div class="stat-value">42</div><div class="stat-label">DNA Parameters</div></div>
+<div class="stat-card"><div class="stat-value">~50</div><div class="stat-label">World Laws</div></div>
+<div class="stat-card"><div class="stat-value">5.4K</div><div class="stat-label">Doc Lines</div></div>
+<div class="stat-card"><div class="stat-value">10</div><div class="stat-label">Engines</div></div>
+</div>
+</div>
+
+<div class="charts-row">
+<div class="chart-box"><h3>🧬 DNA Parameter Categories</h3><div class="inline-stats"><div class="stat-item"><span class="stat-val" style="color:#a855f7">—</span><span class="stat-lbl">Data</span></div></div></div>
+<div class="chart-box"><h3>📚 Documentation Expansion (12 Batches)</h3><div class="inline-stats"><div class="stat-item"><span class="stat-val" style="color:#a855f7">—</span><span class="stat-lbl">Data</span></div></div></div>
+</div>
+<div class="charts-row">
+<div class="chart-box"><h3>⚙️ Engine Subsystem Sizes</h3><div class="inline-stats"><div class="stat-item"><span class="stat-val" style="color:#a855f7">—</span><span class="stat-lbl">Data</span></div></div></div>
+<div class="chart-box"><h3>📁 Code Composition</h3><div class="inline-stats"><div class="stat-item"><span class="stat-val" style="color:#a855f7">—</span><span class="stat-lbl">Data</span></div></div></div>
+</div>
+
+<div class="section">
+<div class="section-title">🧬 DNA Parameter Breakdown — 42 Traits</div>
+<div class="dna-grid">
+<div class="dna-card"><div class="count">8</div><h4>⚛️ Physics & Motion</h4><p>Force, Viscosity, Torque, Jitter, Tidal, Inertia, Friction, Max Velocity — core kinetic behavior.</p></div>
+<div class="dna-card"><div class="count">9</div><h4>🪨 Matter & Morphology</h4><p>Symmetry (C3), Hidden Mass, Stiffness, Fusion, Fusion Momentum, Fusion Time, Base Radius, Elasticity, Bond Angle.</p></div>
+<div class="dna-card"><div class="count">7</div><h4>⚡ Electromagnetism & Chemistry</h4><p>Polarity (C1), Alpha (C2), Conductivity, Magnetic Moment, Reaction Threshold, Catalysis, Heat Output.</p></div>
+<div class="dna-card"><div class="count">7</div><h4>🧬 Biology</h4><p>Birth Rate, Death Rate, Mutation, Energy Efficiency, Sex Chance, Predation Bias, Species Affinity.</p></div>
+<div class="dna-card"><div class="count">11</div><h4>📡 Communication</h4><p>Signal Response, Pulse Rate, Neighborhood Radius, Signal Strength, Decay, Propagation Speed, 4 Tuning Channels, Memory Decay.</p></div>
+</div>
+</div>
+
+<div class="section">
+<div class="section-title">📚 Documentation Expansion Progress</div>
+<div class="batch-grid">
+<div class="batch-card"><div class="batch-check">✓</div><div class="batch-info"><div class="name">Batch 01</div><div class="detail">World Physics — G, dt, viscosity, spawnRate, temp</div></div></div>
+<div class="batch-card"><div class="batch-check">✓</div><div class="batch-info"><div class="name">Batch 02</div><div class="detail">World Environment — pressure, wind, dimensions</div></div></div>
+<div class="batch-card"><div class="batch-check">✓</div><div class="batch-info"><div class="name">Batch 03</div><div class="detail">World Setup — boundaries, scaling, dimZ</div></div></div>
+<div class="batch-card"><div class="batch-check">✓</div><div class="batch-info"><div class="name">Batch 04</div><div class="detail">World Seeding — spreadX/Y/Z, entropy, camera</div></div></div>
+<div class="batch-card"><div class="batch-check">✓</div><div class="batch-info"><div class="name">Batch 05</div><div class="detail">Physics DNA traits</div></div></div>
+<div class="batch-card"><div class="batch-check">✓</div><div class="batch-info"><div class="name">Batch 06</div><div class="detail">Matter DNA traits</div></div></div>
+<div class="batch-card"><div class="batch-check">✓</div><div class="batch-info"><div class="name">Batch 07</div><div class="detail">EM/Chemistry DNA traits</div></div></div>
+<div class="batch-card"><div class="batch-check">✓</div><div class="batch-info"><div class="name">Batch 08</div><div class="detail">Biology DNA traits</div></div></div>
+<div class="batch-card"><div class="batch-check">✓</div><div class="batch-info"><div class="name">Batch 09</div><div class="detail">Communication DNA traits</div></div></div>
+<div class="batch-card"><div class="batch-check">✓</div><div class="batch-info"><div class="name">Batch 10</div><div class="detail">World Laws — physics</div></div></div>
+<div class="batch-card"><div class="batch-check">✓</div><div class="batch-info"><div class="name">Batch 11</div><div class="detail">World Laws — biology</div></div></div>
+<div class="batch-card"><div class="batch-check">✓</div><div class="batch-info"><div class="name">Batch 12</div><div class="detail">World Laws — entropy</div></div></div>
+</div>
+</div>
+
+<div class="section">
+<div class="section-title">⚙️ Engine Architecture — 10 Subsystems</div>
+<div class="engine-grid">
+<div class="engine-card"><h4>🎯 Goal Engine</h4><p>Autonomous objective generation</p></div>
+<div class="engine-card"><h4>💡 Insight Engine</h4><p>Pattern recognition & analysis</p></div>
+<div class="engine-card"><h4>📈 Level Engine</h4><p>Progression & scaling systems</p></div>
+<div class="engine-card"><h4>🧬 Lineage Tracker</h4><p>Generation & ancestry tracking</p></div>
+<div class="engine-card"><h4>🧠 Narrative Consciousness</h4><p>Internal monologue rewriting physics</p></div>
+<div class="engine-card"><h4>📖 Narrative Engine</h4><p>Story-driven parameter modulation</p></div>
+<div class="engine-card"><h4>💾 Persistence Engine</h4><p>State save/load & presets</p></div>
+<div class="engine-card"><h4>🎭 Personality Engine</h4><p>Species behavioral archetypes</p></div>
+<div class="engine-card"><h4>⏱️ Timeline Engine</h4><p>Temporal event sequencing</p></div>
+<div class="engine-card"><h4>📊 Emergent Param Engine</h4><p>Dynamic parameter emergence</p></div>
+</div>
+</div>
+
+<div class="section">
+<div class="section-title">🌟 Key Features</div>
+<div class="feature-grid">
+<div class="feature-card"><h4>🧬 Biological Lifecycle</h4><p>Three reproduction modes: Spontaneous Cloning (birth rate), Sexual Reproduction (DNA blending on collision), and Mitosis (high-energy splitting at 90+ energy).</p><div class="tag-row"><span class="mini-tag">Cloning</span><span class="mini-tag">Sexual</span><span class="mini-tag">Mitosis</span></div></div>
+<div class="feature-card"><h4>💥 Selective Chaos</h4><p>Precision entropy targeting across DNA Rules, DNA Grid, and Physics systems. Controlled evolutionary pressure for emergent complexity.</p><div class="tag-row"><span class="mini-tag">DNA Drift</span><span class="mini-tag">Grid Rewire</span><span class="mini-tag">Physics Fluctuation</span></div></div>
+<div class="feature-card"><h4>🎨 Neon-Noir Aesthetics</h4><p>Sub-pixel rendering, dynamic neon bloom based on energy state, signal-driven glow intensity, and high-fidelity particle movement.</p><div class="tag-row"><span class="mini-tag">Sub-pixel</span><span class="mini-tag">Bloom</span><span class="mini-tag">Signal Glow</span></div></div>
+<div class="feature-card"><h4>🌌 Emergent Structures</h4><p>Macro-scale patterns from local rules: Crystalline Lattices, Primordial Soups, Neural Clouds, and Stellar Engines with fusion ignition.</p><div class="tag-row"><span class="mini-tag">Crystals</span><span class="mini-tag">Soups</span><span class="mini-tag">Neural</span><span class="mini-tag">Stellar</span></div></div>
+<div class="feature-card"><h4>🌍 5 Distribution Modes</h4><p>Soup (random), Grid (structured), Big Bang (explosive), Bipolar (dual source), Galaxy (spiral) — each with per-axis spread controls.</p><div class="tag-row"><span class="mini-tag">Soup</span><span class="mini-tag">Grid</span><span class="mini-tag">Big Bang</span><span class="mini-tag">Bipolar</span><span class="mini-tag">Galaxy</span></div></div>
+<div class="feature-card"><h4>📡 Signal Communication</h4><p>4 tuning channels, configurable propagation speed, neighborhood radius, signal decay, and memory — enabling bio-electrical network simulation.</p><div class="tag-row"><span class="mini-tag">4 Channels</span><span class="mini-tag">Propagation</span><span class="mini-tag">Memory</span></div></div>
+</div>
+</div>
+
+<div class="footer">Generated 2026-07-28 · VEPA2 Progress Dashboard · Vector Emergent Physics Automata</div>
+</div>
+<script>
+</script>
+</body>
+</html>

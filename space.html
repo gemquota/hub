@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SPACE — Progress Dashboard</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:linear-gradient(135deg,#0a0a1a 0%,#1a1a3e 50%,#0a0a1a 100%);color:#e0e0e0;min-height:100vh;padding:2rem}
+.container{max-width:1200px;margin:0 auto}
+a{color:#3178c6;text-decoration:none}a:hover{text-decoration:underline}
+.back-link{display:inline-block;margin-bottom:1.5rem;font-size:0.9rem;opacity:0.7}
+.back-link:hover{opacity:1;text-decoration:none}
+
+/* Hero */
+.hero{text-align:center;padding:3rem 1rem 2rem;position:relative}
+.hero h1{font-size:2.8rem;background:linear-gradient(135deg,#3178c6,#7b2fff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:0.5rem}
+.hero .subtitle{font-size:1.1rem;color:#aaa;margin-bottom:0.5rem}
+.hero .version{display:inline-block;background:rgba(123,47,255,0.15);border:1px solid rgba(123,47,255,0.3);border-radius:20px;padding:0.3rem 1rem;font-size:0.85rem;color:#b8a8ff}
+.hero .tagline{margin-top:1rem;font-size:0.95rem;color:#888;max-width:700px;margin-left:auto;margin-right:auto}
+
+/* Stats Grid */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin:2rem 0}
+.stat-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:1.2rem;text-align:center;transition:transform 0.2s,border-color 0.2s}
+.stat-card:hover{transform:translateY(-2px);border-color:rgba(49,120,198,0.4)}
+.stat-card .number{font-size:2rem;font-weight:700;color:#3178c6}
+.stat-card .number.purple{color:#7b2fff}
+.stat-card .number.green{color:#2ecc71}
+.stat-card .label{font-size:0.8rem;color:#888;margin-top:0.3rem;text-transform:uppercase;letter-spacing:0.05em}
+.stat-card .detail{font-size:0.75rem;color:#666;margin-top:0.2rem}
+
+/* Section */
+section{margin:3rem 0}
+section h2{font-size:1.5rem;margin-bottom:1.2rem;padding-bottom:0.5rem;border-bottom:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;gap:0.5rem}
+
+/* Phase Timeline */
+.timeline{display:flex;flex-direction:column;gap:0.6rem}
+.timeline-row{display:flex;align-items:center;gap:1rem}
+.timeline-label{min-width:200px;font-size:0.85rem;text-align:right;color:#bbb}
+.timeline-bar-wrap{flex:1;background:rgba(255,255,255,0.05);border-radius:6px;height:36px;position:relative;overflow:hidden}
+.timeline-bar{height:100%;border-radius:6px;display:flex;align-items:center;padding:0 0.8rem;font-size:0.78rem;font-weight:600;color:#fff;transition:width 1.5s cubic-bezier(0.22,1,0.36,1)}
+.timeline-bar.complete{background:linear-gradient(90deg,#2ecc71,#27ae60)}
+.timeline-bar .tests{margin-left:auto;font-weight:400;opacity:0.9}
+
+/* Code Distribution */
+.dist-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:center}
+.dist-bars{display:flex;flex-direction:column;gap:0.8rem}
+.dist-bar-row{display:flex;align-items:center;gap:0.8rem}
+.dist-bar-label{min-width:100px;font-size:0.85rem;color:#bbb;text-align:right}
+.dist-bar-track{flex:1;height:28px;background:rgba(255,255,255,0.05);border-radius:6px;overflow:hidden}
+.dist-bar-fill{height:100%;border-radius:6px;display:flex;align-items:center;padding:0 0.6rem;font-size:0.75rem;font-weight:600;color:#fff}
+.dist-legend{display:flex;flex-direction:column;gap:0.6rem}
+.dist-legend-item{display:flex;align-items:center;gap:0.6rem;font-size:0.9rem}
+.dist-dot{width:14px;height:14px;border-radius:3px;flex-shrink:0}
+
+/* Export Formats */
+.export-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+.export-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:1.5rem;text-align:center;transition:all 0.3s;cursor:default}
+.export-card:hover{border-color:rgba(49,120,198,0.5);background:rgba(49,120,198,0.05);transform:translateY(-3px)}
+.export-icon{font-size:2rem;margin-bottom:0.6rem}
+.export-card h3{font-size:1rem;margin-bottom:0.3rem}
+.export-card p{font-size:0.8rem;color:#888}
+.export-card .ext{display:inline-block;margin-top:0.5rem;background:rgba(123,47,255,0.12);border:1px solid rgba(123,47,255,0.25);border-radius:10px;padding:0.15rem 0.6rem;font-size:0.7rem;color:#b8a8ff;font-family:'SF Mono',Monaco,monospace}
+
+/* Architecture */
+.arch{background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:2rem;margin-top:1rem}
+.arch-flow{display:flex;align-items:center;justify-content:center;gap:0;flex-wrap:wrap;padding:1rem 0}
+.arch-node{background:linear-gradient(135deg,rgba(49,120,198,0.15),rgba(123,47,255,0.15));border:1px solid rgba(49,120,198,0.3);border-radius:10px;padding:1rem 1.2rem;text-align:center;min-width:120px;transition:all 0.3s}
+.arch-node:hover{border-color:#3178c6;transform:scale(1.05)}
+.arch-node .icon{font-size:1.5rem;margin-bottom:0.3rem}
+.arch-node .name{font-size:0.85rem;font-weight:600}
+.arch-node .desc{font-size:0.7rem;color:#888;margin-top:0.2rem}
+.arch-arrow{color:#3178c6;font-size:1.5rem;margin:0 0.3rem;opacity:0.6}
+
+/* Phase Cards */
+.phases-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:1.2rem}
+.phase-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:1.5rem;transition:all 0.3s}
+.phase-card:hover{border-color:rgba(46,204,113,0.4);background:rgba(46,204,113,0.03)}
+.phase-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.8rem}
+.phase-header h3{font-size:1.05rem}
+.phase-badge{background:rgba(46,204,113,0.15);border:1px solid rgba(46,204,113,0.3);border-radius:12px;padding:0.2rem 0.7rem;font-size:0.7rem;color:#2ecc71;font-weight:600}
+.phase-deliverables{list-style:none;padding:0}
+.phase-deliverables li{font-size:0.85rem;color:#bbb;padding:0.25rem 0;padding-left:1.2rem;position:relative}
+.phase-deliverables li::before{content:'✓';position:absolute;left:0;color:#2ecc71;font-size:0.8rem}
+.phase-tests{margin-top:0.8rem;padding-top:0.6rem;border-top:1px solid rgba(255,255,255,0.06);font-size:0.8rem;color:#888}
+.phase-tests strong{color:#2ecc71}
+
+/* LLM Providers */
+.providers-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem}
+.provider-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:1.5rem;text-align:center;transition:all 0.3s}
+.provider-card:hover{border-color:rgba(123,47,255,0.4);transform:translateY(-2px)}
+.provider-logo{font-size:2.2rem;margin-bottom:0.6rem}
+.provider-card h3{font-size:1rem;margin-bottom:0.4rem}
+.provider-card p{font-size:0.8rem;color:#888;line-height:1.4}
+.provider-tag{display:inline-block;margin-top:0.6rem;background:rgba(123,47,255,0.12);border:1px solid rgba(123,47,255,0.2);border-radius:8px;padding:0.15rem 0.5rem;font-size:0.7rem;color:#b8a8ff}
+
+/* Feature Matrix */
+.matrix-wrap{overflow-x:auto}
+.feature-matrix{width:100%;border-collapse:collapse;font-size:0.85rem}
+.feature-matrix th{text-align:left;padding:0.7rem 1rem;border-bottom:2px solid rgba(255,255,255,0.1);color:#bbb;font-weight:600}
+.feature-matrix td{padding:0.6rem 1rem;border-bottom:1px solid rgba(255,255,255,0.04)}
+.feature-matrix tr:hover td{background:rgba(255,255,255,0.02)}
+.check{color:#2ecc71;font-weight:700}
+.cross{color:#555}
+
+/* Footer */
+.footer{text-align:center;padding:2rem 0 1rem;border-top:1px solid rgba(255,255,255,0.06);margin-top:3rem;font-size:0.8rem;color:#555}
+.footer p{margin:0.3rem 0}
+
+/* Responsive */
+@media(max-width:768px){
+.stats{grid-template-columns:repeat(2,1fr)}
+.export-grid{grid-template-columns:repeat(2,1fr)}
+.providers-grid{grid-template-columns:repeat(2,1fr)}
+.phases-grid{grid-template-columns:1fr}
+.arch-flow{flex-direction:column}.arch-arrow{transform:rotate(90deg)}
+.hero h1{font-size:2rem}
+.timeline-label{min-width:120px;font-size:0.75rem}
+.dist-grid{grid-template-columns:1fr}
+}
+@media(max-width:480px){
+.stats{grid-template-columns:1fr}
+.export-grid{grid-template-columns:1fr}
+.providers-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<a href="../index.html" class="back-link">← Back to Index</a>
+
+<!-- Hero -->
+<section class="hero">
+  <h1>✨ SPACE — Prompt Creation Engine</h1>
+  <p class="subtitle">Superb Prompt Automatic Creation Engine</p>
+  <span class="version">v2.1.0 · TypeScript Monorepo · Strict Type Safety</span>
+  <p class="tagline">Transformed from a manually-operated, browser-only prompt elicitation framework into a programmable, LLM-augmented, multi-format specification engine</p>
+</section>
+
+<!-- Stats -->
+<div class="stats">
+  <div class="stat-card">
+    <div class="number">492</div>
+    <div class="label">Total Files</div>
+    <div class="detail">54 src · 13 test · 121 docs</div>
+  </div>
+  <div class="stat-card">
+    <div class="number purple">4,704</div>
+    <div class="label">Src Lines</div>
+    <div class="detail">TypeScript source</div>
+  </div>
+  <div class="stat-card">
+    <div class="number">1,630</div>
+    <div class="label">Test Lines</div>
+    <div class="detail">TypeScript tests</div>
+  </div>
+  <div class="stat-card">
+    <div class="number green">92 / 92</div>
+    <div class="label">Tests Passing</div>
+    <div class="detail">100% pass rate</div>
+  </div>
+  <div class="stat-card">
+    <div class="number">121</div>
+    <div class="label">Doc Files</div>
+    <div class="detail">Markdown documentation</div>
+  </div>
+  <div class="stat-card">
+    <div class="number green">7 / 7</div>
+    <div class="label">Phases Complete</div>
+    <div class="detail">Foundation → Web UI</div>
+  </div>
+  <div class="stat-card">
+    <div class="number purple">6</div>
+    <div class="label">Export Formats</div>
+    <div class="detail">JSON · MD · YAML · Prompt · HTML · Diff</div>
+  </div>
+  <div class="stat-card">
+    <div class="number">4</div>
+    <div class="label">LLM Providers</div>
+    <div class="detail">OpenAI · Anthropic · Template · Null</div>
+  </div>
+</div>
+
+<!-- Phase Completion Timeline -->
+<section>
+  <h2>📊 Phase Completion Timeline</h2>
+  <div class="timeline">
+    <div class="timeline-row">
+      <div class="timeline-label">Phase 0 · Foundation</div>
+      <div class="timeline-bar-wrap"><div class="timeline-bar complete" style="width:100%">100%<span class="tests">6/6 tests</span></div></div>
+    </div>
+    <div class="timeline-row">
+      <div class="timeline-label">Phase 1 · Execution Engine</div>
+      <div class="timeline-bar-wrap"><div class="timeline-bar complete" style="width:100%">100%<span class="tests">20/20 tests</span></div></div>
+    </div>
+    <div class="timeline-row">
+      <div class="timeline-label">Phase 2 · LLM Integration</div>
+      <div class="timeline-bar-wrap"><div class="timeline-bar complete" style="width:100%">100%<span class="tests">—</span></div></div>
+    </div>
+    <div class="timeline-row">
+      <div class="timeline-label">Phase 3 · Export Engine</div>
+      <div class="timeline-bar-wrap"><div class="timeline-bar complete" style="width:100%">100%<span class="tests">—</span></div></div>
+    </div>
+    <div class="timeline-row">
+      <div class="timeline-label">Phase 4 · Intelligence Layer</div>
+      <div class="timeline-bar-wrap"><div class="timeline-bar complete" style="width:100%">100%<span class="tests">—</span></div></div>
+    </div>
+    <div class="timeline-row">
+      <div class="timeline-label">Phase 5 · Persistence</div>
+      <div class="timeline-bar-wrap"><div class="timeline-bar complete" style="width:100%">100%<span class="tests">—</span></div></div>
+    </div>
+    <div class="timeline-row">
+      <div class="timeline-label">Phase 6 · Web UI + Terminal</div>
+      <div class="timeline-bar-wrap"><div class="timeline-bar complete" style="width:100%">100%<span class="tests">—</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- Code Distribution -->
+<section>
+  <h2>📁 Code Distribution</h2>
+  <div class="dist-grid">
+    <div class="dist-bars">
+      <div class="dist-bar-row">
+        <div class="dist-bar-label">Source TS</div>
+        <div class="dist-bar-track"><div class="dist-bar-fill" style="width:71%;background:linear-gradient(90deg,#3178c6,#2874a6)">4,704 lines</div></div>
+      </div>
+      <div class="dist-bar-row">
+        <div class="dist-bar-label">Test TS</div>
+        <div class="dist-bar-track"><div class="dist-bar-fill" style="width:24.5%;background:linear-gradient(90deg,#2ecc71,#27ae60)">1,630 lines</div></div>
+      </div>
+      <div class="dist-bar-row">
+        <div class="dist-bar-label">UI / Server</div>
+        <div class="dist-bar-track"><div class="dist-bar-fill" style="width:28%;background:linear-gradient(90deg,#e67e22,#d35400)">HTML · JS · CSS</div></div>
+      </div>
+      <div class="dist-bar-row">
+        <div class="dist-bar-label">Documentation</div>
+        <div class="dist-bar-track"><div class="dist-bar-fill" style="width:55%;background:linear-gradient(90deg,#7b2fff,#6c3dd8)">121 Markdown files</div></div>
+      </div>
+    </div>
+    <div class="dist-legend">
+      <div class="dist-legend-item"><div class="dist-dot" style="background:#3178c6"></div><span><strong>54</strong> TypeScript source files</span></div>
+      <div class="dist-legend-item"><div class="dist-dot" style="background:#2ecc71"></div><span><strong>13</strong> test files · <strong>92</strong> tests</span></div>
+      <div class="dist-legend-item"><div class="dist-dot" style="background:#e67e22"></div><span><strong>Web UI</strong> — index.html, server.mjs, CLI commands</span></div>
+      <div class="dist-legend-item"><div class="dist-dot" style="background:#7b2fff"></div><span><strong>121</strong> Markdown documentation files</span></div>
+      <div class="dist-legend-item" style="margin-top:0.5rem;padding-top:0.5rem;border-top:1px solid rgba(255,255,255,0.06);font-size:0.85rem;color:#888"><span>Total: <strong>36,664</strong> lines across all file types</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- Export Format Showcase -->
+<section>
+  <h2>📦 Export Formats</h2>
+  <div class="export-grid">
+    <div class="export-card">
+      <div class="export-icon">📋</div>
+      <h3>JSON</h3>
+      <p>Structured data export with full schema validation</p>
+      <span class="ext">.json</span>
+    </div>
+    <div class="export-card">
+      <div class="export-icon">📝</div>
+      <h3>Markdown</h3>
+      <p>Human-readable specification with formatted sections</p>
+      <span class="ext">.md</span>
+    </div>
+    <div class="export-card">
+      <div class="export-icon">⚙️</div>
+      <h3>YAML</h3>
+      <p>Compact, configuration-friendly format</p>
+      <span class="ext">.yaml</span>
+    </div>
+    <div class="export-card">
+      <div class="export-icon">🎯</div>
+      <h3>Prompt</h3>
+      <p>Ready-to-use prompt text with embedded context</p>
+      <span class="ext">.prompt</span>
+    </div>
+    <div class="export-card">
+      <div class="export-icon">🌐</div>
+      <h3>HTML</h3>
+      <p>Styled presentation for sharing and review</p>
+      <span class="ext">.html</span>
+    </div>
+    <div class="export-card">
+      <div class="export-icon">🔀</div>
+      <h3>Diff</h3>
+      <p>Incremental change tracking between versions</p>
+      <span class="ext">.diff</span>
+    </div>
+  </div>
+</section>
+
+<!-- Architecture -->
+<section>
+  <h2>🏗️ Architecture Pipeline</h2>
+  <div class="arch">
+    <div class="arch-flow">
+      <div class="arch-node">
+        <div class="icon">📐</div>
+        <div class="name">Framework</div>
+        <div class="desc">Schema v2 · 33 Types<br>Topological Sort</div>
+      </div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-node">
+        <div class="icon">⚡</div>
+        <div class="name">Engine</div>
+        <div class="desc">Session Manager<br>Series State Machine<br>326-Question Flow</div>
+      </div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-node">
+        <div class="icon">🤖</div>
+        <div class="name">LLM Layer</div>
+        <div class="desc">4 Providers<br>Refiner · Synthesizer<br>Quality Scorer</div>
+      </div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-node">
+        <div class="icon">📤</div>
+        <div class="name">Export</div>
+        <div class="desc">6 Formats<br>JSON · MD · YAML<br>Prompt · HTML · Diff</div>
+      </div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-node">
+        <div class="icon">🧠</div>
+        <div class="name">Intelligence</div>
+        <div class="desc">Analytics<br>Contradiction Detection<br>Recommendations</div>
+      </div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-node">
+        <div class="icon">💾</div>
+        <div class="name">Persistence</div>
+        <div class="desc">Filesystem · Snapshots<br>Archives · Auto-save</div>
+      </div>
+    </div>
+    <p style="text-align:center;margin-top:1.2rem;font-size:0.8rem;color:#666">Web UI (index.html) · Terminal UI · CLI (5 commands) · server.mjs</p>
+  </div>
+</section>
+
+<!-- Phase Detail Cards -->
+<section>
+  <h2>📋 Phase Details</h2>
+  <div class="phases-grid">
+
+    <div class="phase-card">
+      <div class="phase-header">
+        <h3>Phase 0 · Foundation</h3>
+        <span class="phase-badge">✓ Complete</span>
+      </div>
+      <ul class="phase-deliverables">
+        <li>Schema v2 — 33 type definitions</li>
+        <li>Framework loader with validation</li>
+        <li>Topological sort for dependencies</li>
+        <li>Artifact mapping — 66 entries</li>
+        <li>CLI — 5 commands</li>
+      </ul>
+      <div class="phase-tests"><strong>6/6</strong> tests passing</div>
+    </div>
+
+    <div class="phase-card">
+      <div class="phase-header">
+        <h3>Phase 1 · Execution Engine</h3>
+        <span class="phase-badge">✓ Complete</span>
+      </div>
+      <ul class="phase-deliverables">
+        <li>Session manager with lifecycle</li>
+        <li>Series state machine</li>
+        <li>Round &amp; question routing</li>
+        <li>Artifact accumulation</li>
+        <li>Answer validation</li>
+        <li>Progress metrics</li>
+        <li>Core engine — 326-question flow</li>
+      </ul>
+      <div class="phase-tests"><strong>20/20</strong> tests passing</div>
+    </div>
+
+    <div class="phase-card">
+      <div class="phase-header">
+        <h3>Phase 2 · LLM Integration</h3>
+        <span class="phase-badge">✓ Complete</span>
+      </div>
+      <ul class="phase-deliverables">
+        <li>Provider abstraction layer</li>
+        <li>OpenAI provider</li>
+        <li>Anthropic provider</li>
+        <li>Template &amp; Null providers</li>
+        <li>Question refiner</li>
+        <li>Artifact synthesizer</li>
+        <li>Quality scorer &amp; spec generator</li>
+      </ul>
+      <div class="phase-tests"><strong>Tests passing</strong></div>
+    </div>
+
+    <div class="phase-card">
+      <div class="phase-header">
+        <h3>Phase 3 · Export Engine</h3>
+        <span class="phase-badge">✓ Complete</span>
+      </div>
+      <ul class="phase-deliverables">
+        <li>JSON export with validation</li>
+        <li>Markdown export</li>
+        <li>YAML export</li>
+        <li>Prompt text export</li>
+        <li>HTML presentation export</li>
+        <li>Diff export for versioning</li>
+      </ul>
+      <div class="phase-tests"><strong>6 formats</strong> implemented</div>
+    </div>
+
+    <div class="phase-card">
+      <div class="phase-header">
+        <h3>Phase 4 · Intelligence Layer</h3>
+        <span class="phase-badge">✓ Complete</span>
+      </div>
+      <ul class="phase-deliverables">
+        <li>Analytics engine</li>
+        <li>Contradiction detection</li>
+        <li>Recommendation system</li>
+      </ul>
+      <div class="phase-tests"><strong>Tests passing</strong></div>
+    </div>
+
+    <div class="phase-card">
+      <div class="phase-header">
+        <h3>Phase 5 · Persistence</h3>
+        <span class="phase-badge">✓ Complete</span>
+      </div>
+      <ul class="phase-deliverables">
+        <li>Filesystem persistence</li>
+        <li>Session snapshots</li>
+        <li>Archive management</li>
+        <li>Auto-save capability</li>
+      </ul>
+      <div class="phase-tests"><strong>Tests passing</strong></div>
+    </div>
+
+    <div class="phase-card">
+      <div class="phase-header">
+        <h3>Phase 6 · Web UI + Terminal</h3>
+        <span class="phase-badge">✓ Complete</span>
+      </div>
+      <ul class="phase-deliverables">
+        <li>index.html — web interface</li>
+        <li>server.mjs — local dev server</li>
+        <li>auto-answers — quick fill</li>
+        <li>gen-answers — bulk generation</li>
+        <li>fill-and-export — end-to-end flow</li>
+        <li>gen-rsi-docs — documentation</li>
+      </ul>
+      <div class="phase-tests"><strong>UI + CLI</strong> commands</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- LLM Providers -->
+<section>
+  <h2>🤖 LLM Providers</h2>
+  <div class="providers-grid">
+    <div class="provider-card">
+      <div class="provider-logo">🟢</div>
+      <h3>OpenAI</h3>
+      <p>GPT-4 and GPT-3.5 models for question refinement and artifact synthesis</p>
+      <span class="provider-tag">Production Ready</span>
+    </div>
+    <div class="provider-card">
+      <div class="provider-logo">🟤</div>
+      <h3>Anthropic</h3>
+      <p>Claude models for high-quality, nuanced prompt generation</p>
+      <span class="provider-tag">Production Ready</span>
+    </div>
+    <div class="provider-card">
+      <div class="provider-logo">📋</div>
+      <h3>Template</h3>
+      <p>Deterministic template-based generation for offline and testing scenarios</p>
+      <span class="provider-tag">Built-in</span>
+    </div>
+    <div class="provider-card">
+      <div class="provider-logo">⭕</div>
+      <h3>Null</h3>
+      <p>Passthrough provider for unit tests and development without API keys</p>
+      <span class="provider-tag">Dev / Testing</span>
+    </div>
+  </div>
+</section>
+
+<!-- Feature Matrix -->
+<section>
+  <h2>✅ Feature Matrix</h2>
+  <div class="matrix-wrap">
+    <table class="feature-matrix">
+      <thead>
+        <tr><th>Feature</th><th>Capability</th><th>Status</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Schema Type Safety</td><td>33 TypeScript type definitions, strict mode</td><td class="check">✓</td></tr>
+        <tr><td>Topological Sort</td><td>Dependency resolution for framework loading</td><td class="check">✓</td></tr>
+        <tr><td>326-Question Methodology</td><td>Comprehensive probe framework as knowledge backbone</td><td class="check">✓</td></tr>
+        <tr><td>State Machine</td><td>Series state machine for session management</td><td class="check">✓</td></tr>
+        <tr><td>LLM Integration</td><td>4 providers with abstraction layer</td><td class="check">✓</td></tr>
+        <tr><td>Question Refinement</td><td>LLM-powered question improvement</td><td class="check">✓</td></tr>
+        <tr><td>Artifact Synthesis</td><td>Automated artifact generation from answers</td><td class="check">✓</td></tr>
+        <tr><td>Quality Scoring</td><td>Automated quality assessment of outputs</td><td class="check">✓</td></tr>
+        <tr><td>Multi-Format Export</td><td>6 formats (JSON, MD, YAML, Prompt, HTML, Diff)</td><td class="check">✓</td></tr>
+        <tr><td>Contradiction Detection</td><td>Intelligent conflict identification</td><td class="check">✓</td></tr>
+        <tr><td>Recommendations</td><td>AI-driven improvement suggestions</td><td class="check">✓</td></tr>
+        <tr><td>Filesystem Persistence</td><td>Snapshots, archives, auto-save</td><td class="check">✓</td></tr>
+        <tr><td>Web Interface</td><td>Full web UI with server</td><td class="check">✓</td></tr>
+        <tr><td>CLI Commands</td><td>5 commands for automation</td><td class="check">✓</td></tr>
+        <tr><td>Test Coverage</td><td>92 tests, 100% passing</td><td class="check">✓</td></tr>
+        <tr><td>Monorepo Structure</td><td>TypeScript, strict type safety</td><td class="check">✓</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <p><strong>SPACE</strong> — Superb Prompt Automatic Creation Engine v2.1.0</p>
+  <p>492 files · 36,664 lines · 7 phases complete · 92/92 tests passing</p>
+  <p style="margin-top:0.5rem"><a href="../index.html">← Back to Index</a></p>
+</footer>
+
+</div>
+</body>
+</html>

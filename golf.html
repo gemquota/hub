@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GOLF — Bonus Scraper System Dashboard</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:linear-gradient(135deg,#0a0a1a 0%,#1a1a3e 50%,#0a0a1a 100%);color:#e0e0e0;min-height:100vh;padding:2rem}
+
+/* Back link */
+.back-link{display:inline-flex;align-items:center;gap:.5rem;color:#ffd93d;text-decoration:none;font-size:.9rem;margin-bottom:2rem;transition:color .2s}
+.back-link:hover{color:#ffa500}
+
+/* Hero */
+.hero{text-align:center;padding:3rem 2rem 2rem;margin-bottom:3rem;position:relative}
+.hero::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:120px;height:4px;background:linear-gradient(90deg,#ffd93d,#ffa500);border-radius:2px}
+.hero h1{font-size:2.8rem;background:linear-gradient(135deg,#ffd93d,#ffa500);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.5rem}
+.hero .subtitle{color:#aaa;font-size:1.1rem;max-width:700px;margin:0 auto}
+.hero .tags{display:flex;justify-content:center;gap:.6rem;margin-top:1.2rem;flex-wrap:wrap}
+.hero .tag{padding:.3rem .8rem;border-radius:20px;font-size:.78rem;font-weight:600;border:1px solid}
+.tag-python{color:#3776ab;border-color:#3776ab44;background:#3776ab11}
+.tag-react{color:#61dafb;border-color:#61dafb44;background:#61dafb11}
+.tag-sqlite{color:#003b57;border-color:#ffd93d44;background:#ffd93d11}
+.tag-fts{color:#ffd93d;border-color:#ffd93d44;background:#ffd93d11}
+.tag-proxy{color:#ffa500;border-color:#ffa50044;background:#ffa50011}
+.tag-export{color:#4ecdc4;border-color:#4ecdc444;background:#4ecdc411}
+
+/* Stats grid */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:3rem}
+.stat-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:1.5rem;text-align:center;transition:transform .2s,border-color .3s;position:relative;overflow:hidden}
+.stat-card:hover{transform:translateY(-3px);border-color:rgba(255,215,61,.3)}
+.stat-card .icon{font-size:1.8rem;margin-bottom:.5rem}
+.stat-card .value{font-size:2rem;font-weight:800;background:linear-gradient(135deg,#ffd93d,#ffa500);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.stat-card .label{font-size:.82rem;color:#888;margin-top:.25rem}
+.stat-card.highlight{border-color:#ffd93d44}
+.stat-card.highlight::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#ffd93d,#ffa500)}
+
+/* Sections */
+.section{margin-bottom:3rem}
+.section-title{font-size:1.5rem;font-weight:700;margin-bottom:1.5rem;padding-bottom:.5rem;border-bottom:2px solid rgba(255,215,61,.2);display:flex;align-items:center;gap:.6rem}
+.section-title .emoji{font-size:1.3rem}
+
+/* Charts row */
+.charts-row{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:3rem}
+.chart-container{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:1.5rem}
+.chart-container h3{font-size:1rem;color:#ffd93d;margin-bottom:1rem;text-align:center}
+.chart-container canvas{width:100%!important;max-height:280px}
+
+/* Pipeline */
+.pipeline{display:flex;align-items:center;justify-content:center;gap:0;margin:2rem 0;flex-wrap:wrap;padding:1.5rem;background:rgba(255,255,255,.03);border-radius:16px;border:1px solid rgba(255,255,255,.06)}
+.pipeline-step{display:flex;flex-direction:column;align-items:center;gap:.4rem;padding:.8rem 1.2rem;background:rgba(255,215,61,.06);border:1px solid rgba(255,215,61,.15);border-radius:12px;min-width:110px;transition:transform .2s,border-color .3s}
+.pipeline-step:hover{transform:translateY(-2px);border-color:#ffd93d55}
+.pipeline-step .step-icon{font-size:1.6rem}
+.pipeline-step .step-name{font-size:.82rem;font-weight:600;color:#e0e0e0}
+.pipeline-step .step-desc{font-size:.68rem;color:#888}
+.pipeline-arrow{font-size:1.2rem;color:#ffa500;margin:0 .3rem;flex-shrink:0}
+
+/* Schema cards */
+.schema-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1rem}
+.schema-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:1.2rem;position:relative;overflow:hidden;transition:transform .2s}
+.schema-card:hover{transform:translateY(-3px)}
+.schema-card .table-name{font-size:1.1rem;font-weight:700;color:#ffd93d;font-family:'SF Mono',Monaco,'Cascadia Code',monospace}
+.schema-card .table-full{font-size:.78rem;color:#888;margin-top:.15rem}
+.schema-card .record-count{font-size:1.5rem;font-weight:800;color:#ffa500;margin:.6rem 0 .3rem}
+.schema-card .record-label{font-size:.75rem;color:#888}
+.schema-card .bar-bg{height:4px;background:rgba(255,255,255,.08);border-radius:2px;margin-top:.8rem;overflow:hidden}
+.schema-card .bar-fill{height:100%;background:linear-gradient(90deg,#ffd93d,#ffa500);border-radius:2px;transition:width .8s ease}
+
+/* Architecture cards */
+.arch-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1rem}
+.arch-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:1.2rem;transition:transform .2s}
+.arch-card:hover{transform:translateY(-3px)}
+.arch-card .arch-icon{font-size:1.5rem;margin-bottom:.5rem}
+.arch-card .arch-name{font-size:.95rem;font-weight:700;color:#e0e0e0}
+.arch-card .arch-file{font-size:.78rem;color:#888;font-family:'SF Mono',monospace;margin:.25rem 0}
+.arch-card .arch-lines{font-size:.78rem;color:#ffd93d;font-weight:600}
+.arch-card .arch-desc{font-size:.75rem;color:#888;margin-top:.5rem;line-height:1.4}
+.arch-card .arch-features{display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.6rem}
+.arch-card .feat{font-size:.65rem;padding:.2rem .5rem;background:rgba(255,215,61,.08);border:1px solid rgba(255,215,61,.15);border-radius:8px;color:#ccc}
+
+/* Viewer apps */
+.viewer-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:1rem}
+.viewer-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:1.5rem;position:relative;overflow:hidden;transition:transform .2s}
+.viewer-card:hover{transform:translateY(-3px)}
+.viewer-card .viewer-header{display:flex;align-items:center;gap:.8rem;margin-bottom:1rem}
+.viewer-card .viewer-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.5rem}
+.viewer-card .viewer-icon.dayne{background:linear-gradient(135deg,#ffd93d22,#ffa50022);border:1px solid #ffd93d44}
+.viewer-card .viewer-icon.sarah{background:linear-gradient(135deg,#4ecdc422,#3776ab22);border:1px solid #4ecdc444}
+.viewer-card .viewer-title{font-size:1.1rem;font-weight:700}
+.viewer-card .viewer-stack{font-size:.78rem;color:#888;margin-top:.1rem}
+.viewer-card .viewer-features{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.8rem}
+.viewer-card .vf{font-size:.72rem;padding:.25rem .6rem;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:8px;color:#bbb}
+
+/* Critique system */
+.critique-container{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:1.5rem;margin-bottom:1rem}
+.critique-header{display:flex;align-items:center;gap:.8rem;margin-bottom:1rem}
+.critique-badge{padding:.3rem .8rem;background:linear-gradient(135deg,#ffd93d22,#ffa50022);border:1px solid #ffd93d44;border-radius:20px;font-size:.8rem;color:#ffd93d;font-weight:600}
+.critique-stats{display:flex;gap:2rem;margin-bottom:1rem}
+.critique-stat .cs-val{font-size:1.3rem;font-weight:800;color:#ffd93d}
+.critique-stat .cs-label{font-size:.75rem;color:#888}
+.domains-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.5rem}
+.domain-chip{display:flex;align-items:center;gap:.5rem;padding:.5rem .7rem;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:10px;transition:border-color .2s}
+.domain-chip:hover{border-color:#ffd93d44}
+.domain-chip .dc-avatar{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:700;color:#0a0a1a;flex-shrink:0}
+.domain-chip .dc-name{font-size:.78rem;color:#ccc;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.domain-chip .dc-role{font-size:.65rem;color:#888}
+
+/* Activity timeline */
+.timeline{position:relative;padding-left:2rem;margin-bottom:1rem}
+.timeline::before{content:'';position:absolute;left:7px;top:0;bottom:0;width:2px;background:linear-gradient(180deg,#ffd93d,#ffa500,transparent)}
+.timeline-item{position:relative;margin-bottom:1.2rem;padding-left:1.5rem}
+.timeline-item::before{content:'';position:absolute;left:-1.6rem;top:.4rem;width:10px;height:10px;border-radius:50%;border:2px solid #ffd93d;background:#1a1a3e}
+.timeline-item.active::before{background:#ffd93d;box-shadow:0 0 8px #ffd93d66}
+.timeline-item .tl-date{font-size:.72rem;color:#888;font-family:'SF Mono',monospace}
+.timeline-item .tl-title{font-size:.88rem;font-weight:600;color:#e0e0e0;margin-top:.15rem}
+.timeline-item .tl-desc{font-size:.78rem;color:#888;margin-top:.1rem}
+.timeline-item .tl-entries{display:inline-flex;align-items:center;gap:.3rem;padding:.15rem .5rem;background:rgba(255,215,61,.08);border:1px solid rgba(255,215,61,.15);border-radius:6px;font-size:.68rem;color:#ffd93d;margin-top:.3rem}
+
+/* Config cards */
+.config-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1rem}
+.config-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:1.2rem;transition:transform .2s}
+.config-card:hover{transform:translateY(-2px)}
+.config-card .cc-title{font-size:.9rem;font-weight:700;color:#ffa500;margin-bottom:.6rem;display:flex;align-items:center;gap:.4rem}
+.config-card .cc-items{list-style:none}
+.config-card .cc-items li{font-size:.78rem;color:#bbb;padding:.2rem 0;display:flex;align-items:center;gap:.4rem}
+.config-card .cc-items li::before{content:'›';color:#ffd93d;font-weight:700}
+
+/* Footer */
+.footer{text-align:center;padding:2rem;margin-top:2rem;border-top:1px solid rgba(255,255,255,.08);color:#666;font-size:.8rem}
+.footer a{color:#ffd93d;text-decoration:none}
+.footer a:hover{color:#ffa500}
+
+/* Responsive */
+@media(max-width:1100px){
+.stats-grid{grid-template-columns:repeat(2,1fr)}
+.schema-grid{grid-template-columns:repeat(2,1fr)}
+.arch-grid{grid-template-columns:repeat(2,1fr)}
+.config-grid{grid-template-columns:1fr}
+}
+@media(max-width:700px){
+body{padding:1rem}
+.hero h1{font-size:2rem}
+.stats-grid{grid-template-columns:1fr 1fr}
+.charts-row{grid-template-columns:1fr}
+.schema-grid,.arch-grid{grid-template-columns:1fr}
+.viewer-grid{grid-template-columns:1fr}
+.critique-stats{flex-direction:column;gap:.5rem}
+.pipeline{flex-direction:column}
+.pipeline-arrow{transform:rotate(90deg)}
+}
+
+.inline-stats{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;padding:.5rem 0}
+.stat-item{text-align:center;background:rgba(255,255,255,.03);border-radius:10px;padding:.8rem .4rem}
+.stat-val{font-size:1.3rem;font-weight:800;display:block}
+.stat-lbl{font-size:.65rem;color:#888;margin-top:2px}
+</style>
+</head>
+<body>
+
+<a href="index.html" class="back-link">← Back to Dashboards</a>
+
+<!-- Hero -->
+<section class="hero">
+  <h1>⛳ GOLF — Bonus Scraper System</h1>
+  <p class="subtitle">Web scraper for bonus data extraction with SQLite storage, proxy rotation, FTS search, and two React viewer apps</p>
+  <div class="tags">
+    <span class="tag tag-python">Python</span>
+    <span class="tag tag-react">React</span>
+    <span class="tag tag-sqlite">SQLite</span>
+    <span class="tag tag-fts">FTS5</span>
+    <span class="tag tag-proxy">Proxy Rotation</span>
+    <span class="tag tag-export">CSV Export</span>
+  </div>
+</section>
+
+<!-- Stats -->
+<section class="stats-grid">
+  <div class="stat-card highlight">
+    <div class="icon">📁</div>
+    <div class="value">1,538</div>
+    <div class="label">Total Files</div>
+  </div>
+  <div class="stat-card highlight">
+    <div class="icon">📝</div>
+    <div class="value">139K</div>
+    <div class="label">Lines of Code</div>
+  </div>
+  <div class="stat-card highlight">
+    <div class="icon">🗄️</div>
+    <div class="value">29,385</div>
+    <div class="label">Database Records</div>
+  </div>
+  <div class="stat-card">
+    <div class="icon">📊</div>
+    <div class="value">4</div>
+    <div class="label">DB Tables</div>
+  </div>
+  <div class="stat-card">
+    <div class="icon">🧪</div>
+    <div class="value">24</div>
+    <div class="label">Test Files</div>
+  </div>
+  <div class="stat-card">
+    <div class="icon">🖥️</div>
+    <div class="value">2</div>
+    <div class="label">Viewer Apps</div>
+  </div>
+  <div class="stat-card">
+    <div class="icon">📋</div>
+    <div class="value">26</div>
+    <div class="label">Doc Files</div>
+  </div>
+  <div class="stat-card">
+    <div class="icon">📦</div>
+    <div class="value">138</div>
+    <div class="label">JS Lines (Viewers)</div>
+  </div>
+</section>
+
+<!-- Charts Row 1 -->
+<div class="charts-row">
+  <div class="chart-container">
+    <h3>Database Table Sizes (Records)</h3>
+    <canvas id="dbChart"></canvas>
+  </div>
+  <div class="chart-container">
+    <h3>Code Breakdown (Lines)</h3>
+    <canvas id="codeChart"></canvas>
+  </div>
+</div>
+
+<!-- Data Pipeline -->
+<section class="section">
+  <div class="section-title"><span class="emoji">🔄</span> Data Pipeline Flow</div>
+  <div class="pipeline">
+    <div class="pipeline-step">
+      <div class="step-icon">⚙️</div>
+      <div class="step-name">Config</div>
+      <div class="step-desc">57 lines</div>
+    </div>
+    <div class="pipeline-arrow">→</div>
+    <div class="pipeline-step">
+      <div class="step-icon">🕷️</div>
+      <div class="step-name">Scraper</div>
+      <div class="step-desc">278 lines</div>
+    </div>
+    <div class="pipeline-arrow">→</div>
+    <div class="pipeline-step">
+      <div class="step-icon">🌐</div>
+      <div class="step-name">Network</div>
+      <div class="step-desc">123 lines</div>
+    </div>
+    <div class="pipeline-arrow">→</div>
+    <div class="pipeline-step">
+      <div class="step-icon">🗄️</div>
+      <div class="step-name">Database</div>
+      <div class="step-desc">170 lines</div>
+    </div>
+    <div class="pipeline-arrow">→</div>
+    <div class="pipeline-step">
+      <div class="step-icon">📤</div>
+      <div class="step-name">Export</div>
+      <div class="step-desc">CSV / FTS</div>
+    </div>
+    <div class="pipeline-arrow">→</div>
+    <div class="pipeline-step">
+      <div class="step-icon">👁️</div>
+      <div class="step-name">Viewer</div>
+      <div class="step-desc">React Apps</div>
+    </div>
+  </div>
+</section>
+
+<!-- Database Schema -->
+<section class="section">
+  <div class="section-title"><span class="emoji">🗄️</span> Database Schema — <code>base.db</code></div>
+  <div class="schema-grid">
+    <div class="schema-card">
+      <div class="table-name">b</div>
+      <div class="table-full">Bonuses</div>
+      <div class="record-count">313</div>
+      <div class="record-label">records</div>
+      <div class="bar-bg"><div class="bar-fill" style="width:1.1%"></div></div>
+    </div>
+    <div class="schema-card">
+      <div class="table-name">l</div>
+      <div class="table-full">Links / Logs</div>
+      <div class="record-count">26,833</div>
+      <div class="record-label">records</div>
+      <div class="bar-bg"><div class="bar-fill" style="width:91.3%"></div></div>
+    </div>
+    <div class="schema-card">
+      <div class="table-name">s</div>
+      <div class="table-full">Sources / Sessions</div>
+      <div class="record-count">934</div>
+      <div class="record-label">records</div>
+      <div class="bar-bg"><div class="bar-fill" style="width:3.2%"></div></div>
+    </div>
+    <div class="schema-card">
+      <div class="table-name">t</div>
+      <div class="table-full">Targets</div>
+      <div class="record-count">1,305</div>
+      <div class="record-label">records</div>
+      <div class="bar-bg"><div class="bar-fill" style="width:4.4%"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- Scraper Architecture -->
+<section class="section">
+  <div class="section-title"><span class="emoji">🏗️</span> Scraper Architecture</div>
+  <div class="arch-grid">
+    <div class="arch-card">
+      <div class="arch-icon">⚙️</div>
+      <div class="arch-name">Configuration</div>
+      <div class="arch-file">config.py</div>
+      <div class="arch-lines">57 lines</div>
+      <div class="arch-desc">Central config for delays, proxy lists, user agents, max withdrawals, and scraper parameters.</div>
+      <div class="arch-features">
+        <span class="feat">Delays</span>
+        <span class="feat">Proxies</span>
+        <span class="feat">User Agents</span>
+        <span class="feat">Limits</span>
+      </div>
+    </div>
+    <div class="arch-card">
+      <div class="arch-icon">🌐</div>
+      <div class="arch-name">Network Layer</div>
+      <div class="arch-file">network.py</div>
+      <div class="arch-lines">123 lines</div>
+      <div class="arch-desc">HTTP requests with proxy rotation, AbuseIPDB checking, and request throttling.</div>
+      <div class="arch-features">
+        <span class="feat">Proxy Rotation</span>
+        <span class="feat">AbuseIPDB</span>
+        <span class="feat">Throttling</span>
+      </div>
+    </div>
+    <div class="arch-card">
+      <div class="arch-icon">🗄️</div>
+      <div class="arch-name">Database Layer</div>
+      <div class="arch-file">db.py</div>
+      <div class="arch-lines">170 lines</div>
+      <div class="arch-desc">SQLite with FTS5 full-text search, CRUD operations across 4 tables, and data integrity checks.</div>
+      <div class="arch-features">
+        <span class="feat">SQLite</span>
+        <span class="feat">FTS5 Search</span>
+        <span class="feat">CRUD</span>
+        <span class="feat">Integrity</span>
+      </div>
+    </div>
+    <div class="arch-card">
+      <div class="arch-icon">🕷️</div>
+      <div class="arch-name">Core Scraper</div>
+      <div class="arch-file">scraper.py + main.py</div>
+      <div class="arch-lines">314 lines</div>
+      <div class="arch-desc">Orchestrates scraping flow, parses bonus data from multiple sources (Dayne, Sarah).</div>
+      <div class="arch-features">
+        <span class="feat">Parsing</span>
+        <span class="feat">Multi-source</span>
+        <span class="feat">Orchestration</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Viewer Apps -->
+<section class="section">
+  <div class="section-title"><span class="emoji">🖥️</span> Viewer Applications</div>
+  <div class="viewer-grid">
+    <div class="viewer-card">
+      <div class="viewer-header">
+        <div class="viewer-icon dayne">🏆</div>
+        <div>
+          <div class="viewer-title">Dayne Bonuses Viewer</div>
+          <div class="viewer-stack">React · 138 lines JS</div>
+        </div>
+      </div>
+      <div class="viewer-features">
+        <span class="vf">Bonus Data Display</span>
+        <span class="vf">FTS5 Search</span>
+        <span class="vf">Filtering</span>
+        <span class="vf">Responsive</span>
+        <span class="vf">Dark Theme</span>
+        <span class="vf">Quick Stats</span>
+      </div>
+    </div>
+    <div class="viewer-card">
+      <div class="viewer-header">
+        <div class="viewer-icon sarah">📊</div>
+        <div>
+          <div class="viewer-title">Sarah Bonuses Viewer</div>
+          <div class="viewer-stack">React · 138 lines JS</div>
+        </div>
+      </div>
+      <div class="viewer-features">
+        <span class="vf">Bonus Data Display</span>
+        <span class="vf">FTS5 Search</span>
+        <span class="vf">Date Sorting</span>
+        <span class="vf">Responsive</span>
+        <span class="vf">Dark Theme</span>
+        <span class="vf">Export Ready</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Configuration -->
+<section class="section">
+  <div class="section-title"><span class="emoji">🔧</span> Configuration System</div>
+  <div class="config-grid">
+    <div class="config-card">
+      <div class="cc-title">🕐 Timing</div>
+      <ul class="cc-items">
+        <li>Configurable request delays</li>
+        <li>Throttling between proxies</li>
+        <li>Session timeouts</li>
+        <li>Retry backoff intervals</li>
+      </ul>
+    </div>
+    <div class="config-card">
+      <div class="cc-title">🔄 Proxy Rotation</div>
+      <ul class="cc-items">
+        <li>Multiple proxy list support</li>
+        <li>Automatic failover</li>
+        <li>AbuseIPDB verification</li>
+        <li>Rotation strategies</li>
+      </ul>
+    </div>
+    <div class="config-card">
+      <div class="cc-title">📋 Data Limits</div>
+      <ul class="cc-items">
+        <li>Max withdrawals cap</li>
+        <li>Pagination depth</li>
+        <li>Source-specific limits</li>
+        <li>Duplicate detection</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- Critique System -->
+<section class="section">
+  <div class="section-title"><span class="emoji">🎭</span> Critique System</div>
+  <div class="critique-container">
+    <div class="critique-header">
+      <div class="critique-badge">AI Code Review Panel</div>
+      <span style="font-size:.8rem;color:#888">45 characters across 16 domains</span>
+    </div>
+    <div class="critique-stats">
+      <div class="critique-stat"><div class="cs-val">45</div><div class="cs-label">Critique Characters</div></div>
+      <div class="critique-stat"><div class="cs-val">16</div><div class="cs-label">Review Domains</div></div>
+      <div class="critique-stat"><div class="cs-val">Multi-Source</div><div class="cs-label">Scraper Coverage</div></div>
+    </div>
+    <div class="domains-grid" id="critiqueGrid"></div>
+  </div>
+</section>
+
+<!-- Activity Timeline -->
+<section class="section">
+  <div class="section-title"><span class="emoji">📅</span> Activity Timeline</div>
+  <div class="timeline">
+    <div class="timeline-item active">
+      <div class="tl-date">Recent Session</div>
+      <div class="tl-title">Active Scraping Operations</div>
+      <div class="tl-desc">Multiple log files documenting ongoing scraping activity</div>
+      <div class="tl-entries">📊 29,385 total records</div>
+    </div>
+    <div class="timeline-item active">
+      <div class="tl-date">Data Collection</div>
+      <div class="tl-title">Bonus Data Extraction</div>
+      <div class="tl-desc">Dayne and Sarah bonus sources scraped and indexed</div>
+      <div class="tl-entries">🎯 313 bonus records</div>
+    </div>
+    <div class="timeline-item">
+      <div class="tl-date">Database Growth</div>
+      <div class="tl-title">Link & Target Indexing</div>
+      <div class="tl-desc">26,833 links and 1,305 targets catalogued with FTS5 indexing</div>
+      <div class="tl-entries">🔗 28,138 link/target records</div>
+    </div>
+    <div class="timeline-item">
+      <div class="tl-date">Export & Analysis</div>
+      <div class="tl-title">CSV Exports Generated</div>
+      <div class="tl-desc">Compiled URLs, mapped URLs, and bonus data exported for analysis</div>
+      <div class="tl-entries">📤 Multiple CSV files</div>
+    </div>
+    <div class="timeline-item">
+      <div class="tl-date">Development</div>
+      <div class="tl-title">Core System Built</div>
+      <div class="tl-desc">745 lines of core Python across 7 files with proxy rotation and FTS5 search</div>
+      <div class="tl-entries">🐍 745 lines core Python</div>
+    </div>
+    <div class="timeline-item">
+      <div class="tl-date">UI Development</div>
+      <div class="tl-title">React Viewer Apps</div>
+      <div class="tl-desc">Dayne and Sarah bonus viewer apps built with FTS5 search integration</div>
+      <div class="tl-entries">⚛️ 2 React apps</div>
+    </div>
+    <div class="timeline-item">
+      <div class="tl-date">Quality</div>
+      <div class="tl-title">Testing & Documentation</div>
+      <div class="tl-desc">24 test files and 26 documentation files maintaining code quality</div>
+      <div class="tl-entries">📝 50 test/doc files</div>
+    </div>
+  </div>
+</section>
+
+<!-- Second Charts Row -->
+<div class="charts-row">
+  <div class="chart-container">
+    <h3>Core Python Breakdown (Lines)</h3>
+    <canvas id="pythonChart"></canvas>
+  </div>
+  <div class="chart-container">
+    <h3>Project Composition (Files)</h3>
+    <canvas id="filesChart"></canvas>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+  <p>⛳ GOLF — Bonus Scraper System Dashboard</p>
+  <p style="margin-top:.4rem">Generated on 2026-07-27 · <a href="index.html">← Back to Dashboards</a></p>
+</footer>
+
+<script>
+// Critique characters
+const critics = [
+  {name:'Dr. Priya Sharma',domain:'Security',color:'#e74c3c'},
+  {name:'Prof. Chen Wei',domain:'Performance',color:'#e67e22'},
+  {name:'Sarah Mitchell',domain:'UX/Accessibility',color:'#2ecc71'},
+  {name:'James Okafor',domain:'Architecture',color:'#3498db'},
+  {name:'Elena Kozlov',domain:'Code Quality',color:'#9b59b6'},
+  {name:'Dr. Ahmed Hassan',domain:'Testing',color:'#1abc9c'},
+  {name:'Maria Garcia',domain:'Documentation',color:'#e74c3c'},
+  {name:'Tom Nakamura',domain:'Error Handling',color:'#f39c12'},
+  {name:'Lisa Andersen',domain:'API Design',color:'#3498db'},
+  {name:'Raj Patel',domain:'Data Modeling',color:'#2ecc71'},
+  {name:'Nina Petrova',domain:'Concurrency',color:'#e91e63'},
+  {name:'David Kim',domain:'Logging',color:'#00bcd4'},
+  {name:'Anna Schmidt',domain:'Config Mgmt',color:'#8bc34a'},
+  {name:'Carlos Ruiz',domain:'Network/Proxy',color:'#ff9800'},
+  {name:'Yuki Tanaka',domain:'SQLite/FTS5',color:'#673ab7'},
+  {name:'Olga Ivanova',domain:'Pipeline',color:'#ff5722'},
+];
+const grid = document.getElementById('critiqueGrid');
+critics.forEach(c => {
+  grid.innerHTML += `<div class="domain-chip">
+    <div class="dc-avatar" style="background:${c.color}">${c.name.split(' ').map(n=>n[0]).join('')}</div>
+    <div><div class="dc-name">${c.name}</div><div class="dc-role">${c.domain}</div></div>
+  </div>`;
+});
+
+// Charts
+const gold = '#ffd93d';
+const orange = '#ffa500';
+const teal = '#4ecdc4';
+const purple = '#9b59b6';
+const blue = '#3498db';
+const green = '#2ecc71';
+const red = '#e74c3c';
+
+
+// DB table sizes
+  type: 'bar',
+  data: {
+    labels: ['b (bonuses)', 'l (links/logs)', 's (sources)', 't (targets)'],
+    datasets: [{
+      label: 'Records',
+      data: [313, 26833, 934, 1305],
+      backgroundColor: [gold+'cc', orange+'cc', teal+'cc', blue+'cc'],
+      borderColor: [gold, orange, teal, blue],
+      borderWidth: 2,
+      borderRadius: 8,
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: { legend: { display: false } },
+    scales: {
+      y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { callback: v => v >= 1000 ? (v/1000).toFixed(0)+'K' : v } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+// Code breakdown
+  type: 'doughnut',
+  data: {
+    labels: ['Core Python (745)', 'Viewers (138)', 'Tests', 'Docs', 'Other'],
+    datasets: [{
+      data: [745, 138, 2000, 1500, 135000 - 745 - 138 - 2000 - 1500],
+      backgroundColor: [gold+'cc', orange+'cc', teal+'cc', purple+'cc', '#ffffff15'],
+      borderColor: ['#1a1a3e'],
+      borderWidth: 3,
+    }]
+  },
+  options: {
+    responsive: true,
+    cutout: '55%',
+    plugins: {
+      legend: { position: 'right', labels: { padding: 12, usePointStyle: true, pointStyleWidth: 10, font: { size: 11 } } }
+    }
+  }
+});
+
+// Python breakdown
+  type: 'bar',
+  data: {
+    labels: ['main.py', 'scraper.py', 'network.py', 'db.py', 'config.py', 'clean_bonuses.py', 'run_scraper.py'],
+    datasets: [{
+      label: 'Lines',
+      data: [36, 278, 123, 170, 57, 48, 33],
+      backgroundColor: [gold+'aa', orange+'aa', teal+'aa', blue+'aa', purple+'aa', green+'aa', red+'aa'],
+      borderColor: [gold, orange, teal, blue, purple, green, red],
+      borderWidth: 1.5,
+      borderRadius: 6,
+    }]
+  },
+  options: {
+    responsive: true,
+    indexAxis: 'y',
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.04)' } },
+      y: { grid: { display: false } }
+    }
+  }
+});
+
+// Files composition
+  type: 'polarArea',
+  data: {
+    labels: ['Python', 'React/JS', 'Tests', 'Docs', 'Config/Data', 'Logs', 'Other'],
+    datasets: [{
+      data: [50, 30, 24, 26, 60, 15, 1333],
+      backgroundColor: [gold+'55', orange+'55', teal+'55', purple+'55', blue+'55', green+'55', '#ffffff0a'],
+      borderColor: [gold, orange, teal, purple, blue, green, '#333'],
+      borderWidth: 1,
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { position: 'right', labels: { padding: 10, usePointStyle: true, pointStyleWidth: 10, font: { size: 11 } } }
+    },
+    scales: { r: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { display: false } } }
+  }
+});
+</script>
+</body>
+</html>

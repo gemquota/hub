@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MyRSIKB Progress Dashboard</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:linear-gradient(135deg,#0a0a1a 0%,#1a1a3e 50%,#0a0a1a 100%);color:#e0e0e0;min-height:100vh;padding:2rem}
+.container{max-width:1400px;margin:0 auto}
+.back-link{display:inline-block;color:#00ff9f;text-decoration:none;font-size:.9rem;margin-bottom:1.5rem;padding:.5rem 1rem;border:1px solid rgba(0,255,159,.3);border-radius:8px;transition:all .3s}
+.back-link:hover{background:rgba(0,255,159,.1);transform:translateX(-3px)}
+h1{text-align:center;font-size:2.8rem;margin-bottom:.3rem;background:linear-gradient(90deg,#00ff9f,#00d9ff,#00ff9f);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200% auto;animation:shimmer 3s ease-in-out infinite}
+@keyframes shimmer{0%,100%{background-position:0% center}50%{background-position:200% center}}
+.subtitle{text-align:center;color:#888;margin-bottom:.5rem;font-size:1.1rem}
+.tagline{text-align:center;color:#666;font-style:italic;margin-bottom:.5rem;font-size:.9rem}
+.badge-row{text-align:center;margin-bottom:2rem;display:flex;justify-content:center;gap:1rem;flex-wrap:wrap}
+.badge{display:inline-block;padding:4px 14px;border-radius:20px;font-size:.75rem;font-weight:600}
+.badge-ver{background:rgba(0,255,159,.15);color:#00ff9f;border:1px solid rgba(0,255,159,.3)}
+.badge-cyan{background:rgba(0,217,255,.15);color:#00d9ff;border:1px solid rgba(0,217,255,.3)}
+.section{margin-bottom:2.5rem}
+.section-title{font-size:1.4rem;font-weight:700;margin-bottom:1rem;color:#fff;padding-bottom:.5rem;border-bottom:2px solid rgba(0,255,159,.2);display:flex;align-items:center;gap:.5rem}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem;margin-bottom:2rem}
+.stat-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:1.2rem;text-align:center;transition:all .3s ease;position:relative;overflow:hidden}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#00ff9f,#00d9ff);opacity:0;transition:opacity .3s}
+.stat-card:hover{transform:translateY(-3px);box-shadow:0 8px 25px rgba(0,255,159,.15);border-color:rgba(0,255,159,.3)}
+.stat-card:hover::before{opacity:1}
+.stat-value{font-size:2rem;font-weight:800;color:#00ff9f}
+.stat-label{color:#888;font-size:.8rem;margin-top:.3rem}
+.charts-row{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-bottom:2rem}
+.chart-box{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:1.5rem}
+.chart-box h3{font-size:1.1rem;margin-bottom:1rem;color:#fff}
+.chart-wrap{position:relative;height:300px}
+/* Triad Architecture */
+.triad{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:1rem;align-items:center;margin-bottom:2rem}
+.triad-node{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:1.5rem;text-align:center;transition:all .3s}
+.triad-node:hover{border-color:rgba(0,255,159,.4);box-shadow:0 6px 20px rgba(0,255,159,.1)}
+.triad-node h4{font-size:1.1rem;margin-bottom:.3rem}
+.triad-node p{font-size:.8rem;color:#888}
+.triad-arrow{font-size:2rem;color:#00ff9f}
+/* Phase cards */
+.phase-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1rem;margin-bottom:2rem}
+.phase-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:1.5rem;transition:all .3s;position:relative;overflow:hidden}
+.phase-card::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;opacity:0;transition:opacity .3s}
+.phase-card:hover{border-color:rgba(0,255,159,.3);box-shadow:0 6px 20px rgba(0,255,159,.1)}
+.phase-card:hover::after{opacity:1}
+.phase-card.done::after{background:linear-gradient(90deg,#00ff9f,#00d9ff)}
+.phase-card.pending::after{background:linear-gradient(90deg,#ffa500,#ff6b6b)}
+.phase-card h4{font-size:1rem;margin-bottom:.5rem;display:flex;justify-content:space-between;align-items:center}
+.phase-card .status{font-size:.7rem;padding:2px 8px;border-radius:8px}
+.status-done{background:rgba(0,255,159,.15);color:#00ff9f;border:1px solid rgba(0,255,159,.2)}
+.status-pending{background:rgba(255,165,0,.15);color:#ffa500;border:1px solid rgba(255,165,0,.2)}
+.phase-card ul{list-style:none;padding:0;font-size:.8rem;color:#aaa}
+.phase-card li{padding:.3rem 0;border-bottom:1px solid rgba(255,255,255,.03)}
+.phase-card li:last-child{border:none}
+/* Roadmap */
+.roadmap-section{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:1.5rem;margin-bottom:2rem}
+.roadmap-group{margin-bottom:1.5rem}
+.roadmap-group h4{font-size:1rem;color:#00d9ff;margin-bottom:.8rem;padding-bottom:.4rem;border-bottom:1px solid rgba(0,217,255,.15)}
+.roadmap-item{display:flex;align-items:flex-start;gap:.8rem;padding:.6rem .8rem;border-radius:8px;transition:background .2s;margin-bottom:.3rem}
+.roadmap-item:hover{background:rgba(255,255,255,.03)}
+.roadmap-item .ri-status{width:20px;height:20px;border-radius:50%;border:2px solid rgba(255,255,255,.15);flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;font-size:.65rem}
+.ri-done .ri-status{background:rgba(0,255,159,.2);border-color:#00ff9f;color:#00ff9f}
+.ri-pending .ri-status{border-color:rgba(255,165,0,.3)}
+.ri-text{flex:1}
+.ri-text .ri-title{font-size:.85rem;color:#fff;font-weight:500}
+.ri-text .ri-desc{font-size:.75rem;color:#888;margin-top:.2rem}
+.ri-text .ri-meta{font-size:.65rem;color:#666;margin-top:.2rem;display:flex;gap:.8rem}
+/* Audit */
+.audit-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(350px,1fr));gap:1rem;margin-bottom:2rem}
+.audit-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:1.5rem;transition:all .3s}
+.audit-card:hover{border-color:rgba(0,217,255,.3);box-shadow:0 6px 20px rgba(0,217,255,.1)}
+.audit-card h4{color:#00d9ff;margin-bottom:.8rem;font-size:1rem}
+.audit-card table{width:100%;border-collapse:collapse;font-size:.8rem}
+.audit-card th{text-align:left;color:#888;padding:.4rem .6rem;border-bottom:1px solid rgba(255,255,255,.08)}
+.audit-card td{padding:.4rem .6rem;color:#ccc;border-bottom:1px solid rgba(255,255,255,.03)}
+.audit-card .resolved{color:#00ff9f}
+.audit-card .in-progress{color:#ffa500}
+.audit-card .planned{color:#888}
+.footer{text-align:center;color:#555;font-size:.8rem;margin-top:3rem;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,.05)}
+@media(max-width:768px){.charts-row,.triad{grid-template-columns:1fr}.stats-grid{grid-template-columns:repeat(2,1fr)}.triad-arrow{transform:rotate(90deg)}h1{font-size:2rem}}
+
+.inline-stats{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;padding:.5rem 0}
+.stat-item{text-align:center;background:rgba(255,255,255,.03);border-radius:10px;padding:.8rem .4rem}
+.stat-val{font-size:1.3rem;font-weight:800;display:block}
+.stat-lbl{font-size:.65rem;color:#888;margin-top:2px}
+</style>
+</head>
+<body>
+<div class="container">
+<a href="index.html" class="back-link">← All Projects</a>
+<h1>🔗 MyRSIKB</h1>
+<p class="subtitle">Memory Bridge — Integrating RSIS3 × MyKB</p>
+<p class="tagline">rsis3/ (the mind) → myrsikb/ (the interface) → mykb/ (the memory)</p>
+<div class="badge-row">
+<span class="badge badge-ver">v0.1.0</span>
+<span class="badge badge-cyan">5/5 Phases Complete</span>
+<span class="badge badge-ver">44 Files · 42.5K LOC</span>
+<span class="badge badge-cyan">43 Roadmap Items</span>
+</div>
+
+<div class="section">
+<div class="section-title">📊 Key Metrics</div>
+<div class="stats-grid">
+<div class="stat-card"><div class="stat-value">44</div><div class="stat-label">Files</div></div>
+<div class="stat-card"><div class="stat-value">42.5K</div><div class="stat-label">Lines of Code</div></div>
+<div class="stat-card"><div class="stat-value">18</div><div class="stat-label">Wiki Pages Added</div></div>
+<div class="stat-card"><div class="stat-value">5</div><div class="stat-label">Phases Complete</div></div>
+<div class="stat-card"><div class="stat-value">43</div><div class="stat-label">Roadmap Items</div></div>
+<div class="stat-card"><div class="stat-value">11</div><div class="stat-label">Integration Points</div></div>
+<div class="stat-card"><div class="stat-value">3</div><div class="stat-label">Projects Connected</div></div>
+<div class="stat-card"><div class="stat-value">1</div><div class="stat-label">Resolved Already</div></div>
+</div>
+</div>
+
+<div class="section">
+<div class="section-title">🏛️ Triad Architecture</div>
+<div class="triad">
+<div class="triad-node" style="border-color:rgba(255,165,0,.3)"><h4 style="color:#ffa500">🧠 RSIS3</h4><p>Cognitive Engine<br>9 layers · 65 modules<br>38 tests · FastAPI</p></div>
+<div class="triad-arrow">→</div>
+<div class="triad-node" style="border-color:rgba(0,255,159,.3)"><h4 style="color:#00ff9f">🔗 MyRSIKB</h4><p>Memory Bridge<br>44 files · 42.5K LOC<br>5 phases · 11 integrations</p></div>
+<div class="triad-arrow">→</div>
+<div class="triad-node" style="border-color:rgba(123,47,255,.3)"><h4 style="color:#7b2fff">📚 MyKB</h4><p>Knowledge OS<br>2,308 pages · 47 domains<br>11.5K chunks · Hybrid search</p></div>
+</div>
+</div>
+
+<div class="charts-row">
+<div class="chart-box"><h3>📈 Phase Completion Timeline</h3><div class="inline-stats"><div class="stat-item"><span class="stat-val" style="color:#a855f7">—</span><span class="stat-lbl">Data</span></div></div></div>
+<div class="chart-box"><h3>📂 Wiki Pages by Directory</h3><div class="inline-stats"><div class="stat-item"><span class="stat-val" style="color:#a855f7">—</span><span class="stat-lbl">Data</span></div></div></div>
+</div>
+
+<div class="section">
+<div class="section-title">📋 Completed Phases</div>
+<div class="phase-grid">
+<div class="phase-card done"><h4>Phase 1-3: Foundation <span class="status status-done">✅ Done</span></h4><ul>
+<li>5 cognitive subsystems wired</li><li>Genesis hash identity</li><li>Auto-mode operational</li><li>Write-enabled API</li><li>Dual-layer metacognition</li><li>13 integration tests passing</li></ul></div>
+<div class="phase-card done"><h4>Phase 4a: Audit Resolution <span class="status status-done">✅ Done</span></h4><ul>
+<li>SQLite fix</li><li>TelemetryWriter in scheduler</li><li>--fast mode</li><li>Version manifests</li><li>Dashboard frontend (3 new tabs)</li><li>RRP audit (20 items analyzed)</li><li>All 23 tests passing</li></ul></div>
+<div class="phase-card done"><h4>Phase 4b: Integration Wiring <span class="status status-done">✅ Done</span></h4><ul>
+<li>Episodic planning</li><li>StubScanner (435 funcs/0.3s)</li><li>KG delete/batch API + UI</li><li>TelemetryWriter flush</li><li>ExperimentManager in auto-mode</li></ul></div>
+<div class="phase-card done"><h4>Phase 5: Knowledge Curation <span class="status status-done">✅ Done</span></h4><ul>
+<li>18 new wiki pages across 11 dirs</li><li>concepts/ (3→6), entities/ (1→4)</li><li>Full project lineage documented</li><li>ACE relationship mapped</li><li>Deployment context recorded</li></ul></div>
+<div class="phase-card done"><h4>Phase 6: Triad Audit <span class="status status-done">✅ Done</span></h4><ul>
+<li>ACE Pros vs Triad Cons analysis</li><li>43 roadmap items identified</li><li>1 item already resolved</li><li>Priority matrix created</li><li>Effort estimates assigned</li></ul></div>
+</div>
+</div>
+
+<div class="section">
+<div class="section-title">🗺️ Phase 7+ Roadmap — 43 Items <span style="font-size:.8rem;color:#888;font-weight:400">(0/43 resolved)</span></div>
+<div class="roadmap-section">
+<div class="roadmap-group">
+<h4>🔴 P0 — Must Fix (Critical)</h4>
+<div class="roadmap-item ri-pending"><div class="ri-status"></div><div class="ri-text"><div class="ri-title">1. Search Infrastructure Sprawl</div><div class="ri-desc">Consolidate 3 parallel search stacks to Python. Archive JS daemon files. Canonicalize 10 index files.</div><div class="ri-meta"><span>Est: 4h</span><span>Scope: mykb</span><span>Files: 5 to retire</span></div></div></div>
+<div class="roadmap-item ri-pending"><div class="ri-status"></div><div class="ri-text"><div class="ri-title">2. Causal Event Tracing</div><div class="ri-desc">Add Lamport-clock-style causal_parent and cycle_hash to pulse cycles. SHA-256 hash chain for replay verification.</div><div class="ri-meta"><span>Est: 3h</span><span>Scope: rsis3</span><span>DB migration: 2 columns</span></div></div></div>
+<div class="roadmap-item ri-pending"><div class="ri-status"></div><div class="ri-text"><div class="ri-title">3. Genesis Hash Identity</div><div class="ri-desc">Anchor SelfModel identity to sha256(hostname:timestamp:version). Store in .genesis_hash file. Mismatch → crisis.</div><div class="ri-meta"><span>Est: 2h</span><span>Scope: rsis3</span><span>~30 lines</span></div></div></div>
+</div>
+<div class="roadmap-group">
+<h4>🟡 P1 — Architecture</h4>
+<div class="roadmap-item ri-pending"><div class="ri-status"></div><div class="ri-text"><div class="ri-title">4. Temporal Horizon</div><div class="ri-desc">4-hour cycle time limit. Auto-HOLD on exceeded. Wire into RecoveryManager rollback triggers.</div><div class="ri-meta"><span>Est: 3h</span><span>Scope: rsis3</span><span>~40 lines</span></div></div></div>
+<div class="roadmap-item ri-pending"><div class="ri-status"></div><div class="ri-text"><div class="ri-title">5. Dual KG Resolution (Option A)</div><div class="ri-desc">Replace dashboard KG with mykb-backed version. Keep SQLite for rebirth/engine archival only.</div><div class="ri-meta"><span>Est: 4h</span><span>Scope: rsis3+myrsikb</span><span>Dashboard KG swap</span></div></div></div>
+<div class="roadmap-item ri-pending"><div class="ri-status"></div><div class="ri-text"><div class="ri-title">6. No Integration Tests</div><div class="ri-desc">Create test_memory_bridge.py covering all 11 integration points end-to-end.</div><div class="ri-meta"><span>Est: 4h</span><span>Scope: myrsikb</span><span>New test file</span></div></div></div>
+<div class="roadmap-item ri-pending"><div class="ri-status"></div><div class="ri-text"><div class="ri-title">7. Version Manifests</div><div class="ri-desc">Add VERSION file and version.py for all subsystems. Semantic versioning across triad.</div><div class="ri-meta"><span>Est: 2h</span><span>Scope: all</span><span>VERSION files</span></div></div></div>
+</div>
+<div class="roadmap-group">
+<h4>🟠 P2 — Functional</h4>
+<div class="roadmap-item ri-pending"><div class="ri-status"></div><div class="ri-text"><div class="ri-title">8. MyKB Rollback</div><div class="ri-desc">Git-based wiki versioning with pre-commit hooks. Rollback to any previous state.</div><div class="ri-meta"><span>Est: 3h</span><span>Scope: mykb</span><span>Git hooks</span></div></div></div>
+<div class="roadmap-item ri-pending"><div class="ri-status"></div><div class="ri-text"><div class="ri-title">9. Partial Automation (--auto mode)</div><div class="ri-desc">Wire pulse engine to run autonomously with configurable intervals and safety bounds.</div><div class="ri-meta"><span>Est: 4h</span><span>Scope: rsis3</span><span>Scheduler feature</span></div></div></div>
+<div class="roadmap-item ri-pending"><div class="ri-status"></div><div class="ri-text"><div class="ri-title">10. RRP Wire-or-Prune</div><div class="ri-desc">Audit all RRP code paths. Wire useful ones, prune dead code. Reduce over-engineering.</div><div class="ri-meta"><span>Est: 6h</span><span>Scope: rsis3</span><span>Code audit</span></div></div></div>
+<div class="roadmap-item ri-pending"><div class="ri-status"></div><div class="ri-text"><div class="ri-title">11. Dashboard Write API</div><div class="ri-desc">Add POST/PUT/DELETE endpoints for cycles, errors, snapshots from the dashboard UI.</div><div class="ri-meta"><span>Est: 4h</span><span>Scope: rsis3</span><span>New endpoints</span></div></div></div>
+<div class="roadmap-item ri-pending"><div class="ri-status"></div><div class="ri-text"><div class="ri-title">12. Dead Code Cleanup</div><div class="ri-desc">Remove unused modules, orphaned imports, and over-engineered abstractions across all 3 projects.</div><div class="ri-meta"><span>Est: 3h</span><span>Scope: all</span><span>Code cleanup</span></div></div></div>
+</div>
+<div class="roadmap-group">
+<h4>🟢 P3 — Enhancement</h4>
+<div class="roadmap-item ri-pending"><div class="ri-status"></div><div class="ri-text"><div class="ri-title">13. Staleness Detection</div><div class="ri-desc">Add timestamp comparison to graph_engine.py. Alert when knowledge graph is stale vs latest entity.</div><div class="ri-meta"><span>Est: 2h</span><span>Scope: mykb</span></div></div></div>
+<div class="roadmap-item ri-pending"><div class="ri-status"></div><div class="ri-text"><div class="ri-title">14. Format Documentation</div><div class="ri-desc">Create FORMAT.md documenting canonical index schema for all search/knowledge files.</div><div class="ri-meta"><span>Est: 1h</span><span>Scope: mykb</span></div></div></div>
+<div class="roadmap-item ri-pending"><div class="ri-status"></div><div class="ri-text"><div class="ri-title">15. Operations Manual</div><div class="ri-desc">Document how to start/stop/monitor the system in Termux. Include troubleshooting guide.</div><div class="ri-meta"><span>Est: 2h</span><span>Scope: myrsikb</span></div></div></div>
+<div class="roadmap-item ri-pending"><div class="ri-status"></div><div class="ri-text"><div class="ri-title">16. Dashboard User Guide</div><div class="ri-desc">Document each tab's purpose, metrics meaning, and interaction patterns.</div><div class="ri-meta"><span>Est: 2h</span><span>Scope: rsis3</span></div></div></div>
+<div class="roadmap-item ri-pending"><div class="ri-status"></div><div class="ri-text"><div class="ri-title">17. API Reference</div><div class="ri-desc">Auto-generate API docs from FastAPI routes. Publish to mykb wiki.</div><div class="ri-meta"><span>Est: 2h</span><span>Scope: rsis3</span></div></div></div>
+<div class="roadmap-item ri-pending"><div class="ri-status"></div><div class="ri-text"><div class="ri-title">18. Subsystem Concept Pages</div><div class="ri-desc">Create dedicated wiki pages for L3, codegen, evaluator, recovery, metacognition.</div><div class="ri-meta"><span>Est: 3h</span><span>Scope: mykb</span><span>5 new pages</span></div></div></div>
+<div class="roadmap-item ri-pending"><div class="ri-status"></div><div class="ri-text"><div class="ri-title">19. Failure History Documentation</div><div class="ri-desc">Document first crisis occurrence and resolution when it happens.</div><div class="ri-meta"><span>Est: 1h</span><span>Scope: mykb</span></div></div></div>
+<div class="roadmap-item ri-pending"><div class="ri-status"></div><div class="ri-text"><div class="ri-title">20. ACE Feature Parity Assessment</div><div class="ri-desc">Formal comparison of remaining ACE features vs Triad. Decide won't-do items.</div><div class="ri-meta"><span>Est: 2h</span><span>Scope: all</span></div></div></div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<div class="section-title">🔍 Triad Audit — ACE Pros vs Triad Cons</div>
+<div class="audit-grid">
+<div class="audit-card">
+<h4>ACE Advantages (to adopt)</h4>
+<table>
+<tr><th>Feature</th><th>Triad Status</th></tr>
+<tr><td>Causal event system</td><td class="planned">Planned (#2)</td></tr>
+<tr><td>Genesis Hash identity</td><td class="in-progress">Implementing (#3)</td></tr>
+<tr><td>Temporal horizon</td><td class="planned">Planned (#4)</td></tr>
+<tr><td>Swarm economy</td><td class="planned">Won't do (single-agent)</td></tr>
+<tr><td>Glyph visual logic</td><td class="planned">Won't do (N/A)</td></tr>
+<tr><td>AUSP FastAPI server</td><td class="planned">Phase 3 (#11)</td></tr>
+</table>
+</div>
+<div class="audit-card">
+<h4>Triad Weaknesses (to fix)</h4>
+<table>
+<tr><th>Issue</th><th>Status</th></tr>
+<tr><td>sys.path.insert in 4 modules</td><td class="resolved">✅ Done</td></tr>
+<tr><td>Search infrastructure sprawl</td><td class="in-progress">Planned (#1)</td></tr>
+<tr><td>No integration tests</td><td class="planned">Planned (#6)</td></tr>
+<tr><td>No versioning</td><td class="planned">Planned (#7)</td></tr>
+<tr><td>No mykb rollback</td><td class="planned">Planned (#8)</td></tr>
+<tr><td>Partial automation</td><td class="planned">Planned (#9)</td></tr>
+<tr><td>Dead code / over-engineering</td><td class="planned">Planned (#10, #12)</td></tr>
+<tr><td>Dual KG conflict</td><td class="planned">Planned (#5)</td></tr>
+<tr><td>Read-only API</td><td class="planned">Planned (#11)</td></tr>
+</table>
+</div>
+<div class="audit-card">
+<h4>RSIS3 Function Test Status</h4>
+<table>
+<tr><th>Status</th><th>Count</th></tr>
+<tr><td style="color:#00ff9f">✅ Working</td><td>120</td></tr>
+<tr><td style="color:#ffa500">⚠️ Partial</td><td>8</td></tr>
+<tr><td style="color:#ff6b6b">❌ Broken</td><td>1</td></tr>
+<tr><td style="color:#888">⬜ Untested</td><td>1</td></tr>
+<tr><td style="color:#666">🔴 No data</td><td>1</td></tr>
+<tr><td><strong>Total</strong></td><td><strong>131</strong></td></tr>
+</table>
+</div>
+<div class="audit-card">
+<h4>RSIS3 Expansion Items</h4>
+<table>
+<tr><th>Group</th><th>Items</th></tr>
+<tr><td>Overview</td><td>5 expansions</td></tr>
+<tr><td>Cycles</td><td>5 expansions</td></tr>
+<tr><td>DB</td><td>3 expansions</td></tr>
+<tr><td>Telemetry</td><td>4 expansions</td></tr>
+<tr><td>Knowledge</td><td>3 expansions</td></tr>
+<tr><td>RRP</td><td>3 expansions</td></tr>
+<tr><td>Identity</td><td>2 expansions</td></tr>
+<tr><td>Scheduler</td><td>2 expansions</td></tr>
+<tr><td>Errors</td><td>3 expansions</td></tr>
+<tr><td><strong>Total</strong></td><td><strong>88 items</strong></td></tr>
+</table>
+</div>
+</div>
+</div>
+
+<div class="footer">Generated 2026-07-28 · MyRSIKB Progress Dashboard · Memory Bridge</div>
+</div>
+<script>
+</script>
+</body>
+</html>

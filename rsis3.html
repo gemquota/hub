@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RSIS3 — Recursive Self-Improving System</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:linear-gradient(135deg,#0a0a1a 0%,#1a1a3e 50%,#0a0a1a 100%);color:#e0e0e0;min-height:100vh;padding:2rem}
+a{color:#ffa500;text-decoration:none}
+a:hover{text-decoration:underline}
+.back-link{position:fixed;top:1.2rem;left:1.5rem;font-size:.85rem;opacity:.7;z-index:10}
+.back-link:hover{opacity:1}
+.back-link::before{content:'← ';}
+
+/* Hero */
+.hero{text-align:center;padding:2.5rem 0 1.5rem}
+.hero h1{font-size:2.6rem;font-weight:800;background:linear-gradient(135deg,#ffa500,#ff6b6b);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.15}
+.hero .subtitle{color:#aaa;font-size:1.05rem;margin-top:.5rem}
+.hero .version{display:inline-block;margin-top:.6rem;background:rgba(255,165,0,.12);color:#ffa500;padding:.2rem .7rem;border-radius:999px;font-size:.8rem;font-weight:600;border:1px solid rgba(255,165,0,.25)}
+
+/* Sections */
+.section{margin-top:2.2rem}
+.section-title{font-size:1.25rem;font-weight:700;margin-bottom:1rem;color:#fff;padding-left:.15rem;border-left:3px solid #ffa500;padding-left:.6rem}
+
+/* Stats grid */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:.9rem}
+.stat-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:1.1rem .9rem;text-align:center;transition:border-color .2s}
+.stat-card:hover{border-color:rgba(255,165,0,.35)}
+.stat-card .val{font-size:1.9rem;font-weight:800;color:#ffa500}
+.stat-card .lbl{font-size:.75rem;color:#999;margin-top:.25rem;text-transform:uppercase;letter-spacing:.04em}
+
+/* Chart row */
+.chart-row{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
+@media(max-width:800px){.chart-row{grid-template-columns:1fr}}
+.chart-box{background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:1.2rem}
+.chart-box h3{font-size:.9rem;color:#ccc;margin-bottom:.8rem;font-weight:600}
+.chart-box canvas{max-height:280px}
+
+/* Full-width chart */
+.chart-full{background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:1.2rem}
+.chart-full h3{font-size:.9rem;color:#ccc;margin-bottom:.8rem;font-weight:600}
+
+/* Architecture cards */
+.arch-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem}
+.arch-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:1.1rem;position:relative;overflow:hidden;transition:transform .15s,border-color .2s}
+.arch-card:hover{transform:translateY(-2px);border-color:rgba(255,165,0,.35)}
+.arch-card::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;border-radius:12px 0 0 12px}
+.arch-card .layer-num{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.25rem}
+.arch-card h4{font-size:1rem;color:#fff;margin-bottom:.3rem}
+.arch-card p{font-size:.78rem;color:#999;line-height:1.45}
+.arch-card .deps{margin-top:.5rem;font-size:.7rem;color:#888}
+.arch-card .deps span{display:inline-block;background:rgba(255,255,255,.06);padding:.1rem .4rem;border-radius:4px;margin:.1rem .15rem .1rem 0}
+
+/* Tab status */
+.tab-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.7rem}
+.tab-item{display:flex;align-items:center;gap:.55rem;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:.7rem 1rem;font-size:.85rem}
+.tab-item .icon{font-size:1rem;flex-shrink:0}
+.tab-item .name{font-weight:600;color:#ddd}
+.tab-item .group{font-size:.7rem;color:#777;margin-left:auto;white-space:nowrap}
+
+/* Audit cards */
+.audit-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1rem}
+.audit-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:1.2rem}
+.audit-card h4{font-size:1rem;color:#fff;margin-bottom:.6rem;display:flex;align-items:center;gap:.4rem}
+.audit-card ul{list-style:none;padding:0}
+.audit-card li{font-size:.8rem;color:#bbb;padding:.2rem 0;line-height:1.4}
+.audit-card li::before{content:'▸ ';color:#ffa500}
+
+/* Test coverage */
+.test-bar-outer{height:28px;background:rgba(255,255,255,.06);border-radius:8px;overflow:hidden;margin-top:.5rem}
+.test-bar-inner{height:100%;background:linear-gradient(90deg,#22c55e,#4ade80);border-radius:8px;display:flex;align-items:center;padding-left:.8rem;font-size:.8rem;font-weight:700;color:#0a0a1a;transition:width .8s ease}
+.test-details{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:.7rem;margin-top:.8rem}
+.test-detail{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.18);border-radius:8px;padding:.7rem .8rem;text-align:center}
+.test-detail .td-val{font-size:1.4rem;font-weight:800;color:#4ade80}
+.test-detail .td-lbl{font-size:.7rem;color:#999;margin-top:.15rem}
+
+/* Roadmap */
+.roadmap-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:.8rem}
+.roadmap-card{background:rgba(255,165,0,.04);border:1px solid rgba(255,165,0,.12);border-radius:10px;padding:.9rem 1rem}
+.roadmap-card h5{font-size:.85rem;color:#ffa500;margin-bottom:.3rem}
+.roadmap-card p{font-size:.75rem;color:#999;line-height:1.4}
+.roadmap-card .module{font-size:.65rem;color:#666;margin-top:.35rem;text-transform:uppercase;letter-spacing:.03em}
+
+/* Footer */
+.footer{text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,.06);font-size:.75rem;color:#555}
+.footer a{color:#ffa500}
+
+.inline-stats{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;padding:.5rem 0}
+.stat-item{text-align:center;background:rgba(255,255,255,.03);border-radius:10px;padding:.8rem .4rem}
+.stat-val{font-size:1.3rem;font-weight:800;display:block}
+.stat-lbl{font-size:.65rem;color:#888;margin-top:2px}
+</style>
+</head>
+<body>
+
+<a class="back-link" href="index.html">Back to Index</a>
+
+<!-- 1. Hero -->
+<section class="hero">
+  <h1>RSIS3 — Recursive Self-Improving System</h1>
+  <p class="subtitle">Python 3.13+ cognitive engine with FastAPI dashboard, SQLite persistence, and 9 cognitive layers</p>
+  <span class="version">v0.1.0</span>
+</section>
+
+<!-- 2. Stats Grid -->
+<section class="section">
+  <h2 class="section-title">Project at a Glance</h2>
+  <div class="stats">
+    <div class="stat-card"><div class="val">378</div><div class="lbl">Total Files</div></div>
+    <div class="stat-card"><div class="val">10,077</div><div class="lbl">Src Python Lines</div></div>
+    <div class="stat-card"><div class="val">682</div><div class="lbl">Test Python Lines</div></div>
+    <div class="stat-card"><div class="val">72K</div><div class="lbl">Total Lines</div></div>
+    <div class="stat-card"><div class="val">65</div><div class="lbl">Src Modules</div></div>
+    <div class="stat-card"><div class="val">41</div><div class="lbl">Docs (Markdown)</div></div>
+    <div class="stat-card"><div class="val">~45</div><div class="lbl">API Endpoints</div></div>
+    <div class="stat-card"><div class="val">8</div><div class="lbl">CLI Commands</div></div>
+  </div>
+</section>
+
+<!-- 3 & 4. Charts: Radar + Code Distribution -->
+<section class="section">
+  <div class="chart-row">
+    <div class="chart-box">
+      <h3>Cognitive Layer Completeness</h3>
+      <canvas id="radarChart"></canvas>
+    </div>
+    <div class="chart-box">
+      <h3>Code Distribution</h3>
+      <canvas id="doughnutChart"></canvas>
+    </div>
+  </div>
+</section>
+
+<!-- 5. API Endpoint Categories -->
+<section class="section">
+  <div class="chart-full">
+    <h3>API Endpoint Categories (~45 Endpoints)</h3>
+    <canvas id="barChart" style="max-height:220px"></canvas>
+  </div>
+</section>
+
+<!-- 6. Architecture Diagram Cards -->
+<section class="section">
+  <h2 class="section-title">Architecture — 9 Cognitive Layers</h2>
+  <div class="arch-grid">
+    <div class="arch-card" style="border-left-color:#ffa500">
+      <div style="position:absolute;top:0;left:0;width:4px;height:100%;background:#ffa500;border-radius:12px 0 0 12px"></div>
+      <div class="layer-num" style="color:#ffa500">Layer 0 — Core Identity</div>
+      <h4>Identity</h4>
+      <p>Self-model, crisis monitor, and persistence of system identity across sessions.</p>
+      <div class="deps"><span>crisis_monitor</span><span>self_model</span></div>
+    </div>
+    <div class="arch-card" style="border-left-color:#ff6b6b">
+      <div style="position:absolute;top:0;left:0;width:4px;height:100%;background:#ff6b6b;border-radius:12px 0 0 12px"></div>
+      <div class="layer-num" style="color:#ff6b6b">Layer 1 — Vital Signs</div>
+      <h4>Pulse</h4>
+      <p>Real-time health monitoring, heartbeat checks, and system vitals telemetry.</p>
+      <div class="deps"><span>pulse</span><span>scheduler</span></div>
+    </div>
+    <div class="arch-card" style="border-left-color:#4ade80">
+      <div style="position:absolute;top:0;left:0;width:4px;height:100%;background:#4ade80;border-radius:12px 0 0 12px"></div>
+      <div class="layer-num" style="color:#4ade80">Layer 2 — Recursive Refinement</div>
+      <h4>RRP</h4>
+      <p>Reiterative Refinement Protocol for recursive self-improvement cycles.</p>
+      <div class="deps"><span>rrp</span><span>scheduler</span></div>
+    </div>
+    <div class="arch-card" style="border-left-color:#60a5fa">
+      <div style="position:absolute;top:0;left:0;width:4px;height:100%;background:#60a5fa;border-radius:12px 0 0 12px"></div>
+      <div class="layer-num" style="color:#60a5fa">Layer 3 — Synthesis</div>
+      <h4>Codegen</h4>
+      <p>Automated code generation, synthesis engine, and output validation.</p>
+      <div class="deps"><span>codegen/engine</span><span>knowledge_graph</span></div>
+    </div>
+    <div class="arch-card" style="border-left-color:#c084fc">
+      <div style="position:absolute;top:0;left:0;width:4px;height:100%;background:#c084fc;border-radius:12px 0 0 12px"></div>
+      <div class="layer-num" style="color:#c084fc">Layer 4 — Knowledge</div>
+      <h4>Knowledge Graph</h4>
+      <p>Relational knowledge storage, gap analysis, and semantic connections.</p>
+      <div class="deps"><span>knowledge_graph</span><span>gap_analysis</span></div>
+    </div>
+    <div class="arch-card" style="border-left-color:#fb923c">
+      <div style="position:absolute;top:0;left:0;width:4px;height:100%;background:#fb923c;border-radius:12px 0 0 12px"></div>
+      <div class="layer-num" style="color:#fb923c">Layer 5 — Resilience</div>
+      <h4>Recovery</h4>
+      <p>Error recovery, rollback mechanisms, and graceful degradation strategies.</p>
+      <div class="deps"><span>recovery/manager</span><span>rollback</span></div>
+    </div>
+    <div class="arch-card" style="border-left-color:#e879f9">
+      <div style="position:absolute;top:0;left:0;width:4px;height:100%;background:#e879f9;border-radius:12px 0 0 12px"></div>
+      <div class="layer-num" style="color:#e879f9">Layer 6 — Autonomy</div>
+      <h4>L3 Self-Direction</h4>
+      <p>Higher-order goal setting, autonomous decision-making, and priority management.</p>
+      <div class="deps"><span>l3_self_direction</span><span>goal_manager</span></div>
+    </div>
+    <div class="arch-card" style="border-left-color:#2dd4bf">
+      <div style="position:absolute;top:0;left:0;width:4px;height:100%;background:#2dd4bf;border-radius:12px 0 0 12px"></div>
+      <div class="layer-num" style="color:#2dd4bf">Layer 7 — Introspection</div>
+      <h4>Metacognition</h4>
+      <p>Self-aware reasoning, introspection loops, and meta-level monitoring.</p>
+      <div class="deps"><span>metacognition</span><span>introspection</span></div>
+    </div>
+    <div class="arch-card" style="border-left-color:#94a3b8">
+      <div style="position:absolute;top:0;left:0;width:4px;height:100%;background:#94a3b8;border-radius:12px 0 0 12px"></div>
+      <div class="layer-num" style="color:#94a3b8">Layer 8 — Observability</div>
+      <h4>Telemetry</h4>
+      <p>System-wide telemetry collection, metrics aggregation, and dashboard data feed.</p>
+      <div class="deps"><span>telemetry</span><span>metrics</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 7. Tab Navigation Status -->
+<section class="section">
+  <h2 class="section-title">Dashboard Tab Status (10 Tabs)</h2>
+  <div class="tab-grid">
+    <div class="tab-item"><span class="icon">✅</span><span class="name">Overview</span><span class="group">Overview/Cycles/DB</span></div>
+    <div class="tab-item"><span class="icon">✅</span><span class="name">Cycles</span><span class="group">Overview/Cycles/DB</span></div>
+    <div class="tab-item"><span class="icon">✅</span><span class="name">DB Inspector</span><span class="group">Overview/Cycles/DB</span></div>
+    <div class="tab-item"><span class="icon">✅</span><span class="name">Scheduler</span><span class="group">Scheduler</span></div>
+    <div class="tab-item"><span class="icon">✅</span><span class="name">Knowledge</span><span class="group">Knowledge</span></div>
+    <div class="tab-item"><span class="icon">✅</span><span class="name">CodeGen</span><span class="group">CodeGen</span></div>
+    <div class="tab-item"><span class="icon">✅</span><span class="name">Identity</span><span class="group">Identity</span></div>
+    <div class="tab-item"><span class="icon">✅</span><span class="name">Errors</span><span class="group">Errors</span></div>
+    <div class="tab-item"><span class="icon">✅</span><span class="name">Snapshots</span><span class="group">Snapshots</span></div>
+    <div class="tab-item"><span class="icon">⚠️</span><span class="name">RRP</span><span class="group">RRP / L3</span></div>
+  </div>
+</section>
+
+<!-- 8. Audit Summary Cards -->
+<section class="section">
+  <h2 class="section-title">Audit Summary</h2>
+  <div class="audit-grid">
+    <div class="audit-card">
+      <h4>🖥️ Frontend Audit</h4>
+      <ul>
+        <li>17 JavaScript files across dashboard UI</li>
+        <li>~3,400 lines of frontend code</li>
+        <li>10 interactive dashboard tabs</li>
+        <li>12 Chart.js visualizations</li>
+        <li>~45 API endpoints consumed</li>
+        <li>Real-time updates and live data feeds</li>
+      </ul>
+    </div>
+    <div class="audit-card">
+      <h4>⚙️ Backend Audit</h4>
+      <ul>
+        <li>45+ API endpoints via FastAPI</li>
+        <li>Multiple new SQLite DB tables</li>
+        <li>Telemetry writer subsystem</li>
+        <li>Scheduler with cron-like task execution</li>
+        <li>Jinja2 templated dashboard views</li>
+        <li>Rich CLI output formatting</li>
+      </ul>
+    </div>
+    <div class="audit-card">
+      <h4>🧠 AI/ML Audit</h4>
+      <ul>
+        <li>Knowledge gap analysis engine</li>
+        <li>Rebirth engine lifecycle management</li>
+        <li>RSI readiness assessment scoring</li>
+        <li>Metacognitive reasoning loops</li>
+        <li>Self-directed goal refinement</li>
+        <li>Crisis detection and recovery protocols</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 9. Test Coverage Section -->
+<section class="section">
+  <h2 class="section-title">Test Coverage</h2>
+  <div class="test-bar-outer">
+    <div class="test-bar-inner" style="width:100%">100% — All 38 Tests Passing</div>
+  </div>
+  <div class="test-details">
+    <div class="test-detail"><div class="td-val">38</div><div class="td-lbl">Total Tests</div></div>
+    <div class="test-detail"><div class="td-val">38</div><div class="td-lbl">Passing</div></div>
+    <div class="test-detail"><div class="td-val">0</div><div class="td-lbl">Failing</div></div>
+    <div class="test-detail"><div class="td-val">19</div><div class="td-lbl">Test Files</div></div>
+    <div class="test-detail"><div class="td-val">100%</div><div class="td-lbl">Pass Rate</div></div>
+    <div class="test-detail"><div class="td-val">682</div><div class="td-lbl">Test LOC</div></div>
+  </div>
+</section>
+
+<!-- 10. Expansion Roadmap -->
+<section class="section">
+  <h2 class="section-title">Expansion Roadmap (20+ Items)</h2>
+  <div class="roadmap-grid">
+    <div class="roadmap-card"><h5>Advanced Crisis Simulation</h5><p>Fault injection framework for stress-testing identity crisis monitor under adversarial conditions.</p><div class="module">identity/crisis_monitor</div></div>
+    <div class="roadmap-card"><h5>Multi-Agent Coordination</h5><p>Enable multiple RSIS3 instances to collaborate on shared knowledge graphs.</p><div class="module">knowledge_graph</div></div>
+    <div class="roadmap-card"><h5>Predictive Scheduler</h5><p>ML-powered task scheduling that anticipates load and pre-allocates resources.</p><div class="module">scheduler</div></div>
+    <div class="roadmap-card"><h5>Rebirth Engine v2</h5><p>Full lifecycle with checkpoint migration, rollback, and versioned state snapshots.</p><div class="module">recovery/manager</div></div>
+    <div class="roadmap-card"><h5>CodeGen DSL</h5><p>Domain-specific language for describing generation patterns and templates.</p><div class="module">codegen/engine</div></div>
+    <div class="roadmap-card"><h5>Telemetry Streaming</h5><p>WebSocket-based live telemetry push to dashboard for real-time monitoring.</p><div class="module">telemetry</div></div>
+    <div class="roadmap-card"><h5>L3 Goal Graph</h5><p>Visual dependency graph for self-directed goals with priority cascading.</p><div class="module">l3_self_direction</div></div>
+    <div class="roadmap-card"><h5>Metacognitive Auditing</h5><p>Self-generated audit reports analyzing reasoning quality and decision traces.</p><div class="module">metacognition</div></div>
+    <div class="roadmap-card"><h5>Pulse Anomaly Detection</h5><p>Statistical anomaly detection on vitals with automatic alerting thresholds.</p><div class="module">pulse</div></div>
+    <div class="roadmap-card"><h5>RRP Strategy Catalog</h5><p>Pluggable refinement strategies with A/B comparison and success tracking.</p><div class="module">rrp</div></div>
+    <div class="roadmap-card"><h5>Knowledge Graph Analytics</h5><p>Centrality, community detection, and influence propagation metrics.</p><div class="module">knowledge_graph</div></div>
+    <div class="roadmap-card"><h5>Export & Backup</h5><p>Full system state export to JSON/Parquet with incremental backup scheduling.</p><div class="module">db / snapshots</div></div>
+    <div class="roadmap-card"><h5>Plugin Architecture</h5><p>Hot-loadable plugin system for extending cognitive layers at runtime.</p><div class="module">core</div></div>
+    <div class="roadmap-card"><h5>API Rate Limiting</h5><p>Token-bucket rate limiter with per-user quotas and abuse detection.</p><div class="module">api / fastapi</div></div>
+    <div class="roadmap-card"><h5>Dashboard Themes</h5><p>User-configurable dark/light themes with accent color customization.</p><div class="module">frontend</div></div>
+    <div class="roadmap-card"><h5>E2E Test Suite</h5><p>Browser-based integration tests for all 10 dashboard tabs.</p><div class="module">tests / playwright</div></div>
+    <div class="roadmap-card"><h5>CLI Aliases</h5><p>Short aliases for the 8 CLI entry points with tab-completion support.</p><div class="module">cli</div></div>
+    <div class="roadmap-card"><h5>Docker Deployment</h5><p>Containerized deployment with docker-compose for production environments.</p><div class="module">infra</div></div>
+    <div class="roadmap-card"><h5>Authentication Layer</h5><p>JWT-based auth for dashboard access with role-based permissions.</p><div class="module">api / auth</div></div>
+    <div class="roadmap-card"><h5>Performance Profiling</h5><p>Integrated profiler with flamegraph output for bottleneck identification.</p><div class="module">telemetry / profiling</div></div>
+  </div>
+</section>
+
+<!-- 11. Footer -->
+<footer class="footer">
+  <p>RSIS3 v0.1.0 &mdash; Recursive Self-Improving System &mdash; <a href="index.html">Back to Index</a></p>
+  <p style="margin-top:.3rem">Python 3.13+ &middot; FastAPI &middot; SQLite &middot; 9 Cognitive Layers &middot; 378 Files &middot; 72K Lines</p>
+</footer>
+
+<script>
+// Radar — Cognitive Layer Completeness
+  type: 'radar',
+  data: {
+    labels: ['Identity','Pulse','RRP','Codegen','Knowledge Graph','Recovery','L3 Self-Direction','Metacognition','Telemetry'],
+    datasets: [{
+      label: 'Completeness %',
+      data: [92, 88, 80, 85, 90, 82, 75, 70, 86],
+      backgroundColor: 'rgba(255,165,0,.15)',
+      borderColor: '#ffa500',
+      pointBackgroundColor: '#ffa500',
+      pointBorderColor: '#fff',
+      pointRadius: 4,
+      borderWidth: 2
+    }]
+  },
+  options: {
+    responsive: true,
+    scales: {
+      r: {
+        beginAtZero: true, max: 100,
+        grid: { color: 'rgba(255,255,255,.08)' },
+        angleLines: { color: 'rgba(255,255,255,.08)' },
+        pointLabels: { color: '#ccc', font: { size: 11 } },
+        ticks: { display: false }
+      }
+    },
+    plugins: { legend: { display: false } }
+  }
+});
+
+// Doughnut — Code Distribution
+  type: 'doughnut',
+  data: {
+    labels: ['Src Python (10,077)','Test Python (682)','Docs Markdown (41 files)','Frontend JS (~3,400 lines)','Other Config'],
+    datasets: [{
+      data: [10077, 682, 2050, 3400, 56000],
+      backgroundColor: ['#ffa500','#4ade80','#60a5fa','#e879f9','#334155'],
+      borderColor: '#0a0a1a',
+      borderWidth: 2
+    }]
+  },
+  options: {
+    responsive: true,
+    cutout: '55%',
+    plugins: {
+      legend: { position: 'bottom', labels: { color: '#aaa', font: { size: 11 }, padding: 12 } }
+    }
+  }
+});
+
+// Stacked Bar — API Endpoint Categories
+  type: 'bar',
+  data: {
+    labels: ['Overview/Cycles','Scheduler','Knowledge','CodeGen','Identity','Errors','Snapshots','RRP / L3'],
+    datasets: [
+      { label: 'GET', data: [6, 3, 4, 3, 3, 3, 2, 3], backgroundColor: '#ffa500' },
+      { label: 'POST', data: [3, 2, 3, 4, 2, 2, 2, 3], backgroundColor: '#ff6b6b' },
+      { label: 'PUT', data: [1, 1, 1, 1, 1, 0, 1, 1], backgroundColor: '#60a5fa' },
+      { label: 'DELETE', data: [1, 0, 1, 0, 0, 1, 1, 0], backgroundColor: '#c084fc' }
+    ]
+  },
+  options: {
+    responsive: true,
+    scales: {
+      x: { stacked: true, grid: { color: 'rgba(255,255,255,.05)' }, ticks: { color: '#999', font: { size: 11 } } },
+      y: { stacked: true, grid: { color: 'rgba(255,255,255,.05)' }, ticks: { color: '#999' }, title: { display: true, text: 'Endpoints', color: '#999' } }
+    },
+    plugins: { legend: { labels: { color: '#ccc', font: { size: 11 } } } }
+  }
+});
+</script>
+</body>
+</html>

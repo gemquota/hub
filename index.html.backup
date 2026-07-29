@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project Hub</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0f1118;color:#e0e0e0;display:flex;flex-direction:column}
+.split{display:flex;flex:1}
+.half{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-decoration:none;color:inherit;transition:all .3s;cursor:pointer;position:relative;overflow:hidden}
+.half::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity .4s}
+.half:hover::before{opacity:1}
+.half.ai{background:linear-gradient(135deg,#080818 0%,#0d0d2b 50%,#1a0a2e 100%)}
+.half.ai::before{background:radial-gradient(ellipse at 40% 50%,rgba(123,47,255,.08),transparent 60%)}
+.half.non-ai{background:linear-gradient(135deg,#0a0804 0%,#1a1208 50%,#0d0d0a 100%)}
+.half.non-ai::before{background:radial-gradient(ellipse at 60% 50%,rgba(255,140,0,.06),transparent 60%)}
+.half .icon{font-size:4rem;margin-bottom:.8rem;position:relative;z-index:1}
+.half h2{font-size:2.2rem;font-weight:800;position:relative;z-index:1}
+.half.ai h2{background:linear-gradient(90deg,#7b2fff,#00d9ff,#00ff9f);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.half.non-ai h2{background:linear-gradient(90deg,#ff8c00,#ffd93d,#ff6b35);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.half .sub{font-size:.9rem;color:#666;margin-top:.4rem;position:relative;z-index:1}
+.half .count{font-size:.75rem;color:#444;margin-top:.2rem;position:relative;z-index:1}
+.half .glow{position:absolute;width:250px;height:250px;border-radius:50%;filter:blur(70px);opacity:.12;transition:opacity .5s}
+.half.ai .glow{background:#7b2fff;bottom:-80px;right:-80px}
+.half.non-ai .glow{background:#ff8c00;bottom:-80px;left:-80px}
+.half:hover .glow{opacity:.25}
+.half:hover{transform:scale(1.01);z-index:2}
+.tagline{position:fixed;bottom:1rem;left:50%;transform:translateX(-50%);color:#333;font-size:.65rem;z-index:10;text-align:center}
+</style>
+</head>
+<body>
+<div class="split">
+  <a href="/ai.html" class="half ai">
+    <div class="glow"></div>
+    <div class="icon">☯</div>
+    <h2>AI / RSI</h2>
+    <div class="sub">Knowledge systems · agents · infrastructure</div>
+    <div class="count">6 services · 2,308 articles · 18k links</div>
+  </a>
+  <a href="/non-ai.html" class="half non-ai">
+    <div class="glow"></div>
+    <div class="icon">🔧</div>
+    <h2>Non-AI</h2>
+    <div class="sub">Tools · simulations · scrapers</div>
+    <div class="count">3 projects · 4 languages · ~5k lines</div>
+  </a>
+</div>
+<div class="tagline">Project Ecosystem Progress Dashboard · Generated 2026-07-28</div>
+</body>
+</html>

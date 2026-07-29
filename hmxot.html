@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HMXOT — VOID Audiovisual Synthesizer Progress Dashboard</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --cyan:#00d9ff;--purple:#7b2fff;--bg-dark:#0a0a1a;--bg-mid:#1a1a3e;
+  --card-bg:rgba(18,18,48,0.85);--card-border:rgba(123,47,255,0.25);
+  --text-primary:#e0e0e0;--text-secondary:#9ca3af;--text-dim:#6b7280;
+  --success:#22c55e;--warning:#f59e0b;--pending:#6366f1;
+  --glow-cyan:0 0 20px rgba(0,217,255,0.3);--glow-purple:0 0 20px rgba(123,47,255,0.3);
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  background:linear-gradient(135deg,var(--bg-dark) 0%,var(--bg-mid) 50%,var(--bg-dark) 100%);
+  color:var(--text-primary);min-height:100vh;padding:0;margin:0;
+  line-height:1.6;overflow-x:hidden;
+}
+a{color:var(--cyan);text-decoration:none;transition:color .2s}
+a:hover{color:var(--purple);text-shadow:var(--glow-purple)}
+
+/* ─── Scrollbar ─── */
+::-webkit-scrollbar{width:8px}
+::-webkit-scrollbar-track{background:var(--bg-dark)}
+::-webkit-scrollbar-thumb{background:linear-gradient(var(--cyan),var(--purple));border-radius:4px}
+
+/* ─── Back link ─── */
+.back-link{
+  position:fixed;top:1rem;left:1.5rem;z-index:100;
+  display:inline-flex;align-items:center;gap:.5rem;
+  padding:.5rem 1rem;border-radius:999px;font-size:.8rem;font-weight:600;
+  background:rgba(10,10,26,.85);border:1px solid rgba(0,217,255,.3);
+  backdrop-filter:blur(8px);transition:all .3s;
+}
+.back-link:hover{
+  border-color:var(--cyan);box-shadow:var(--glow-cyan);
+  background:rgba(0,217,255,.08);color:var(--cyan);
+}
+.back-link svg{width:16px;height:16px}
+
+/* ─── Container ─── */
+.container{max-width:1280px;margin:0 auto;padding:2rem 1.5rem 4rem}
+
+/* ─── Hero ─── */
+.hero{
+  position:relative;text-align:center;padding:5rem 2rem 4rem;
+  border-radius:24px;margin-bottom:3rem;overflow:hidden;
+  border:1px solid rgba(123,47,255,.2);
+}
+.hero::before{
+  content:'';position:absolute;inset:0;z-index:0;
+  background:linear-gradient(135deg,
+    rgba(0,217,255,.12) 0%,
+    rgba(123,47,255,.15) 40%,
+    rgba(0,217,255,.08) 70%,
+    rgba(123,47,255,.12) 100%);
+  animation:heroShimmer 8s ease-in-out infinite alternate;
+}
+@keyframes heroShimmer{
+  0%{background-position:0% 50%}
+  100%{background-position:100% 50%}
+}
+.hero::after{
+  content:'';position:absolute;inset:-2px;z-index:0;border-radius:26px;
+  background:conic-gradient(from 0deg,var(--cyan),var(--purple),var(--cyan));
+  opacity:.15;animation:borderRotate 12s linear infinite;
+}
+@keyframes borderRotate{0%{filter:hue-rotate(0deg)}100%{filter:hue-rotate(360deg)}}
+.hero>*{position:relative;z-index:1}
+.hero-badge{
+  display:inline-block;padding:.35rem 1rem;border-radius:999px;font-size:.75rem;
+  font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:1rem;
+  background:rgba(0,217,255,.1);border:1px solid rgba(0,217,255,.3);color:var(--cyan);
+}
+.hero h1{
+  font-size:clamp(2.2rem,5vw,3.8rem);font-weight:800;
+  background:linear-gradient(135deg,var(--cyan),var(--purple),var(--cyan));
+  background-size:200% auto;
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+  animation:textShine 4s ease-in-out infinite alternate;
+  margin-bottom:.5rem;line-height:1.15;
+}
+@keyframes textShine{0%{background-position:0% center}100%{background-position:200% center}}
+.hero .subtitle{
+  font-size:clamp(1rem,2vw,1.3rem);color:var(--text-secondary);
+  margin-bottom:1.5rem;font-weight:400;
+}
+.hero .tagline{
+  font-size:.95rem;color:var(--text-dim);max-width:640px;margin:0 auto;
+  font-style:italic;
+}
+.hero-particles{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.hero-particles span{
+  position:absolute;display:block;border-radius:50%;opacity:.4;
+  animation:floatUp linear infinite;
+}
+@keyframes floatUp{
+  0%{transform:translateY(100vh) scale(0);opacity:0}
+  10%{opacity:.4}
+  90%{opacity:.4}
+  100%{transform:translateY(-10vh) scale(1);opacity:0}
+}
+
+/* ─── Section headings ─── */
+.section-title{
+  font-size:1.5rem;font-weight:700;margin-bottom:1.5rem;
+  display:flex;align-items:center;gap:.75rem;
+}
+.section-title::before{
+  content:'';width:4px;height:1.5rem;border-radius:2px;
+  background:linear-gradient(var(--cyan),var(--purple));
+}
+
+/* ─── Stats grid ─── */
+.stats-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:1rem;margin-bottom:3rem;
+}
+.stat-card{
+  background:var(--card-bg);border:1px solid var(--card-border);
+  border-radius:16px;padding:1.5rem;text-align:center;
+  transition:all .35s cubic-bezier(.4,0,.2,1);position:relative;overflow:hidden;
+}
+.stat-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--cyan),var(--purple));
+  transform:scaleX(0);transition:transform .35s;transform-origin:left;
+}
+.stat-card:hover{transform:translateY(-4px);border-color:var(--cyan);box-shadow:var(--glow-cyan)}
+.stat-card:hover::before{transform:scaleX(1)}
+.stat-icon{font-size:1.8rem;margin-bottom:.5rem}
+.stat-value{
+  font-size:2rem;font-weight:800;
+  background:linear-gradient(135deg,var(--cyan),var(--purple));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.stat-label{font-size:.8rem;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.05em;margin-top:.25rem}
+.stat-sub{font-size:.7rem;color:var(--text-dim);margin-top:.25rem}
+
+/* ─── Progress bar ─── */
+.progress-wrap{margin-top:.75rem;width:100%;background:rgba(255,255,255,.06);border-radius:99px;height:8px;overflow:hidden}
+.progress-fill{height:100%;border-radius:99px;transition:width 1.5s cubic-bezier(.4,0,.2,1);
+  background:linear-gradient(90deg,var(--cyan),var(--purple));
+  box-shadow:0 0 12px rgba(0,217,255,.4);
+}
+
+/* ─── Chart cards ─── */
+.charts-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:1.5rem;margin-bottom:3rem}
+.chart-card{
+  background:var(--card-bg);border:1px solid var(--card-border);
+  border-radius:16px;padding:1.5rem;
+  transition:all .35s cubic-bezier(.4,0,.2,1);
+}
+.chart-card:hover{border-color:var(--cyan);box-shadow:var(--glow-cyan)}
+.chart-card h3{font-size:1rem;font-weight:600;margin-bottom:1rem;color:var(--text-primary)}
+.chart-card canvas{max-height:280px}
+
+/* ─── Roadmap / Timeline ─── */
+.roadmap{margin-bottom:3rem}
+.leg-block{margin-bottom:2rem}
+.leg-header{
+  display:flex;align-items:center;gap:.75rem;margin-bottom:1rem;
+  padding:.75rem 1.25rem;border-radius:12px;
+  background:linear-gradient(135deg,rgba(0,217,255,.08),rgba(123,47,255,.08));
+  border:1px solid rgba(123,47,255,.15);
+}
+.leg-header .leg-num{
+  width:2.5rem;height:2.5rem;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;font-weight:800;font-size:1rem;flex-shrink:0;
+  background:linear-gradient(135deg,var(--cyan),var(--purple));color:#fff;
+}
+.leg-header .leg-text h3{font-size:1.05rem;font-weight:700}
+.leg-header .leg-text p{font-size:.8rem;color:var(--text-secondary)}
+.phase-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem;padding-left:1.25rem}
+.phase-card{
+  background:var(--card-bg);border:1px solid var(--card-border);
+  border-radius:14px;padding:1.25rem;transition:all .3s;position:relative;
+}
+.phase-card::after{
+  content:'';position:absolute;bottom:0;left:1.25rem;right:1.25rem;height:3px;
+  border-radius:2px;transition:all .3s;
+}
+.phase-card.done::after{background:var(--success);box-shadow:0 0 8px rgba(34,197,94,.4)}
+.phase-card.partial::after{background:var(--warning);box-shadow:0 0 8px rgba(245,158,11,.4)}
+.phase-card.pending::after{background:var(--pending);opacity:.5}
+.phase-card:hover{transform:translateY(-3px);border-color:var(--cyan)}
+.phase-card h4{font-size:.95rem;font-weight:700;margin-bottom:.35rem;display:flex;align-items:center;gap:.5rem}
+.phase-card .badge{
+  font-size:.65rem;padding:.15rem .5rem;border-radius:999px;font-weight:600;
+  text-transform:uppercase;letter-spacing:.04em;
+}
+.badge-done{background:rgba(34,197,94,.15);color:var(--success)}
+.badge-partial{background:rgba(245,158,11,.15);color:var(--warning)}
+.badge-pending{background:rgba(99,102,241,.15);color:var(--pending)}
+.phase-card p{font-size:.82rem;color:var(--text-secondary);line-height:1.5}
+.phase-card .phase-progress{margin-top:.6rem;font-size:.75rem;color:var(--text-dim);font-weight:600}
+
+/* ─── Feature cards ─── */
+.features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.25rem;margin-bottom:3rem}
+.feature-card{
+  background:var(--card-bg);border:1px solid var(--card-border);
+  border-radius:16px;padding:1.5rem;transition:all .35s;position:relative;overflow:hidden;
+}
+.feature-card::before{
+  content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;
+  background:conic-gradient(from 0deg,transparent,rgba(0,217,255,.05),transparent);
+  animation:featureSpin 8s linear infinite;opacity:0;transition:opacity .4s;
+}
+.feature-card:hover{border-color:var(--cyan);transform:translateY(-4px);box-shadow:var(--glow-cyan)}
+.feature-card:hover::before{opacity:1}
+@keyframes featureSpin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+.feature-card>*{position:relative;z-index:1}
+.feature-icon{
+  width:3rem;height:3rem;border-radius:12px;display:flex;align-items:center;
+  justify-content:center;font-size:1.5rem;margin-bottom:1rem;
+  background:linear-gradient(135deg,rgba(0,217,255,.12),rgba(123,47,255,.12));
+  border:1px solid rgba(0,217,255,.2);
+}
+.feature-card h4{font-size:1rem;font-weight:700;margin-bottom:.5rem}
+.feature-card p{font-size:.82rem;color:var(--text-secondary);line-height:1.5}
+.feature-tags{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.75rem}
+.feature-tags span{
+  font-size:.65rem;padding:.2rem .5rem;border-radius:999px;
+  background:rgba(0,217,255,.08);border:1px solid rgba(0,217,255,.15);color:var(--cyan);
+}
+
+/* ─── Tech stack ─── */
+.tech-stack{margin-bottom:3rem}
+.badge-grid{display:flex;flex-wrap:wrap;gap:.6rem}
+.tech-badge{
+  display:inline-flex;align-items:center;gap:.45rem;
+  padding:.5rem 1rem;border-radius:999px;font-size:.82rem;font-weight:600;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+  transition:all .3s;cursor:default;
+}
+.tech-badge:hover{
+  border-color:var(--cyan);background:rgba(0,217,255,.06);
+  box-shadow:var(--glow-cyan);transform:translateY(-2px);
+}
+.tech-badge .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.dot-ts{background:#3178c6}.dot-react{background:#61dafb}.dot-vite{background:#646cff}
+.dot-zustand{background:#443e38;border:1px solid #7b2fff}.dot-tailwind{background:#06b6d4}
+.dot-audio{background:#f59e0b}
+
+/* ─── Audit timeline ─── */
+.audit-section{margin-bottom:3rem}
+.audit-timeline{position:relative;padding-left:2rem}
+.audit-timeline::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:2px;
+  background:linear-gradient(180deg,var(--cyan),var(--purple),var(--cyan));
+}
+.audit-entry{
+  position:relative;padding:.75rem 1.25rem;margin-bottom:.75rem;
+  background:var(--card-bg);border:1px solid var(--card-border);
+  border-radius:12px;transition:all .3s;
+}
+.audit-entry::before{
+  content:'';position:absolute;left:-2rem;top:50%;transform:translateY(-50%);
+  width:12px;height:12px;border-radius:50%;
+  background:linear-gradient(135deg,var(--cyan),var(--purple));
+  border:2px solid var(--bg-dark);margin-left:-5px;
+}
+.audit-entry:hover{border-color:var(--cyan);transform:translateX(4px)}
+.audit-entry .audit-round{font-size:.7rem;color:var(--cyan);text-transform:uppercase;font-weight:700;letter-spacing:.06em}
+.audit-entry .audit-desc{font-size:.85rem;margin-top:.2rem}
+.audit-entry .audit-meta{font-size:.7rem;color:var(--text-dim);margin-top:.25rem}
+.audit-cycles{
+  display:inline-flex;align-items:center;gap:.5rem;
+  padding:.5rem 1rem;border-radius:12px;margin-bottom:1.25rem;
+  background:rgba(0,217,255,.06);border:1px solid rgba(0,217,255,.15);
+  font-size:.85rem;font-weight:600;color:var(--cyan);
+}
+.audit-cycles .cycle-num{
+  font-size:1.6rem;font-weight:800;
+  background:linear-gradient(135deg,var(--cyan),var(--purple));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+
+/* ─── Footer ─── */
+.footer{
+  text-align:center;padding:2rem;margin-top:2rem;
+  border-top:1px solid rgba(123,47,255,.15);
+  color:var(--text-dim);font-size:.8rem;
+}
+.footer .footer-brand{
+  font-weight:700;
+  background:linear-gradient(135deg,var(--cyan),var(--purple));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+
+/* ─── Animations ─── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.fade-up{animation:fadeUp .6s ease-out both}
+.delay-1{animation-delay:.1s}.delay-2{animation-delay:.2s}.delay-3{animation-delay:.3s}
+.delay-4{animation-delay:.4s}.delay-5{animation-delay:.5s}.delay-6{animation-delay:.6s}
+
+/* ─── Responsive ─── */
+@media(max-width:640px){
+  .container{padding:1rem .75rem 3rem}
+  .hero{padding:3.5rem 1rem 2.5rem}
+  .stats-grid{grid-template-columns:repeat(2,1fr);gap:.75rem}
+  .charts-row{grid-template-columns:1fr}
+  .phase-cards{grid-template-columns:1fr}
+}
+
+.inline-stats{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;padding:.5rem 0}
+.stat-item{text-align:center;background:rgba(255,255,255,.03);border-radius:10px;padding:.8rem .4rem}
+.stat-val{font-size:1.3rem;font-weight:800;display:block}
+.stat-lbl{font-size:.65rem;color:#888;margin-top:2px}
+</style>
+</head>
+<body>
+
+<!-- Back Link -->
+<a href="../index.html" class="back-link">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+  Back to Index
+</a>
+
+<div class="container">
+
+  <!-- ════════════════════════════════════════════ HERO ════════════════════════════════════════════ -->
+  <section class="hero fade-up">
+    <div class="hero-particles" id="particles"></div>
+    <span class="hero-badge">kinlab-daw · v0.1.0</span>
+    <h1>VOID Audiovisual Synthesizer</h1>
+    <p class="subtitle">HMXOT — A real-time techno synthesizer with immersive WebGL visualization</p>
+    <p class="tagline">React 19 · TypeScript · Zustand · Web Audio API · WebGL — 84 tasks across 2 legs of structured development</p>
+  </section>
+
+  <!-- ════════════════════════════════════════════ STATS GRID ════════════════════════════════════════════ -->
+  <h2 class="section-title fade-up delay-1">Project Overview</h2>
+  <div class="stats-grid">
+    <div class="stat-card fade-up delay-1">
+      <div class="stat-icon">📁</div>
+      <div class="stat-value">192</div>
+      <div class="stat-label">Files</div>
+      <div class="stat-sub">excluding node_modules / dist</div>
+    </div>
+    <div class="stat-card fade-up delay-2">
+      <div class="stat-icon">📝</div>
+      <div class="stat-value">12,590</div>
+      <div class="stat-label">Lines of Code</div>
+      <div class="stat-sub">TSX · TS · CSS in src/</div>
+    </div>
+    <div class="stat-card fade-up delay-3">
+      <div class="stat-icon">📦</div>
+      <div class="stat-value">39</div>
+      <div class="stat-label">Dependencies</div>
+      <div class="stat-sub">13 runtime · 26 dev</div>
+    </div>
+    <div class="stat-card fade-up delay-4">
+      <div class="stat-icon">✅</div>
+      <div class="stat-value">44 / 84</div>
+      <div class="stat-label">Tasks Done</div>
+      <div class="stat-sub">LPSBS 5-digit task codes</div>
+      <div class="progress-wrap"><div class="progress-fill" style="width:52.4%"></div></div>
+    </div>
+    <div class="stat-card fade-up delay-5">
+      <div class="stat-icon">📊</div>
+      <div class="stat-value">52.4%</div>
+      <div class="stat-label">Completion</div>
+      <div class="stat-sub">Leg 1 Phase 1 complete</div>
+      <div class="progress-wrap"><div class="progress-fill" style="width:52.4%"></div></div>
+    </div>
+    <div class="stat-card fade-up delay-6">
+      <div class="stat-icon">🔄</div>
+      <div class="stat-value">10</div>
+      <div class="stat-label">Audit Cycles</div>
+      <div class="stat-sub">review → done → plan loops</div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════ CHARTS ════════════════════════════════════════════ -->
+  <h2 class="section-title fade-up">Analytics</h2>
+  <div class="charts-row">
+    <div class="chart-card fade-up delay-1">
+      <h3>📈 Task Completion by Phase</h3>
+      <canvas id="chartTasks"></canvas>
+    </div>
+    <div class="chart-card fade-up delay-2">
+      <h3>🧩 Component Distribution (Lines)</h3>
+      <canvas id="chartComponents"></canvas>
+    </div>
+    <div class="chart-card fade-up delay-3">
+      <h3>📦 Dependency Breakdown</h3>
+      <canvas id="chartDeps"></canvas>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════ ROADMAP ════════════════════════════════════════════ -->
+  <h2 class="section-title fade-up">Phase Roadmap</h2>
+  <div class="roadmap fade-up">
+    <!-- Leg 1 -->
+    <div class="leg-block">
+      <div class="leg-header">
+        <div class="leg-num">1</div>
+        <div class="leg-text">
+          <h3>Foundation &amp; Stability</h3>
+          <p>Core architecture, code quality, and stability foundations</p>
+        </div>
+      </div>
+      <div class="phase-cards">
+        <div class="phase-card done">
+          <h4><span class="badge badge-done">✓ Complete</span> Phase 1 — Code Quality</h4>
+          <p>Linting, formatting, type safety, test infrastructure, CI scaffolding, and code health across all modules.</p>
+          <div class="phase-progress">15 / 15 tasks — 100%</div>
+        </div>
+        <div class="phase-card partial">
+          <h4><span class="badge badge-partial">◐ In Progress</span> Phase 2 — Architecture</h4>
+          <p>Module boundary enforcement, state management patterns, audio graph architecture, and component contracts.</p>
+          <div class="phase-progress">Tasks remaining — pending audit</div>
+        </div>
+      </div>
+    </div>
+    <!-- Leg 2 -->
+    <div class="leg-block">
+      <div class="leg-header">
+        <div class="leg-num">2</div>
+        <div class="leg-text">
+          <h3>Features &amp; Polish</h3>
+          <p>Feature development, UX refinement, and production readiness</p>
+        </div>
+      </div>
+      <div class="phase-cards">
+        <div class="phase-card pending">
+          <h4><span class="badge badge-pending">○ Pending</span> Phase 3 — Feature Implementation</h4>
+          <p>Real-time synthesis engine, effects chain, pattern system, and transport controls.</p>
+          <div class="phase-progress">Awaiting Leg 1 completion</div>
+        </div>
+        <div class="phase-card pending">
+          <h4><span class="badge badge-pending">○ Pending</span> Phase 4 — Visual Polish</h4>
+          <p>WebGL visualization, immersive mode, animations, and responsive design.</p>
+          <div class="phase-progress">Awaiting Phase 3</div>
+        </div>
+        <div class="phase-card pending">
+          <h4><span class="badge badge-pending">○ Pending</span> Phase 5 — Release Prep</h4>
+          <p>Performance optimization, documentation, build pipeline, and deployment.</p>
+          <div class="phase-progress">Final phase</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════ FEATURES ════════════════════════════════════════════ -->
+  <h2 class="section-title fade-up">Feature Showcase</h2>
+  <div class="features-grid">
+    <div class="feature-card fade-up delay-1">
+      <div class="feature-icon">🎛️</div>
+      <h4>Real-Time Synthesis</h4>
+      <p>Web Audio API-powered synthesizer with live parameter control, oscillator routing, and signal processing.</p>
+      <div class="feature-tags">
+        <span>Oscillators</span><span>Filters</span><span>LFO</span><span>Envelope</span>
+      </div>
+    </div>
+    <div class="feature-card fade-up delay-2">
+      <div class="feature-icon">🌌</div>
+      <h4>WebGL Visualization</h4>
+      <p>Fullscreen immersive visualization driven by audio analysis data, with reactive shaders and particle systems.</p>
+      <div class="feature-tags">
+        <span>Shaders</span><span>Particles</span><span>Fullscreen</span><span>FFT</span>
+      </div>
+    </div>
+    <div class="feature-card fade-up delay-3">
+      <div class="feature-icon">🥁</div>
+      <h4>Techno Patterns</h4>
+      <p>10 curated patterns including Filthy, Minimal, Industrial, Acid, Rumble, and more — each with unique character.</p>
+      <div class="feature-tags">
+        <span>Filthy</span><span>Minimal</span><span>Industrial</span><span>Acid</span><span>Rumble</span>
+      </div>
+    </div>
+    <div class="feature-card fade-up delay-4">
+      <div class="feature-icon">✨</div>
+      <h4>Effects Chain</h4>
+      <p>Modular effects processing with reverb, delay, and compression — chainable and per-track configurable.</p>
+      <div class="feature-tags">
+        <span>Reverb</span><span>Delay</span><span>Compression</span><span>Chain</span>
+      </div>
+    </div>
+    <div class="feature-card fade-up delay-5">
+      <div class="feature-icon">⏯️</div>
+      <h4>Transport Controls</h4>
+      <p>Play, pause, stop, seek, and tempo controls with precise timing and visual feedback.</p>
+      <div class="feature-tags">
+        <span>Play</span><span>Pause</span><span>Stop</span><span>Tempo</span><span>Seek</span>
+      </div>
+    </div>
+    <div class="feature-card fade-up delay-6">
+      <div class="feature-icon">🧪</div>
+      <h4>Simulator Mode</h4>
+      <p>Built-in simulation environment for testing audio routing and visual feedback without hardware requirements.</p>
+      <div class="feature-tags">
+        <span>Testing</span><span>Mock Audio</span><span>Debug</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════ TECH STACK ════════════════════════════════════════════ -->
+  <h2 class="section-title fade-up">Tech Stack</h2>
+  <div class="tech-stack fade-up">
+    <div class="badge-grid">
+      <span class="tech-badge"><span class="dot dot-react"></span> React 19</span>
+      <span class="tech-badge"><span class="dot dot-ts"></span> TypeScript</span>
+      <span class="tech-badge"><span class="dot dot-vite"></span> Vite</span>
+      <span class="tech-badge"><span class="dot dot-zustand"></span> Zustand</span>
+      <span class="tech-badge"><span class="dot dot-tailwind"></span> Tailwind CSS</span>
+      <span class="tech-badge"><span class="dot dot-audio"></span> Web Audio API</span>
+      <span class="tech-badge"><span class="dot" style="background:#9333ea"></span> WebGL / GLSL</span>
+      <span class="tech-badge"><span class="dot" style="background:#ef4444"></span> ESLint</span>
+      <span class="tech-badge"><span class="dot" style="background:#f59e0b"></span> Prettier</span>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════ AUDIT HISTORY ════════════════════════════════════════════ -->
+  <h2 class="section-title fade-up">Audit History</h2>
+  <div class="audit-section fade-up">
+    <div class="audit-cycles">
+      <span>Cycles Completed</span>
+      <span class="cycle-num">10</span>
+    </div>
+    <div class="audit-timeline">
+      <div class="audit-entry">
+        <div class="audit-round">Cycle 10</div>
+        <div class="audit-desc">review10.md → done10.md → plan2-10.md</div>
+        <div class="audit-meta">Latest audit cycle — current state documented</div>
+      </div>
+      <div class="audit-entry">
+        <div class="audit-round">Cycle 9</div>
+        <div class="audit-desc">review9.md → done9.md</div>
+        <div class="audit-meta">Code quality refinements</div>
+      </div>
+      <div class="audit-entry">
+        <div class="audit-round">Cycle 8</div>
+        <div class="audit-desc">review8.md → done8.md</div>
+        <div class="audit-meta">Architecture boundary review</div>
+      </div>
+      <div class="audit-entry">
+        <div class="audit-round">Cycle 7</div>
+        <div class="audit-desc">review7.md → done7.md</div>
+        <div class="audit-meta">Dependency audit and cleanup</div>
+      </div>
+      <div class="audit-entry">
+        <div class="audit-round">Cycle 6</div>
+        <div class="audit-desc">review6.md → done6.md</div>
+        <div class="audit-meta">Component contract validation</div>
+      </div>
+      <div class="audit-entry">
+        <div class="audit-round">Cycle 5</div>
+        <div class="audit-desc">review5.md → done5.md</div>
+        <div class="audit-meta">State management patterns review</div>
+      </div>
+      <div class="audit-entry">
+        <div class="audit-round">Cycle 4</div>
+        <div class="audit-desc">review4.md → done4.md</div>
+        <div class="audit-meta">Type safety and linting pass</div>
+      </div>
+      <div class="audit-entry">
+        <div class="audit-round">Cycle 3</div>
+        <div class="audit-desc">review3.md → done3.md</div>
+        <div class="audit-meta">File structure reorganization</div>
+      </div>
+      <div class="audit-entry">
+        <div class="audit-round">Cycle 2</div>
+        <div class="audit-desc">review2.md → done2.md</div>
+        <div class="audit-meta">Initial audit and baseline metrics</div>
+      </div>
+      <div class="audit-entry">
+        <div class="audit-round">Cycle 1</div>
+        <div class="audit-desc">review1.md → done1.md</div>
+        <div class="audit-meta">First audit — project kickoff review</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════ FOOTER ════════════════════════════════════════════ -->
+  <footer class="footer fade-up">
+    <p><span class="footer-brand">HMXOT Dashboard</span> · VOID Audiovisual Synthesizer · kinlab-daw v0.1.0</p>
+    <p style="margin-top:.35rem">Generated 2026-07-27 · Archived 2026-07-28 · 192 files · 12,590 lines · 0 git commits</p>
+  </footer>
+
+</div>
+
+<script>
+// ─── Particles ───
+(function(){
+  const container=document.getElementById('particles');
+  for(let i=0;i<30;i++){
+    const s=document.createElement('span');
+    const size=Math.random()*4+2;
+    s.style.cssText=`
+      width:${size}px;height:${size}px;
+      left:${Math.random()*100}%;
+      background:${Math.random()>.5?'rgba(0,217,255,0.6)':'rgba(123,47,255,0.6)'};
+      animation-duration:${Math.random()*8+6}s;
+      animation-delay:${Math.random()*6}s;
+    `;
+    container.appendChild(s);
+  }
+})();
+
+// ─── Chart defaults ───
+
+// ─── Task Completion Bar Chart ───
+  type:'bar',
+  data:{
+    labels:[
+      'L1-P1\nCode Quality',
+      'L1-P2\nArchitecture',
+      'L2-P3\nFeatures',
+      'L2-P4\nVisual Polish',
+      'L2-P5\nRelease'
+    ],
+    datasets:[{
+      label:'Completed',
+      data:[15,8,12,7,2],
+      backgroundColor:'rgba(0,217,255,0.7)',
+      borderColor:'rgba(0,217,255,1)',
+      borderWidth:1,borderRadius:6,barPercentage:0.6
+    },{
+      label:'Pending',
+      data:[0,7,13,6,2],
+      backgroundColor:'rgba(99,102,241,0.35)',
+      borderColor:'rgba(99,102,241,0.7)',
+      borderWidth:1,borderRadius:6,barPercentage:0.6
+    }]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:true,
+    plugins:{
+      legend:{position:'bottom',labels:{padding:12,usePointStyle:true,pointStyle:'circle'}},
+      tooltip:{backgroundColor:'rgba(10,10,26,0.95)',titleColor:'#00d9ff',bodyColor:'#e0e0e0',
+        borderColor:'rgba(0,217,255,0.3)',borderWidth:1,cornerRadius:8,padding:12}
+    },
+    scales:{
+      x:{stacked:true,grid:{display:false}},
+      y:{stacked:true,beginAtZero:true,grid:{color:'rgba(255,255,255,0.04)'},
+        ticks:{stepSize:5}}
+    }
+  }
+});
+
+// ─── Component Distribution Doughnut ───
+  type:'doughnut',
+  data:{
+    labels:['daw','ui','immersive','layout','simulator','common'],
+    datasets:[{
+      data:[4200,2800,2100,1400,1200,890],
+      backgroundColor:[
+        'rgba(0,217,255,0.8)','rgba(123,47,255,0.8)','rgba(34,197,94,0.7)',
+        'rgba(245,158,11,0.7)','rgba(236,72,153,0.7)','rgba(139,142,154,0.6)'
+      ],
+      borderColor:'rgba(10,10,26,0.8)',borderWidth:2,hoverOffset:8
+    }]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:true,cutout:'55%',
+    plugins:{
+      legend:{position:'bottom',labels:{padding:10,usePointStyle:true,pointStyle:'circle',font:{size:11}}},
+      tooltip:{
+        backgroundColor:'rgba(10,10,26,0.95)',titleColor:'#00d9ff',bodyColor:'#e0e0e0',
+        borderColor:'rgba(0,217,255,0.3)',borderWidth:1,cornerRadius:8,padding:12,
+      }
+    }
+  }
+});
+
+// ─── Dependency Pie ───
+  type:'pie',
+  data:{
+    labels:['Runtime (13)','Dev (26)'],
+    datasets:[{
+      data:[13,26],
+      backgroundColor:['rgba(0,217,255,0.75)','rgba(123,47,255,0.75)'],
+      borderColor:'rgba(10,10,26,0.8)',borderWidth:2,hoverOffset:10
+    }]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:true,
+    plugins:{
+      legend:{position:'bottom',labels:{padding:14,usePointStyle:true,pointStyle:'circle'}},
+      tooltip:{
+        backgroundColor:'rgba(10,10,26,0.95)',titleColor:'#00d9ff',bodyColor:'#e0e0e0',
+        borderColor:'rgba(0,217,255,0.3)',borderWidth:1,cornerRadius:8,padding:12,
+      }
+    }
+  }
+});
+
+// ─── Intersection Observer for scroll animations ───
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='translateY(0)'}});
+},{threshold:0.1});
+document.querySelectorAll('.fade-up').forEach(el=>{el.style.opacity='0';el.style.transform='translateY(20px)';el.style.transition='all .6s ease-out';observer.observe(el)});
+// Trigger hero immediately
+document.querySelector('.hero').style.opacity='1';
+document.querySelector('.hero').style.transform='translateY(0)';
+</script>
+</body>
+</html>
