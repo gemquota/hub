@@ -2,8 +2,11 @@ backup-*/
 *.log
 serve.sh
 *.backup
-*.backup
 *.backup2
 *.pdf
 cosmos
 space
+.cap_sandbox/
+
+# Generated wiki content (regenerate with build-tree.py)
+wiki-content/
