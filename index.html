@@ -151,7 +151,6 @@ h1{font-size:1.3rem;font-weight:700;margin-bottom:.05rem;background:linear-gradi
       <div style="font-size:.5rem;color:#666">Tool layer. 326-probe spec generation, TypeScript + Node</div>
     </a>
   </div>
-
   <div style="display:flex;align-items:center;gap:.3rem;font-size:.6rem;color:#666;padding-top:.3rem;border-top:1px solid rgba(255,255,255,.04)">
     <span>🔗 Active Triad:</span>
     <span style="color:#ff8c00;font-weight:600">rsis3</span>
@@ -167,12 +166,12 @@ h1{font-size:1.3rem;font-weight:700;margin-bottom:.05rem;background:linear-gradi
 
 <div class="card">
   <div class="proj-grid">
-<a href="mykb.html" class="proj-card" style="border-left:3px solid #a855f7"><div class="p-row"><span style="font-weight:700;font-size:.8rem;color:#a855f7">MyKB</span><span class="p-badge live" style="font-size:.5rem;padding:1px 8px;border-radius:8px;background:rgba(0,255,159,.15);color:#00ff9f;border:1px solid rgba(0,255,159,.25);font-weight:600;letter-spacing:.3px">LIVE</span>
+<a href="mykb.html" class="proj-card" style="border-left:3px solid #a855f7"><div class="p-row"><span style="font-weight:700;font-size:.8rem;color:#a855f7">MyKB</span><span class="p-badge live" style="font-size:.5rem;padding:1px 8px;border-radius:8px;background:rgba(0,255,159,.15);color:#00ff9f;border:1px solid rgba(0,255,159,.25);font-weight:600;letter-spacing:.3px">LIVE</span></div><div style="font-size:.6rem;color:#777;margin:.1rem 0 .2rem">Personal LLM wiki — 2,442 concepts across 27 domains with hybrid search, graph, Git history
+</div>
   </div>
 </div>
-
-<!-- MODULE: Overview Charts -->
-<div class="module-label"><span class="icon">📊</span> Overview</div>
+<!-- MODULE: Charts -->
+<div class="module-label"><span class="icon">📊</span> Charts <span class="hdr-sub">all bars stacked · click toggle for grouped view</span></div>
 
 <div class="card-grid">
 
@@ -203,12 +202,14 @@ h1{font-size:1.3rem;font-weight:700;margin-bottom:.05rem;background:linear-gradi
       </div>
     </div>
     <div id="entity-count-grouped" class="chart-view hidden">
-      <div class="comp-row"><span class="lbl">VEPA2</span><div class="track"><div class="fill" style="width:100%;background:#ef4444"></div></div><span class="pct">680</span></div>
-      <div class="comp-row"><span class="lbl">SPACE</span><div class="track"><div class="fill" style="width:61.8%;background:#3b82f6"></div></div><span class="pct">420</span></div>
-      <div class="comp-row"><span class="lbl">HMXOT</span><div class="track"><div class="fill" style="width:47.1%;background:#00d4ff"></div></div><span class="pct">320</span></div>
-      <div class="comp-row"><span class="lbl">RSIS3</span><div class="track"><div class="fill" style="width:26.5%;background:#ff8c00"></div></div><span class="pct">180</span></div>
-      <div class="comp-row"><span class="lbl">GOLF</span><div class="track"><div class="fill" style="width:13.2%;background:#eab308"></div></div><span class="pct">90</span></div>
-      <div class="comp-row"><span class="lbl">MyRSIKB</span><div class="track"><div class="fill" style="width:2.2%;background:#22c55e"></div></div><span class="pct">15</span></div>
+      <div class="vbar-wrap">
+        <div class="vbar-col"><div class="vbar" style="height:73.6%;background:#ef4444"><span class="vval">680</span></div><span class="vbar-lbl">VEPA2</span></div>
+        <div class="vbar-col"><div class="vbar" style="height:45.5%;background:#3b82f6"><span class="vval">420</span></div><span class="vbar-lbl">SPACE</span></div>
+        <div class="vbar-col"><div class="vbar" style="height:34.6%;background:#00d4ff"><span class="vval">320</span></div><span class="vbar-lbl">HMXOT</span></div>
+        <div class="vbar-col"><div class="vbar" style="height:19.5%;background:#ff8c00"><span class="vval">180</span></div><span class="vbar-lbl">RSIS3</span></div>
+        <div class="vbar-col"><div class="vbar" style="height:9.7%;background:#eab308"><span class="vval">90</span></div><span class="vbar-lbl">GOLF</span></div>
+        <div class="vbar-col"><div class="vbar" style="height:1.6%;background:#22c55e"><span class="vval">15</span></div><span class="vbar-lbl">MyRSIKB</span></div>
+      </div>
     </div>
   </div>
 
@@ -241,13 +242,15 @@ h1{font-size:1.3rem;font-weight:700;margin-bottom:.05rem;background:linear-gradi
       </div>
     </div>
     <div id="file-count-grouped" class="chart-view hidden">
-      <div class="comp-row"><span class="lbl">SPACE</span><div class="track"><div class="fill" style="width:100%;background:#3b82f6"></div></div><span class="pct">9,901</span></div>
-      <div class="comp-row"><span class="lbl">VEPA2</span><div class="track"><div class="fill" style="width:90.7%;background:#ef4444"></div></div><span class="pct">8,982</span></div>
-      <div class="comp-row"><span class="lbl">MyKB</span><div class="track"><div class="fill" style="width:33.8%;background:#a855f7"></div></div><span class="pct">3,351</span></div>
-      <div class="comp-row"><span class="lbl">GOLF</span><div class="track"><div class="fill" style="width:26.0%;background:#eab308"></div></div><span class="pct">2,579</span></div>
-      <div class="comp-row"><span class="lbl">HMXOT</span><div class="track"><div class="fill" style="width:12.8%;background:#00d4ff"></div></div><span class="pct">1,269</span></div>
-      <div class="comp-row"><span class="lbl">RSIS3</span><div class="track"><div class="fill" style="width:6.3%;background:#ff8c00"></div></div><span class="pct">627</span></div>
-      <div class="comp-row"><span class="lbl">MyRSIKB</span><div class="track"><div class="fill" style="width:0.4%;background:#22c55e"></div></div><span class="pct">37</span></div>
+      <div class="vbar-wrap">
+        <div class="vbar-col"><div class="vbar" style="height:33.8%;background:#a855f7"><span class="vval">3,351</span></div><span class="vbar-lbl">MyKB</span></div>
+        <div class="vbar-col"><div class="vbar" style="height:90.7%;background:#ef4444"><span class="vval">8,982</span></div><span class="vbar-lbl">VEPA2</span></div>
+        <div class="vbar-col"><div class="vbar" style="height:100%;background:#3b82f6"><span class="vval">9,901</span></div><span class="vbar-lbl">SPACE</span></div>
+        <div class="vbar-col"><div class="vbar" style="height:12.8%;background:#00d4ff"><span class="vval">1,269</span></div><span class="vbar-lbl">HMXOT</span></div>
+        <div class="vbar-col"><div class="vbar" style="height:6.3%;background:#ff8c00"><span class="vval">627</span></div><span class="vbar-lbl">RSIS3</span></div>
+        <div class="vbar-col"><div class="vbar" style="height:26%;background:#eab308"><span class="vval">2,579</span></div><span class="vbar-lbl">GOLF</span></div>
+        <div class="vbar-col"><div class="vbar" style="height:0.4%;background:#22c55e"><span class="vval">37</span></div><span class="vbar-lbl">MyRSIKB</span></div>
+      </div>
     </div>
   </div>
 
@@ -280,13 +283,15 @@ h1{font-size:1.3rem;font-weight:700;margin-bottom:.05rem;background:linear-gradi
       </div>
     </div>
     <div id="loc-grouped" class="chart-view hidden">
-      <div class="comp-row"><span class="lbl">HMXOT</span><div class="track"><div class="fill" style="width:100%;background:#00d4ff"></div></div><span class="pct">953k</span></div>
-      <div class="comp-row"><span class="lbl">VEPA2</span><div class="track"><div class="fill" style="width:55.9%;background:#ef4444"></div></div><span class="pct">532k</span></div>
-      <div class="comp-row"><span class="lbl">GOLF</span><div class="track"><div class="fill" style="width:31.2%;background:#eab308"></div></div><span class="pct">297k</span></div>
-      <div class="comp-row"><span class="lbl">SPACE</span><div class="track"><div class="fill" style="width:22.0%;background:#3b82f6"></div></div><span class="pct">209k</span></div>
-      <div class="comp-row"><span class="lbl">MyKB</span><div class="track"><div class="fill" style="width:7.2%;background:#a855f7"></div></div><span class="pct">68k</span></div>
-      <div class="comp-row"><span class="lbl">RSIS3</span><div class="track"><div class="fill" style="width:4.4%;background:#ff8c00"></div></div><span class="pct">42k</span></div>
-      <div class="comp-row"><span class="lbl">MyRSIKB</span><div class="track"><div class="fill" style="width:1.0%;background:#22c55e"></div></div><span class="pct">10k</span></div>
+      <div class="vbar-wrap">
+        <div class="vbar-col"><div class="vbar" style="height:3.2%;background:#a855f7"><span class="vval">68k</span></div><span class="vbar-lbl">MyKB</span></div>
+        <div class="vbar-col"><div class="vbar" style="height:25.2%;background:#ef4444"><span class="vval">532k</span></div><span class="vbar-lbl">VEPA2</span></div>
+        <div class="vbar-col"><div class="vbar" style="height:9.9%;background:#3b82f6"><span class="vval">209k</span></div><span class="vbar-lbl">SPACE</span></div>
+        <div class="vbar-col"><div class="vbar" style="height:45.1%;background:#00d4ff"><span class="vval">953k</span></div><span class="vbar-lbl">HMXOT</span></div>
+        <div class="vbar-col"><div class="vbar" style="height:2.0%;background:#ff8c00"><span class="vval">42k</span></div><span class="vbar-lbl">RSIS3</span></div>
+        <div class="vbar-col"><div class="vbar" style="height:14.1%;background:#eab308"><span class="vval">297k</span></div><span class="vbar-lbl">GOLF</span></div>
+        <div class="vbar-col"><div class="vbar" style="height:0.5%;background:#22c55e"><span class="vval">10k</span></div><span class="vbar-lbl">MyRSIKB</span></div>
+      </div>
     </div>
   </div>
 
@@ -294,9 +299,9 @@ h1{font-size:1.3rem;font-weight:700;margin-bottom:.05rem;background:linear-gradi
   <div class="card card-full">
     <div class="card-header">
       <span class="icon">💾</span> Code vs Data Ratio
-      <span class="chart-toggle active" data-target="code-data" onclick="toggleChart('code-data')">▤ Stacked</span>
+      <span class="chart-toggle" data-target="code-data" onclick="toggleChart('code-data')">▤ Stacked</span>
     </div>
-    <div id="code-data-grouped" class="chart-view hidden">
+    <div id="code-data-grouped" class="chart-view">
       <div class="vbar-wrap">
         <div class="vbar-col" style="justify-content:flex-end"><div class="vbar-group"><div class="vbar vbar-code" style="height:0.6%;background:#a855f7" title="Code: 41"></div><div class="vbar vbar-data" style="height:33.6%;background:rgba(255,255,255,.12)" title="Data: 2,430"></div></div><span class="vbar-lbl">MyKB</span></div>
         <div class="vbar-col" style="justify-content:flex-end"><div class="vbar-group"><div class="vbar vbar-code" style="height:72.5%;background:#ef4444" title="Code: 5,245"></div><div class="vbar vbar-data" style="height:7.5%;background:rgba(255,255,255,.12)" title="Data: 544"></div></div><span class="vbar-lbl">VEPA2</span></div>
@@ -307,7 +312,7 @@ h1{font-size:1.3rem;font-weight:700;margin-bottom:.05rem;background:linear-gradi
         <div class="vbar-col" style="justify-content:flex-end"><div class="vbar-group"><div class="vbar vbar-code" style="height:10.0%;background:#22c55e" title="Code: 37"></div><div class="vbar vbar-data" style="height:90.0%;background:rgba(255,255,255,.12)" title="Data: 334"></div></div><span class="vbar-lbl">MyRSIKB</span></div>
       </div>
     </div>
-    <div id="code-data-stacked" class="chart-view">
+    <div id="code-data-stacked" class="chart-view hidden">
       <div class="stacked-bar-wrap">
         <div class="stacked-bar">
           <div class="seg" style="width:46.3%;background:#a855f7" title="MyKB: code 41, data 2,430"></div>
@@ -360,67 +365,19 @@ h1{font-size:1.3rem;font-weight:700;margin-bottom:.05rem;background:linear-gradi
       </div>
     </div>
     <div id="lang-mix-grouped" class="chart-view hidden">
-      <div class="comp-row"><span class="lbl">JS/TS</span><div class="track"><div class="fill" style="width:100%;background:#eab308"></div></div><span class="pct">66%</span></div>
-      <div class="comp-row"><span class="lbl">Markdown</span><div class="track"><div class="fill" style="width:18.2%;background:#22c55e"></div></div><span class="pct">12%</span></div>
-      <div class="comp-row"><span class="lbl">JSON</span><div class="track"><div class="fill" style="width:12.1%;background:#3b82f6"></div></div><span class="pct">8%</span></div>
-      <div class="comp-row"><span class="lbl">HTML</span><div class="track"><div class="fill" style="width:10.6%;background:#ef4444"></div></div><span class="pct">7%</span></div>
-      <div class="comp-row"><span class="lbl">Images</span><div class="track"><div class="fill" style="width:6.1%;background:#a855f7"></div></div><span class="pct">4%</span></div>
-      <div class="comp-row"><span class="lbl">Python</span><div class="track"><div class="fill" style="width:3.0%;background:#ff8c00"></div></div><span class="pct">2%</span></div>
-      <div class="comp-row"><span class="lbl">Other</span><div class="track"><div class="fill" style="width:1.5%;background:#00d4ff"></div></div><span class="pct">1%</span></div>
-    </div>
-  </div>
-
-</div><!-- /card-grid -->
-
-<!-- MODULE: Non-bar charts (half width) -->
-<div class="module-label"><span class="icon">📈</span> Distributions &amp; Stats</div>
-
-<div class="card-grid">
-
-  <!-- Entity Distribution Donut - half width -->
-  <div class="card card-half">
-    <div class="card-header"><span class="icon">🥧</span> Entity Distribution</div>
-    <div class="donut-wrap">
-      <svg class="donut" viewBox="0 0 100 100">
-        <circle cx="50" cy="50" r="40" fill="none" stroke="rgba(255,255,255,.04)" stroke-width="16"/>
-        <circle cx="50" cy="50" r="40" fill="none" stroke="#a855f7" stroke-width="16" stroke-dasharray="148 251" stroke-dashoffset="-0" transform="rotate(-90 50 50)"/>
-        <circle cx="50" cy="50" r="40" fill="none" stroke="#ef4444" stroke-width="16" stroke-dasharray="41 251" stroke-dashoffset="-148" transform="rotate(-90 50 50)"/>
-        <circle cx="50" cy="50" r="40" fill="none" stroke="#3b82f6" stroke-width="16" stroke-dasharray="25 251" stroke-dashoffset="-189" transform="rotate(-90 50 50)"/>
-        <circle cx="50" cy="50" r="40" fill="none" stroke="#00d4ff" stroke-width="16" stroke-dasharray="19 251" stroke-dashoffset="-214" transform="rotate(-90 50 50)"/>
-        <circle cx="50" cy="50" r="40" fill="none" stroke="#ff8c00" stroke-width="16" stroke-dasharray="11 251" stroke-dashoffset="-233" transform="rotate(-90 50 50)"/>
-        <circle cx="50" cy="50" r="40" fill="none" stroke="#eab308" stroke-width="16" stroke-dasharray="5 251" stroke-dashoffset="-244" transform="rotate(-90 50 50)"/>
-        <circle cx="50" cy="50" r="40" fill="none" stroke="#22c55e" stroke-width="16" stroke-dasharray="1 251" stroke-dashoffset="-249" transform="rotate(-90 50 50)"/>
-      </svg>
-      <div class="donut-legend">
-        <div class="row"><span class="swatch" style="background:#a855f7"></span><span class="lbl">MyKB</span><span class="cnt">2,442</span></div>
-        <div class="row"><span class="swatch" style="background:#ef4444"></span><span class="lbl">VEPA2</span><span class="cnt">680</span></div>
-        <div class="row"><span class="swatch" style="background:#3b82f6"></span><span class="lbl">SPACE</span><span class="cnt">420</span></div>
-        <div class="row"><span class="swatch" style="background:#00d4ff"></span><span class="lbl">HMXOT</span><span class="cnt">320</span></div>
-        <div class="row"><span class="swatch" style="background:#ff8c00"></span><span class="lbl">RSIS3</span><span class="cnt">180</span></div>
-        <div class="row"><span class="swatch" style="background:#eab308"></span><span class="lbl">GOLF</span><span class="cnt">90</span></div>
-        <div class="row"><span class="swatch" style="background:#22c55e"></span><span class="lbl">MyRSIKB</span><span class="cnt">15</span></div>
+      <div class="vbar-wrap">
+        <div class="vbar-col"><div class="vbar" style="height:100%;background:#eab308"><span class="vval">66%</span></div><span class="vbar-lbl">JS/TS</span></div>
+        <div class="vbar-col"><div class="vbar" style="height:18.2%;background:#22c55e"><span class="vval">12%</span></div><span class="vbar-lbl">MD</span></div>
+        <div class="vbar-col"><div class="vbar" style="height:12.1%;background:#3b82f6"><span class="vval">8%</span></div><span class="vbar-lbl">JSON</span></div>
+        <div class="vbar-col"><div class="vbar" style="height:10.6%;background:#ef4444"><span class="vval">7%</span></div><span class="vbar-lbl">HTML</span></div>
+        <div class="vbar-col"><div class="vbar" style="height:6.1%;background:#a855f7"><span class="vval">4%</span></div><span class="vbar-lbl">Img</span></div>
+        <div class="vbar-col"><div class="vbar" style="height:3.0%;background:#ff8c00"><span class="vval">2%</span></div><span class="vbar-lbl">Python</span></div>
+        <div class="vbar-col"><div class="vbar" style="height:1.5%;background:#00d4ff"><span class="vval">1%</span></div><span class="vbar-lbl">Other</span></div>
       </div>
     </div>
   </div>
 
-  <!-- Stats Snapshot - half width -->
-  <div class="card card-half">
-    <div class="card-header"><span class="icon">📈</span> Stats Snapshot</div>
-    <div class="stat-grid">
-      <div class="stat-cell"><span class="stat-big" style="color:#a855f7">7</span><span class="stat-sm">Projects</span></div>
-      <div class="stat-cell"><span class="stat-big" style="color:#3b82f6">26.7k</span><span class="stat-sm">Total Files</span></div>
-      <div class="stat-cell"><span class="stat-big" style="color:#eab308">2.1M</span><span class="stat-sm">Lines of Code</span></div>
-      <div class="stat-cell"><span class="stat-big" style="color:#00d4ff">4,147</span><span class="stat-sm">Entities</span></div>
-      <div class="stat-cell"><span class="stat-big" style="color:#ff8c00">~1.1G</span><span class="stat-sm">Disk Usage</span></div>
-      <div class="stat-cell"><span class="stat-big" style="color:#22c55e">3</span><span class="stat-sm">Active Today</span></div>
-    </div>
-  </div>
-
 </div><!-- /card-grid -->
-
-<!-- MODULE: Progress -->
-<div class="module-label"><span class="icon">🎯</span> Progress &amp; Activity</div>
-
 <div class="card-grid">
 
   <!-- Completion Status - horizontal bars with toggle -->
@@ -542,10 +499,7 @@ h1{font-size:1.3rem;font-weight:700;margin-bottom:.05rem;background:linear-gradi
 
   <!-- Entity Density - horizontal bars with toggle -->
   <div class="card card-full">
-    <div class="card-header">
-      <span class="icon">🧠</span> Entity Density <span class="hdr-sub">(entities per 100 files)</span>
-      <span class="chart-toggle" data-target="density" onclick="toggleChart('density')">▤ Combined</span>
-    </div>
+    
     <div id="density-stacked" class="chart-view hidden">
       <div class="stacked-bar-wrap">
         <div class="stacked-bar">
@@ -579,7 +533,39 @@ h1{font-size:1.3rem;font-weight:700;margin-bottom:.05rem;background:linear-gradi
     </div>
   </div>
 
-  <!-- Git Activity - half width (non-bar) -->
+  <!-- 
+
+</div><!-- /card-grid -->
+
+<!-- MODULE: Stats & Activity -->
+<div class="module-label"><span class="icon">📈</span> Stats &amp; Activity</div>
+
+<div class="card-grid">
+<div class="card card-half">
+    <div class="card-header"><span class="icon">🥧</span> Entity Distribution</div>
+    <div class="donut-wrap">
+      <svg class="donut" viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="40" fill="none" stroke="rgba(255,255,255,.04)" stroke-width="16"/>
+        <circle cx="50" cy="50" r="40" fill="none" stroke="#a855f7" stroke-width="16" stroke-dasharray="148 251" stroke-dashoffset="-0" transform="rotate(-90 50 50)"/>
+        <circle cx="50" cy="50" r="40" fill="none" stroke="#ef4444" stroke-width="16" stroke-dasharray="41 251" stroke-dashoffset="-148" transform="rotate(-90 50 50)"/>
+        <circle cx="50" cy="50" r="40" fill="none" stroke="#3b82f6" stroke-width="16" stroke-dasharray="25 251" stroke-dashoffset="-189" transform="rotate(-90 50 50)"/>
+        <circle cx="50" cy="50" r="40" fill="none" stroke="#00d4ff" stroke-width="16" stroke-dasharray="19 251" stroke-dashoffset="-214" transform="rotate(-90 50 50)"/>
+        <circle cx="50" cy="50" r="40" fill="none" stroke="#ff8c00" stroke-width="16" stroke-dasharray="11 251" stroke-dashoffset="-233" transform="rotate(-90 50 50)"/>
+        <circle cx="50" cy="50" r="40" fill="none" stroke="#eab308" stroke-width="16" stroke-dasharray="5 251" stroke-dashoffset="-244" transform="rotate(-90 50 50)"/>
+        <circle cx="50" cy="50" r="40" fill="none" stroke="#22c55e" stroke-width="16" stroke-dasharray="1 251" stroke-dashoffset="-249" transform="rotate(-90 50 50)"/>
+      </svg>
+      <div class="donut-legend">
+        <div class="row"><span class="swatch" style="background:#a855f7"></span><span class="lbl">MyKB</span><span class="cnt">2,442</span></div>
+        <div class="row"><span class="swatch" style="background:#ef4444"></span><span class="lbl">VEPA2</span><span class="cnt">680</span></div>
+        <div class="row"><span class="swatch" style="background:#3b82f6"></span><span class="lbl">SPACE</span><span class="cnt">420</span></div>
+        <div class="row"><span class="swatch" style="background:#00d4ff"></span><span class="lbl">HMXOT</span><span class="cnt">320</span></div>
+        <div class="row"><span class="swatch" style="background:#ff8c00"></span><span class="lbl">RSIS3</span><span class="cnt">180</span></div>
+        <div class="row"><span class="swatch" style="background:#eab308"></span><span class="lbl">GOLF</span><span class="cnt">90</span></div>
+        <div class="row"><span class="swatch" style="background:#22c55e"></span><span class="lbl">MyRSIKB</span><span class="cnt">15</span></div>
+      </div>
+    </div>
+  </div>
+  <!-- Git Activity -->
   <div class="card card-half">
     <div class="card-header"><span class="icon">📊</span> Git Activity</div>
     <div class="stat-grid">
@@ -592,11 +578,77 @@ h1{font-size:1.3rem;font-weight:700;margin-bottom:.05rem;background:linear-gradi
     </div>
   </div>
 
+
+
+  <!-- Stats Snapshot - half width -->
+  
+<div class="card card-half">
+    <div class="card-header"><span class="icon">📈</span> Stats Snapshot</div>
+    <div class="stat-grid">
+      <div class="stat-cell"><span class="stat-big" style="color:#a855f7">7</span><span class="stat-sm">Projects</span></div>
+      <div class="stat-cell"><span class="stat-big" style="color:#3b82f6">26.7k</span><span class="stat-sm">Total Files</span></div>
+      <div class="stat-cell"><span class="stat-big" style="color:#eab308">2.1M</span><span class="stat-sm">Lines of Code</span></div>
+      <div class="stat-cell"><span class="stat-big" style="color:#00d4ff">4,147</span><span class="stat-sm">Entities</span></div>
+      <div class="stat-cell"><span class="stat-big" style="color:#ff8c00">~1.1G</span><span class="stat-sm">Disk Usage</span></div>
+      <div class="stat-cell"><span class="stat-big" style="color:#22c55e">3</span><span class="stat-sm">Active Today</span></div>
+    </div>
+  </div>
+
+
+
+
+
+  <!-- Total Lines Breakdown -->
+  <div class="card card-half">
+    <div class="card-header"><span class="icon">📏</span> Code Breakdown</div>
+    <div class="donut-wrap">
+      <svg class="donut" viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="40" fill="none" stroke="rgba(255,255,255,.04)" stroke-width="16"/>
+        <circle cx="50" cy="50" r="40" fill="none" stroke="#eab308" stroke-width="16" stroke-dasharray="99 251" stroke-dashoffset="-0" transform="rotate(-90 50 50)"/>
+        <circle cx="50" cy="50" r="40" fill="none" stroke="#3b82f6" stroke-width="16" stroke-dasharray="81 251" stroke-dashoffset="-99" transform="rotate(-90 50 50)"/>
+        <circle cx="50" cy="50" r="40" fill="none" stroke="#a855f7" stroke-width="16" stroke-dasharray="71 251" stroke-dashoffset="-180" transform="rotate(-90 50 50)"/>
+      </svg>
+      <div class="donut-legend">
+        <div class="row"><span class="swatch" style="background:#eab308"></span><span class="lbl">JS/TS</span><span class="cnt">1.4M</span></div>
+        <div class="row"><span class="swatch" style="background:#3b82f6"></span><span class="lbl">Python</span><span class="cnt">425k</span></div>
+        <div class="row"><span class="swatch" style="background:#a855f7"></span><span class="lbl">Markdown</span><span class="cnt">310k</span></div>
+        <div class="row"><span class="swatch" style="background:rgba(255,255,255,.08)"></span><span class="lbl">Other</span><span class="cnt">~50k</span></div>
+        <div class="row" style="margin-top:4px;font-size:.5rem;color:#555"><span class="lbl">Total 2.1M lines across all projects</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Entity Stats -->
+  <div class="card card-half">
+    <div class="card-header"><span class="icon">🧩</span> Entity Stats</div>
+    <div class="stat-grid">
+      <div class="stat-cell"><span class="stat-big" style="color:#a855f7">2,442</span><span class="stat-sm">MyKB entities</span></div>
+      <div class="stat-cell"><span class="stat-big" style="color:#ef4444">680</span><span class="stat-sm">VEPA2 agents</span></div>
+      <div class="stat-cell"><span class="stat-big" style="color:#3b82f6">420</span><span class="stat-sm">SPACE specs</span></div>
+      <div class="stat-cell"><span class="stat-big" style="color:#00d4ff">320</span><span class="stat-sm">HMXOT entities</span></div>
+      <div class="stat-cell"><span class="stat-big" style="color:#ff8c00">180</span><span class="stat-sm">RSIS3 loops</span></div>
+      <div class="stat-cell"><span class="stat-big" style="color:#eab308">90</span><span class="stat-sm">GOLF sims</span></div>
+      <div class="stat-cell"><span class="stat-big" style="color:#22c55e">15</span><span class="stat-sm">MyRSIKB seeds</span></div>
+      <div class="stat-cell"><span class="stat-big" style="color:#555">4,147</span><span class="stat-sm">Total entities</span></div>
+    </div>
+  </div>
+
+  <!-- Disk Usage -->
+  <div class="card card-half">
+    <div class="card-header"><span class="icon">💾</span> Disk Usage <span class="hdr-sub">per project</span></div>
+    <div class="comp-row"><span class="lbl">SPACE</span><div class="track"><div class="fill" style="width:100%;background:#3b82f6"></div></div><span class="pct">512MB</span></div>
+    <div class="comp-row"><span class="lbl">VEPA2</span><div class="track"><div class="fill" style="width:68%;background:#ef4444"></div></div><span class="pct">348MB</span></div>
+    <div class="comp-row"><span class="lbl">MyKB</span><div class="track"><div class="fill" style="width:42%;background:#a855f7"></div></div><span class="pct">215MB</span></div>
+    <div class="comp-row"><span class="lbl">HMXOT</span><div class="track"><div class="fill" style="width:31%;background:#00d4ff"></div></div><span class="pct">160MB</span></div>
+    <div class="comp-row"><span class="lbl">GOLF</span><div class="track"><div class="fill" style="width:18%;background:#eab308"></div></div><span class="pct">92MB</span></div>
+    <div class="comp-row"><span class="lbl">RSIS3</span><div class="track"><div class="fill" style="width:6%;background:#ff8c00"></div></div><span class="pct">31MB</span></div>
+    <div class="comp-row"><span class="lbl">MyRSIKB</span><div class="track"><div class="fill" style="width:2%;background:#22c55e"></div></div><span class="pct">8MB</span></div>
+  </div>
 </div><!-- /card-grid -->
 
 <div class="footer">Generated 2026-07-29 · <a href="https://gemquota.github.io/hub/">Hub Dashboard</a> · <a href="https://github.com/gemquota/hub">GitHub</a></div>
 
-</div>
+
 
 <script>
 function toggleChart(name) {
