@@ -1,0 +1,54 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>SLOTRPG v3 — Dashboard</title><style>
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0f1118;color:#e0e0e0;padding:.6rem;margin:0}
+.container{max-width:1000px;margin:0 auto}
+.back{display:inline-block;padding:3px 12px;border-radius:8px;border:1px solid rgba(255,255,255,.1);font-size:.7rem;margin-bottom:.6rem;color:#888;text-decoration:none}
+h1{font-size:1.3rem;font-weight:700;color:#a78bfa;margin-bottom:.1rem}
+.sub{color:#666;font-size:.65rem;margin-bottom:.6rem}
+.card{background:#161822;border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:.6rem;margin-bottom:.5rem}
+.card-hdr{font-size:.7rem;font-weight:600;color:#ccc;margin-bottom:.3rem}
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:.5rem;margin-bottom:.5rem}
+.stat-card{background:rgba(255,255,255,.03);border-radius:8px;padding:.5rem;text-align:center}
+.stat-num{font-size:1.3rem;font-weight:800;color:#a78bfa;display:block}
+.stat-lbl{font-size:.55rem;color:#777;display:block;margin-top:2px}
+.comp-row{display:flex;align-items:center;gap:.25rem;margin-bottom:.15rem;font-size:.6rem}
+.comp-row .lbl{width:80px;text-align:right;color:#888;flex-shrink:0}
+.comp-row .track{flex:1;height:8px;background:rgba(255,255,255,.04);border-radius:4px;overflow:hidden}
+.comp-row .fill{height:100%;border-radius:4px}
+.comp-row .pct{color:#555;font-size:.55rem;width:30px;text-align:right}
+.footer{text-align:center;color:#222;font-size:.5rem;margin-top:.5rem}
+.module-label{font-size:.8rem;font-weight:700;color:#ccc;margin:.5rem 0 .3rem;padding-bottom:.2rem;border-bottom:1px solid rgba(255,255,255,.06)}
+.stacked-bar{display:flex;height:22px;border-radius:6px;overflow:hidden;background:rgba(255,255,255,.03)}
+.stacked-bar .seg{height:100%;min-width:2px}
+.stacked-bar .seg:first-child{border-radius:6px 0 0 6px}
+.stacked-bar .seg:last-child{border-radius:0 6px 6px 0}
+.stacked-legend{display:flex;flex-wrap:wrap;gap:.2rem .5rem;margin-top:.25rem;font-size:.55rem}
+.stacked-legend .leg-item{display:flex;align-items:center;gap:.2rem;color:#999}
+.stacked-legend .leg-swatch{width:7px;height:7px;border-radius:2px;flex-shrink:0}
+</style></head><body><div class="container">
+<a href="slotrpg.html" class="back">← SLOTRPG</a>
+<h1>🎲 SLOTRPG v3</h1>
+<div class="sub">Early design phase · 13 files · phase-based documentation</div>
+
+<div class="stat-grid">
+<div class="stat-card"><span class="stat-num">13</span><span class="stat-lbl">Files</span></div>
+<div class="stat-card"><span class="stat-num">6</span><span class="stat-lbl">Phases</span></div>
+<div class="stat-card"><span class="stat-num">Docs</span><span class="stat-lbl">Type</span></div>
+</div>
+
+<div class="card"><div class="card-hdr">📑 Phase Documents</div>
+<div class="comp-row"><span class="lbl" style="width:140px">Phase 1</span><div class="track"><div class="fill" style="width:100%;background:#a78bfa"></div></div><span class="pct">Potentiality</span></div>
+<div class="comp-row"><span class="lbl" style="width:140px">Phase 2</span><div class="track"><div class="fill" style="width:85%;background:#a78bfa"></div></div><span class="pct">RRP Summary</span></div>
+<div class="comp-row"><span class="lbl" style="width:140px">Phase 3</span><div class="track"><div class="fill" style="width:70%;background:#c084fc"></div></div><span class="pct">Design/Spec/Systems</span></div>
+<div class="comp-row"><span class="lbl" style="width:140px">Phase 4</span><div class="track"><div class="fill" style="width:60%;background:#c084fc"></div></div><span class="pct">RRP Analysis</span></div>
+<div class="comp-row"><span class="lbl" style="width:140px">Phase 5</span><div class="track"><div class="fill" style="width:55%;background:#d8b4fe"></div></div><span class="pct">Spec/Bible/Compendium</span></div>
+<div class="comp-row"><span class="lbl" style="width:140px">Phase 6</span><div class="track"><div class="fill" style="width:40%;background:#d8b4fe"></div></div><span class="pct">Refinement</span></div>
+</div>
+
+<div class="card"><div class="card-hdr">📊 Content Breakdown</div>
+<div class="stacked-bar"><div class="seg" style="width:45%;background:#a78bfa" title="Design Docs"></div><div class="seg" style="width:30%;background:#c084fc" title="Specs"></div><div class="seg" style="width:15%;background:#d8b4fe" title="Analysis"></div><div class="seg" style="width:10%;background:#e9d5ff" title="Notes"></div></div>
+<div class="stacked-legend"><span class="leg-item"><span class="leg-swatch" style="background:#a78bfa"></span>Design: 45%</span><span class="leg-item"><span class="leg-swatch" style="background:#c084fc"></span>Specs: 30%</span><span class="leg-item"><span class="leg-swatch" style="background:#d8b4fe"></span>Analysis: 15%</span><span class="leg-item"><span class="leg-swatch" style="background:#e9d5ff"></span>Notes: 10%</span></div>
+</div>
+
+<div class="card"><div class="card-hdr">📁 Location</div><p style="font-size:.6rem;color:#888"><code>~/dev/slotrpg/v3/docs/phases/</code></p></div>
+<div class="footer"><a href="https://github.com/gemquota/hub" style="color:#222">Hub Dashboard</a> · SLOTRPG v3</div>
+</div></body></html>

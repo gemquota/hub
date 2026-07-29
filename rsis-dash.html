@@ -1,23 +1,51 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>RSIS Dashboard</title><style>
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0f1118;color:#e0e0e0;padding:.6rem}
-.container{width:100%}
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>RSIS Dashboard — Dashboard</title><style>
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0f1118;color:#e0e0e0;padding:.6rem;margin:0}
+.container{max-width:1000px;margin:0 auto}
 .back{display:inline-block;padding:3px 12px;border-radius:8px;border:1px solid rgba(255,255,255,.1);font-size:.7rem;margin-bottom:.6rem;color:#888;text-decoration:none}
 h1{font-size:1.3rem;font-weight:700;color:#ff8c00;margin-bottom:.1rem}
 .sub{color:#666;font-size:.65rem;margin-bottom:.6rem}
 .card{background:#161822;border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:.6rem;margin-bottom:.5rem}
 .card-hdr{font-size:.7rem;font-weight:600;color:#ccc;margin-bottom:.3rem}
 .stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:.5rem;margin-bottom:.5rem}
-.stat-card{background:#161822;border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:.6rem;text-align:center}
-.stat-num{font-size:1.5rem;font-weight:800;color:#ff8c00;display:block}
-.stat-lbl{font-size:.6rem;color:#777;display:block;margin-top:2px}
+.stat-card{background:rgba(255,255,255,.03);border-radius:8px;padding:.5rem;text-align:center}
+.stat-num{font-size:1.3rem;font-weight:800;color:#ff8c00;display:block}
+.stat-lbl{font-size:.55rem;color:#777;display:block;margin-top:2px}
+.comp-row{display:flex;align-items:center;gap:.25rem;margin-bottom:.15rem;font-size:.6rem}
+.comp-row .lbl{width:90px;text-align:right;color:#888;flex-shrink:0}
+.comp-row .track{flex:1;height:8px;background:rgba(255,255,255,.04);border-radius:4px;overflow:hidden}
+.comp-row .fill{height:100%;border-radius:4px}
+.comp-row .cnt{color:#555;font-size:.55rem;width:30px;text-align:right}
 .footer{text-align:center;color:#222;font-size:.5rem;margin-top:.5rem}
+.stacked-bar{display:flex;height:22px;border-radius:6px;overflow:hidden;background:rgba(255,255,255,.03)}
+.stacked-bar .seg{height:100%;min-width:2px}
+.stacked-bar .seg:first-child{border-radius:6px 0 0 6px}
+.stacked-bar .seg:last-child{border-radius:0 6px 6px 0}
+.stacked-legend{display:flex;flex-wrap:wrap;gap:.2rem .5rem;margin-top:.25rem;font-size:.55rem}
+.stacked-legend .leg-item{display:flex;align-items:center;gap:.2rem;color:#999}
+.stacked-legend .leg-swatch{width:7px;height:7px;border-radius:2px;flex-shrink:0}
 </style></head><body><div class="container">
 <a href="index.html" class="back">← Back to Hub</a>
-<h1>RSIS Dashboard</h1><div class="sub">22 files · JS/CSS · standalone</div>
+<h1>📊 RSIS Dashboard</h1>
+<div class="sub">Standalone dashboard frontend · 22 files · JS/CSS · Vercel-deployed</div>
+
 <div class="stat-grid">
 <div class="stat-card"><span class="stat-num">22</span><span class="stat-lbl">Files</span></div>
+<div class="stat-card"><span class="stat-num">11</span><span class="stat-lbl">Components</span></div>
+<div class="stat-card"><span class="stat-num">Vercel</span><span class="stat-lbl">Deploy</span></div>
 </div>
-<div class="card"><div class="card-hdr">📝 Description</div><p style="font-size:.65rem;color:#999;line-height:1.4">Standalone dashboard frontend for RSIS3. CSS, JS, and HTML visualization layer.</p></div>
-<div class="card"><div class="card-hdr">📋 Location</div><p style="font-size:.6rem;color:#888"><code>~/dev/rsis-dash</code></p></div>
-<div class="footer">Scanned 2026-07-29 · <a href="https://gemquota.github.io/hub/" style="color:#222">Hub Dashboard</a></div>
+
+<div class="card"><div class="card-hdr">📦 Component Breakdown</div>
+<div class="comp-row"><span class="lbl">CSS</span><div class="track"><div class="fill" style="width:100%;background:#ff8c00"></div></div><span class="cnt">3 files</span></div>
+<div class="comp-row"><span class="lbl">JS Components</span><div class="track"><div class="fill" style="width:85%;background:#fb923c"></div></div><span class="cnt">11 files</span></div>
+<div class="comp-row"><span class="lbl">JS Utils</span><div class="track"><div class="fill" style="width:30%;background:#fdba74"></div></div><span class="cnt">2 files</span></div>
+<div class="comp-row"><span class="lbl">HTML</span><div class="track"><div class="fill" style="width:25%;background:#fed7aa"></div></div><span class="cnt">1 file</span></div>
+</div>
+
+<div class="card"><div class="card-hdr">🔗 Components</div>
+<p style="font-size:.6rem;color:#999;line-height:1.5">Header, Tabs, PulseCard, GoalCard, Charts, Filter, Tooltips, Baseline, Plots, Conversation, Data — modular RSIS3 visualization frontend deployed via Vercel.</p></div>
+
+<div class="card"><div class="card-hdr">📝 Description</div><p style="font-size:.65rem;color:#999;line-height:1.4">Standalone dashboard frontend for RSIS3. CSS, JS, and HTML visualization layer with modular component architecture. Deployed on Vercel for real-time RSIS3 monitoring.</p></div>
+
+<div class="card"><div class="card-hdr">📋 Location</div><p style="font-size:.6rem;color:#888"><code>~/dev/rsis-dash</code> · vercel deploy</p></div>
+<div class="footer">Scanned 2026-07-29 · <a href="https://github.com/gemquota/hub" style="color:#222">Hub Dashboard</a></div>
 </div></body></html>
